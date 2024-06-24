@@ -1,12 +1,12 @@
-import React from 'react'
-import AccountSettings from '@/components/Account/AccountSettings'
+import React from "react";
+import AccountSettings from "@/components/Account/AccountSettings";
 
 const AccSettings = () => {
-    return (
-        <div>
-            <AccountSettings />
-        </div>
-    )
-}
+  return (
+    <div>
+      <AccountSettings />
+    </div>
+  );
+};
 
-export default AccSettings
+export default AccSettings;

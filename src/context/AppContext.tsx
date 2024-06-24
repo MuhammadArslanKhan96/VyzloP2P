@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import { ethers } from "ethers";
+import { setWalletAddress } from "@/hooks/cooket";
 
 const AppContext = createContext({} as any); // Provide a default value to the context
 
@@ -96,9 +97,10 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
           const Wallet = res.length > 0 && String(res[0]);
           console.log(Wallet, "YO");
           !wallet && setWallet(Wallet);
+          setWalletAddress(Wallet);
         })
 
-        .catch((err) => {
+        .catch((err: any) => {
           console.log(err);
         });
     } else {
