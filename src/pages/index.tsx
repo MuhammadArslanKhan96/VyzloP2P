@@ -1,8 +1,8 @@
 import { useState } from "react";
-import React from 'react'
+import React from "react";
 import Header from "@/components/Header/Header";
 import Sidebar from "@/components/Sidebar/Sidebar";
-import MarketPlace from "@/components/Marketplace/MarketPlace"
+import MarketPlace from "@/components/Marketplace/MarketPlace";
 import AccountSidebar from "@/components/Account/AccountSidebar";
 
 export default function Home() {
@@ -13,7 +13,7 @@ export default function Home() {
 
   const toggleTabSell = () => {
     setTab(false);
-  }
+  };
 
   const [openMenu, setOpenMenu] = useState(false);
   const toggleMenu = () => {
@@ -37,21 +37,51 @@ export default function Home() {
 
   const [TutorialDropDown, openTutorialDropDown] = useState(false);
   const toggleTutorialDropDown = () => {
-    openTutorialDropDown(!TutorialDropDown)
-  }
+    openTutorialDropDown(!TutorialDropDown);
+  };
 
   return (
     <>
-      <Header openMenu={openMenu} toggleMenu={toggleMenu} openAccMenu={openAccMenu} toggleAccMenu={toggleAccMenu} />
+      <Header
+        openMenu={openMenu}
+        toggleMenu={toggleMenu}
+        openAccMenu={openAccMenu}
+        toggleAccMenu={toggleAccMenu}
+      />
 
       <div className="flex">
         {/* Main Content */}
-        {openMenu && <div onClick={toggleMenu} className="bg-black/70 xl:hidden w-screen h-full min-h-screen fixed top-0 left-0 z-10"></div>}
-        <Sidebar openMenu={openMenu} TutorialDropDown={TutorialDropDown} toggleTutorialDropDown={toggleTutorialDropDown} P2PDropDown={P2PDropDown} toggleP2PDropDown={toggleP2PDropDown} CommunityDropDown={CommunityDropDown} toggleCommunityDropDown={toggleCommunityDropDown} />
-        {openAccMenu && <div onClick={toggleAccMenu} className="bg-black/70 xl:hidden w-screen h-full min-h-screen fixed top-0 left-0 z-10"></div>}
-        <AccountSidebar openAccMenu={openAccMenu} toggleAccMenu={toggleAccMenu} />
+        {openMenu && (
+          <div
+            onClick={toggleMenu}
+            className="bg-black/70 xl:hidden w-screen h-full min-h-screen fixed top-0 left-0 z-10"
+          ></div>
+        )}
+        <Sidebar
+          openMenu={openMenu}
+          TutorialDropDown={TutorialDropDown}
+          toggleTutorialDropDown={toggleTutorialDropDown}
+          P2PDropDown={P2PDropDown}
+          toggleP2PDropDown={toggleP2PDropDown}
+          CommunityDropDown={CommunityDropDown}
+          toggleCommunityDropDown={toggleCommunityDropDown}
+        />
+        {openAccMenu && (
+          <div
+            onClick={toggleAccMenu}
+            className="bg-black/70 xl:hidden w-screen h-full min-h-screen fixed top-0 left-0 z-10"
+          ></div>
+        )}
+        <AccountSidebar
+          openAccMenu={openAccMenu}
+          toggleAccMenu={toggleAccMenu}
+        />
         {/* Content */}
-        <MarketPlace tab={tab} toggleTabBuy={toggleTabBuy} toggleTabSell={toggleTabSell} />
+        <MarketPlace
+          tab={tab}
+          toggleTabBuy={toggleTabBuy}
+          toggleTabSell={toggleTabSell}
+        />
       </div>
     </>
   );
