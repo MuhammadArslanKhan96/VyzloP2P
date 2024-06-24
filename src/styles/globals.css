@@ -3,31 +3,27 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --scroll-bar-color: gray;
+  --scroll-bar-bg-color: transparent;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+.selectscroll {
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: var(--scroll-bar-color) var(--scroll-bar-bg-color); /* For Firefox */
+}
+
+.selectscroll::-webkit-scrollbar {
+  width: 1px;
+  .selectscroll::-webkit-scrollbar-track {
+    background: var(--scroll-bar-bg-color);
   }
+  .selectscroll::-webkit-scrollbar-thumb {
+    background-color: var(--scroll-bar-color);
+    border-radius: 2px;
+    border: 1px solid var(--scroll-bar-bg-color);
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
 }
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
 }
