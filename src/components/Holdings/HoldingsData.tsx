@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
-import Ethereum from "../../images/Ethereum.png"
-import USDT from '../../images/USDT.png'
+import Ethereum from "../../../public/images/Ethereum.png"
+import USDT from '../../../public/images/USDT.png'
 
 const HoldingsData = () => {
     return (

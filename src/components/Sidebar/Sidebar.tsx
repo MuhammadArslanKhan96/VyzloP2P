@@ -26,7 +26,7 @@ type SidebarProps = {
 const Sidebar = ({ openMenu, TutorialDropDown, toggleTutorialDropDown, toggleP2PDropDown, P2PDropDown, CommunityDropDown, toggleCommunityDropDown }: SidebarProps) => {
     return (
         <div className={`transition-all duration-300 ease-in-out ${openMenu ? 'md:w-[40vw] lg:w-[34vw]' : 'lg:w-20'}`}>        {/* Sidebar */}
-            <div className={`bg-white fixed z-20 transition-all duration-300 ease-in-out ${openMenu ? "w-[90vw] sm:w-[30vw] top-0 xl:top-20 xl:w-[26vw] left-0 h-full min-h-screen" : "h-0 top-0 lg:top-20 -left-40 w-0"} flex flex-col gap-10 overflow-y-scroll selectscroll`}>
+            <div className={`bg-white fixed z-20 transition-all duration-300 ease-in-out ${openMenu ? "w-[90vw] sm:w-[30vw] top-0 xl:top-20 xl:w-[26vw] left-0 h-full min-h-screen !pb-16" : "h-0 top-0 lg:top-20 -left-40 w-0"} flex flex-col gap-10 overflow-y-scroll selectscroll`}>
                 <div className="px-4">
                     <div className='xl:hidden flex items-center'>
                         <Image src={Logo} alt="Logo" width={60} height={30} />
@@ -39,7 +39,7 @@ const Sidebar = ({ openMenu, TutorialDropDown, toggleTutorialDropDown, toggleP2P
                             {!P2PDropDown ? <IoIosArrowDown /> : <IoIosArrowUp />}
                         </button>
                         {
-                            P2PDropDown ? <h1 className="flex items-center p-4 gap-2"><GoDotFill fontSize="small" />Marketplace</h1> : ""
+                            P2PDropDown ? <Link href="/" className="flex items-center p-4 gap-2"><GoDotFill fontSize="small" />Marketplace</Link> : ""
                         }
                     </div>
                     <div className="py-4 px-8">
@@ -107,7 +107,7 @@ const Sidebar = ({ openMenu, TutorialDropDown, toggleTutorialDropDown, toggleP2P
                     content={
                         <div className='rounded-lg bg-white text-gray-700'>
                             <div className='p-2'>
-                                <h1 className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer"><GoDotFill fontSize="small" />Marketplace</h1>
+                                <Link href="/" className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer"><GoDotFill fontSize="small" />Marketplace</Link>
                             </div>
                         </div>
                     }
