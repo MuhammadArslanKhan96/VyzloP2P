@@ -4,22 +4,12 @@ import ABI from "@/content/ABI.json";
 
 declare global {
   interface Window {
-    ethereum: ethers.providers.ExternalProvider | null;
+    ethereum: ethers.Provider | null;
   }
 }
 let provider;
 
-let signer: ethers.providers.Provider | ethers.Signer | undefined;
-
-if (typeof window !== "undefined") {
-  provider = new ethers.providers.Web3Provider(window.ethereum as any);
-
-  signer = provider.getSigner();
-} else {
-  // Handle the case where window is not defined (e.g. server-side rendering)
-
-  console.log("Window is not defined");
-}
+let signer: ethers.Provider | ethers.Signer | any | undefined;
 
 // export const CreateEsCrow = async () => {
 //   const gasPrice = await signer?.getGasPrice();
@@ -44,15 +34,24 @@ if (typeof window !== "undefined") {
 // };
 
 export const CreateEsCrow = async (): Promise<boolean> => {
+  if (typeof window !== "undefined") {
+    provider = new ethers.BrowserProvider(window.ethereum as any);
+
+    signer = await provider.getSigner();
+  } else {
+    // Handle the case where window is not defined (e.g. server-side rendering)
+
+    console.log("Window is not defined");
+  }
   try {
-    const gasPrice = await signer?.getGasPrice();
+    // const gasPrice = await signer?.getGasPrice();
     const myContract = new ethers.Contract(contractAddress, ABI, signer);
     const orderId = 7659;
     const takerAddress = "0x019a678785Eab4090E372ecef55c54a291545908";
     const value = 100000000000000;
     const makerPremium = false;
     const takerPremium = false;
-    
+
     await myContract.createEscrowNativeCoin(
       orderId,
       takerAddress,
@@ -60,15 +59,15 @@ export const CreateEsCrow = async (): Promise<boolean> => {
       makerPremium,
       takerPremium,
       {
-        gasPrice: gasPrice,
-        gasLimit: "210000",
+        // gasPrice: gasPrice,
+        // gasLimit: "210000",
         value: value,
       }
     );
-    return true; 
+    return true;
   } catch (error) {
     console.error("Transaction failed:", error);
-    return false; 
+    return false;
   }
 };
 
@@ -77,10 +76,10 @@ export const SetMarkAsPaid = async (): Promise<boolean> => {
     const myContract = new ethers.Contract(contractAddress, ABI, signer);
     const orderId = 7659;
     await myContract.setMarkAsPaid(orderId);
-    return true; 
+    return true;
   } catch (error) {
     console.error("Transaction failed:", error);
-    return false; 
+    return false;
   }
 };
 
@@ -89,9 +88,9 @@ export const ReleaseEsCrow = async (): Promise<boolean> => {
     const myContract = new ethers.Contract(contractAddress, ABI, signer);
     const orderId = 7659;
     await myContract.releaseEscrowNativeCoin(orderId);
-    return true; 
+    return true;
   } catch (error) {
     console.error("Transaction failed:", error);
-    return false; 
+    return false;
   }
 };
