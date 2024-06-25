@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -14,6 +14,7 @@ function a11yProps(index: any) {
 export default function VerticalTabs({ value, handleChange }: any) {
   const { setTabValue } = useAppContext();
   setTabValue(value);
+
   return (
     <Box
       sx={{
@@ -29,10 +30,28 @@ export default function VerticalTabs({ value, handleChange }: any) {
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
-        sx={{ borderRight: 1, borderColor: "divider" }}
+        sx={{
+          borderLeft: 1,
+          borderColor: "divider",
+          textAlign: "left",
+        }}
       >
-        <Tab label="MarketPlace" {...a11yProps(0)} />
-        <Tab label="Item Two" {...a11yProps(1)} />
+        <Tab
+          label="MarketPlace"
+          {...a11yProps(0)}
+          sx={{
+            textTransform: "capitalize",
+            "&.Mui-selected": { bgcolor: "transparent" },
+          }}
+        />
+        <Tab
+          label="Item Two"
+          {...a11yProps(1)}
+          sx={{
+            textTransform: "capitalize",
+            "&.Mui-selected": { bgcolor: "transparent" },
+          }}
+        />
       </Tabs>
     </Box>
   );
