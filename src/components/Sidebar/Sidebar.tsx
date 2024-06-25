@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PeopleIcon from "@mui/icons-material/People";
 import sidebarIcon1 from "../../../public/images/icon1.svg";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -12,6 +12,7 @@ import Logo from "../../../public/images/images.jpg";
 import Image from "next/image";
 import { Tooltip } from "@nextui-org/tooltip";
 import Link from "next/link";
+import VerticalTabs from "../Tabs/VerticalTabs";
 
 type SidebarProps = {
   openMenu: boolean;
@@ -32,9 +33,14 @@ const Sidebar = ({
   CommunityDropDown,
   toggleCommunityDropDown,
 }: SidebarProps) => {
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event: any, newValue: any) => {
+    setValue(newValue);
+  };
   return (
     <div
-      className={`transition-all duration-300 ease-in-out ${
+      className={`transition-all duration-300 ease-in-out  bg-white ${
         openMenu ? "md:w-[40vw] lg:w-[34vw]" : "lg:w-20"
       }`}
     >
@@ -72,10 +78,18 @@ const Sidebar = ({
               {!P2PDropDown ? <IoIosArrowDown /> : <IoIosArrowUp />}
             </button>
             {P2PDropDown ? (
-              <Link href="/" className="flex items-center p-4 gap-2">
-                <GoDotFill fontSize="small" />
-                Marketplace
-              </Link>
+              <>
+                <VerticalTabs value={value} handleChange={handleChange} />{" "}
+                {/*
+                 <Link href="/" className="flex items-center p-4 gap-2">
+                  <GoDotFill fontSize="small" />
+                  Marketplace
+                </Link>
+                <Link href="/" className="flex items-center p-4 gap-2">
+                  <GoDotFill fontSize="small" />
+                  My Ads
+                </Link> */}
+              </>
             ) : (
               ""
             )}
@@ -192,7 +206,7 @@ const Sidebar = ({
         </div>
       </div>
       <div
-        className={`hidden transition-all duration-300 ease-in-out fixed top-20 z-20 lg:flex flex-col gap-10 mt-10 items-center w-20 ${
+        className={`hidden transition-all bg-white h-full duration-300 ease-in-out fixed top-[50px] z-20 lg:flex flex-col gap-10 mt-10 items-center w-20 ${
           openMenu ? "-left-40" : "left-0"
         }`}
       >

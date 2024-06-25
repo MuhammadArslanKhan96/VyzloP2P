@@ -18,11 +18,17 @@ import DropDown from "@/components/Button/DropDown";
 import ChatRoom from "@/components/ChatRoom/ChatRoom";
 import { useRouter } from "next/router";
 import { getWalletAddress } from "@/hooks/cookies";
-import { CreateEsCrow } from "@/hooks/call_contract";
+import {
+  CreateEsCrow,
+  ReleaseEsCrow,
+  SetMarkAsPaid,
+} from "@/hooks/call_contract";
 
 const Purchase = () => {
   const router = useRouter();
   const { id } = router.query;
+  const takerAddress = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
+  console.log("takerAddress", takerAddress);
   const [activeStep, setActiveStep] = useState(0);
   const [btnText, setBtnText] = useState("create escrow");
   const [title, setTitle] = useState("Before we begin");
@@ -37,28 +43,38 @@ const Purchase = () => {
     try {
       if (activeStep === 0) {
         const res = await CreateEsCrow();
-        setBtnText("Mark as Paid");
-        setTitle("Keep in touch with the seller");
-        setPara(
-          "To continue, transfer the fiat under the established conditions and mark as paid."
-        );
         if (res) {
+          setBtnText("Mark as Paid");
+          setTitle("Keep in touch with the seller");
+          setPara(
+            "To continue, transfer the fiat under the established conditions and mark as paid."
+          );
           setActiveStep(1);
+        } else {
+          console.error("Failed to create escrow");
         }
       } else if (activeStep === 1) {
+        const res = await SetMarkAsPaid();
         setBtnText("released crypto");
         setTitle("Perfect");
         setPara(
           "Now you will have to wait for the seller to release the cryptocurrency."
         );
-        setActiveStep(2);
+        if (res) {
+          setActiveStep(2);
+        }
       } else if (activeStep === 2) {
-        setBtnText("released crypto");
-        setTitle("Perfect");
-        setPara(
-          "Now you will have to wait for the seller to release the cryptocurrency."
-        );
-        setActiveStep(3);
+        const res = await ReleaseEsCrow();
+        if (res) {
+          setBtnText("released crypto");
+          setTitle("Perfect");
+          setPara(
+            "Now you will have to wait for the seller to release the cryptocurrency."
+          );
+          setActiveStep(3);
+        } else {
+          console.error("Failed to release crypto");
+        }
       }
     } catch (error: any) {
       if (error.code === "ACTION_REJECTED") {
@@ -77,10 +93,10 @@ const Purchase = () => {
       setWalletAddress(address);
     }
   }, []);
-
+  // MS BT order Id and timer
   return (
     <>
-      <Box className="w-full md:flex justify-end items-center my-1 py-1">
+      <Box className="w-full md:flex justify-end items-center my-1 py-1 ">
         <Box sx={{ width: "100%" }}>
           <Stepper activeStep={activeStep} alternativeLabel>
             {steps.map((label, index) => (
@@ -116,7 +132,7 @@ const Purchase = () => {
           </Box>
         </Box>
       </Box>
-      <Box className="bg-blue-100 p-5 md:flex">
+      <Box className="bg-blue-100 p-5 md:flex  min-h-screen">
         <Box
           sx={{
             backgroundColor: "white",
@@ -347,7 +363,7 @@ const Purchase = () => {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
-              paddingBlock: 2,
+              paddingTop: 2,
             }}
           >
             <Typography

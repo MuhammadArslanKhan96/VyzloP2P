@@ -1,229 +1,9 @@
-// import React, { useState, useEffect, useRef } from "react";
-// import { Avatar, Box, Typography, IconButton } from "@mui/material";
-// import MoreVertIcon from "@mui/icons-material/MoreVert";
-// import SendIcon from "@mui/icons-material/Send";
-// import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
-// import { MainContainer, MessageList } from "@chatscope/chat-ui-kit-react";
-// import {
-//   collection,
-//   addDoc,
-//   query,
-//   orderBy,
-//   onSnapshot,
-//   where,
-//   getDocs,
-// } from "firebase/firestore";
-// import db from "../../../utils/firebaseConfig";
-// import { useRouter } from "next/router";
-// import { useAppContext } from "@/context/AppContext";
-// import { getWalletAddress } from "@/hooks/cooket";
-
-// interface MessageType {
-//   id: string;
-//   text: string; // Example field, adjust as per your actual data structure
-//   createdAt: Date; // Example field, adjust as per your actual data structure
-// }
-// const ChatRoom = () => {
-//   const router = useRouter();
-//   // const { wallet: user1 } = useAppContext();
-//   const { id } = router.query;
-//   const [messages, setMessages] = useState<MessageType[]>([]);
-//   const [newMessage, setNewMessage] = useState("");
-//   const [walletAddress, setWalletAddressState] = useState<string | undefined>(
-//     ""
-//   );
-//   const chatContainerRef = useRef<HTMLDivElement>(null);
-//   const user2 = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
-//   const user1 = walletAddress;
-
-//   useEffect(() => {
-//     const address = getWalletAddress();
-//     if (address) {
-//       setWalletAddressState(address);
-//     }
-//   }, []);
-
-//   console.log(user1, user2);
-//   useEffect(() => {
-//     if (!user1 || !user2) {
-//       console.error("User1 or User2 is undefined");
-//       return;
-//     }
-
-//     const q = query(
-//       collection(db, "conversations"),
-//       where("participants", "array-contains", user1)
-//     );
-
-//     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-//       let conversationId = null;
-//       querySnapshot.forEach((doc) => {
-//         const data = doc.data();
-//         if (data.participants.includes(user2)) {
-//           conversationId = doc.id;
-//         }
-//       });
-
-//       if (conversationId) {
-//         const messagesQuery = query(
-//           collection(db, `conversations/${conversationId}/messages`),
-//           orderBy("createdAt")
-//         );
-//         onSnapshot(messagesQuery, (messagesSnapshot) => {
-//           const loadedMessages:
-//             | ((prevState: never[]) => never[])
-//             | { id: string }[] = [];
-//           messagesSnapshot.forEach((msg) => {
-//             loadedMessages.push({ ...msg.data(), id: msg.id });
-//           });
-//           setMessages(loadedMessages);
-//         });
-//       }
-//     });
-
-//     return () => unsubscribe();
-//   }, [user1, user2]);
-
-//   useEffect(() => {
-//     // Scroll chat container to bottom on messages change
-//     if (chatContainerRef.current) {
-//       chatContainerRef.current.scrollTop =
-//         chatContainerRef.current.scrollHeight;
-//     }
-//   }, [messages]);
-
-//   const handleSend = async () => {
-//     if (newMessage.trim() === "") return;
-
-//     const conversationQuery = query(
-//       collection(db, "conversations"),
-//       where("participants", "array-contains", user1)
-//     );
-
-//     let conversationId = null;
-
-//     const querySnapshot = await getDocs(conversationQuery);
-//     querySnapshot.forEach((doc) => {
-//       const data = doc.data();
-//       if (data.participants.includes(user2)) {
-//         conversationId = doc.id;
-//       }
-//     });
-
-//     if (!conversationId) {
-//       const conversationDoc = await addDoc(collection(db, "conversations"), {
-//         participants: [user1, user2],
-//       });
-//       conversationId = conversationDoc.id;
-//     }
-
-//     await addDoc(collection(db, `conversations/${conversationId}/messages`), {
-//       text: newMessage,
-//       createdAt: new Date(),
-//       sender: user1,
-//     });
-
-//     setNewMessage("");
-//   };
-
-//   return (
-//     <div
-//       style={{
-//         position: "relative",
-//         width: "30%",
-//       }}
-//       className="border bg-white rounded-lg h-[500px] ml-3 flex flex-col justify-between"
-//     >
-//       <Box className="w-full flex justify-between items-center border-b p-4">
-//         <Box className="flex">
-//           <Avatar />
-//           <Box className="ml-1">
-//             <Typography>
-//               {user2
-//                 ? user2.length > 10
-//                   ? `${user2.slice(0, 10)}...${user2.slice(-10)}`
-//                   : user2
-//                 : "no name"}
-//             </Typography>
-
-//             <Typography>no name</Typography>
-//           </Box>
-//         </Box>
-//         <IconButton>
-//           <MoreVertIcon />
-//         </IconButton>
-//       </Box>
-
-//       <MainContainer>
-//         <div
-//           className="w-full h-[350px] overflow-y-auto px-4"
-//           ref={chatContainerRef}
-//         >
-//           <MessageList>
-//             {messages.map((msg: any, index: any) => {
-//               const createdAt = msg?.createdAt?.toDate();
-//               const formattedTime =
-//                 createdAt instanceof Date ? createdAt.toLocaleTimeString() : "";
-
-//               return (
-//                 <Box
-//                   key={index}
-//                   className={`w-full flex items-center  ${
-//                     msg.sender === user1 ? "justify-end" : "justify-start "
-//                   } `}
-//                 >
-//                   <Box
-//                     className={`p-2  rounded-lg w-10/12 ${
-//                       msg?.sender === user1
-//                         ? "bg-blue-100 text-left"
-//                         : "bg-pink-100 text-right"
-//                     } mb-2`}
-//                   >
-//                     <Typography className="text-[9px] text-left">
-//                       {msg.sender === user1 ? "Hamza" : "Ali"}
-//                     </Typography>
-//                     <Typography className="text-sm text-left">
-//                       {msg?.text}
-//                     </Typography>
-//                     <Typography className="text-[9px] text-right">
-//                       {formattedTime}
-//                     </Typography>
-//                   </Box>
-//                 </Box>
-//               );
-//             })}
-//           </MessageList>
-//         </div>
-//       </MainContainer>
-//       <Box className="w-full flex justify-between items-center px-4 py-3 border-t">
-//         <InsertEmoticonIcon />
-//         <input
-//           type="text"
-//           value={newMessage}
-//           onChange={(e) => setNewMessage(e.target.value)}
-//           className="w-full px-1 outline-none border-none"
-//           placeholder="Type message here"
-//           onKeyPress={(e) => {
-//             if (e.key === "Enter") {
-//               handleSend();
-//             }
-//           }}
-//         />
-//         <IconButton onClick={handleSend}>
-//           <SendIcon />
-//         </IconButton>
-//       </Box>
-//     </div>
-//   );
-// };
-
-// export default ChatRoom;
-
 import React, { useState, useEffect, useRef } from "react";
-import { Avatar, Box, Typography, IconButton } from "@mui/material";
+import { Avatar, Box, Typography, IconButton, Button } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SendIcon from "@mui/icons-material/Send";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import ImageIcon from "@mui/icons-material/Image";
 import { MainContainer, MessageList } from "@chatscope/chat-ui-kit-react";
 import {
   collection,
@@ -234,16 +14,24 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
-import db from "../../../utils/firebaseConfig";
+import {
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
+import { db, storage } from "../../../utils/firebaseConfig";
 import { useRouter } from "next/router";
 import { getWalletAddress } from "@/hooks/cookies";
 import getP2P from "@/hooks/getP2P";
+import Image from "next/image";
 interface MessageType {
   id: string;
   text: string;
   createdAt: Date;
   sender?: string;
+  imageURL?: string;
 }
+
 const ChatRoom = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -252,17 +40,19 @@ const ChatRoom = () => {
   const [walletAddress, setWalletAddressState] = useState<string | undefined>(
     ""
   );
-  const [advertiseName, setadvertiseName] = useState("");
+  const [advertiseName, setAdvertiseName] = useState("");
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [uploadedImageURL, setUploadedImageURL] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const user2 = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
   const user1 = walletAddress;
-  getP2P(user2)
-    .then((name) => {
-      setadvertiseName(name);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+
+  useEffect(() => {
+    if (user2) {
+      getP2P(user2, 1);
+    }
+  }, [user2]);
+
   useEffect(() => {
     const address = getWalletAddress();
     if (address) {
@@ -277,36 +67,22 @@ const ChatRoom = () => {
     }
 
     const q = query(
-      collection(db, "conversations"),
-      where("participants", "array-contains", user1)
+      collection(db, "P2POrder", user2, "messages"),
+      orderBy("createdAt")
     );
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let conversationId = null;
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        if (data.participants.includes(user2)) {
-          conversationId = doc.id;
-        }
-      });
-
-      if (conversationId) {
-        const messagesQuery = query(
-          collection(db, `conversations/${conversationId}/messages`),
-          orderBy("createdAt")
-        );
-        onSnapshot(messagesQuery, (messagesSnapshot) => {
-          const loadedMessages: MessageType[] = [];
-          messagesSnapshot.forEach((msg) => {
-            loadedMessages.push({
-              id: msg.id,
-              text: msg.data().text,
-              createdAt: msg.data().createdAt.toDate(),
-            });
-          });
-          setMessages(loadedMessages);
+      const loadedMessages: MessageType[] = [];
+      querySnapshot.forEach((msg) => {
+        loadedMessages.push({
+          id: msg.id,
+          text: msg.data().text,
+          createdAt: msg.data().createdAt.toDate(),
+          sender: msg.data().sender,
+          imageURL: msg.data().imageURL,
         });
-      }
+      });
+      setMessages(loadedMessages);
     });
 
     return () => unsubscribe();
@@ -320,37 +96,52 @@ const ChatRoom = () => {
   }, [messages]);
 
   const handleSend = async () => {
-    if (newMessage.trim() === "") return;
+    if (newMessage.trim() === "" && !uploadedImageURL) return;
 
-    const conversationQuery = query(
-      collection(db, "conversations"),
-      where("participants", "array-contains", user1)
-    );
-
-    let conversationId = null;
-
-    const querySnapshot = await getDocs(conversationQuery);
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      if (data.participants.includes(user2)) {
-        conversationId = doc.id;
-      }
-    });
-
-    if (!conversationId) {
-      const conversationDoc = await addDoc(collection(db, "conversations"), {
-        participants: [user1, user2],
-      });
-      conversationId = conversationDoc.id;
+    if (!user1 || !user2) {
+      console.error("User1 or User2 is undefined");
+      return;
     }
 
-    await addDoc(collection(db, `conversations/${conversationId}/messages`), {
+    const messageData: Partial<MessageType> = {
       text: newMessage,
       createdAt: new Date(),
       sender: user1,
-    });
+    };
+
+    if (uploadedImageURL) {
+      messageData.imageURL = uploadedImageURL;
+    }
+
+    await addDoc(collection(db, `P2POrder/${user2}/messages`), messageData);
 
     setNewMessage("");
+    setUploadedImageURL(null);
+    setSelectedImage(null);
+  };
+
+  const handleImageUpload = async (imageFile: File) => {
+    try {
+      const imageRef = storageRef(storage, `images/${imageFile.name}`);
+      await uploadBytes(imageRef, imageFile);
+      const imageURL = await getDownloadURL(imageRef);
+      setUploadedImageURL(imageURL);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+
+  const confirmSend = async () => {
+    if (selectedImage) {
+      await handleImageUpload(selectedImage);
+    }
+    handleSend();
+    setSelectedImage(null);
+  };
+
+  const cancelOrder = async () => {
+    await getP2P(user2, 0); // Set type to 0 on cancel order
+    router.push("/");
   };
 
   return (
@@ -376,9 +167,16 @@ const ChatRoom = () => {
             <Typography fontSize={14}>{advertiseName}</Typography>
           </Box>
         </Box>
-        <IconButton>
+        <Box>
+          <Button
+            sx={{ fontSize: 10, borderRadius: 2 }}
+            className="bg-blue-100/50"
+            onClick={cancelOrder}
+          >
+            Cancel order
+          </Button>
           <MoreVertIcon />
-        </IconButton>
+        </Box>
       </Box>
 
       <MainContainer>
@@ -386,38 +184,70 @@ const ChatRoom = () => {
           className="w-full h-[350px] overflow-y-auto px-4"
           ref={chatContainerRef}
         >
-          <MessageList>
-            {messages.map((msg, index) => (
-              <Box
-                key={index}
-                className={`w-full flex items-center ${
-                  msg.sender === user1 ? "justify-end" : "justify-start"
-                }`}
-              >
+          {selectedImage !== null ? (
+            <Box className="w-full flex flex-col items-center p-4 ">
+              <Image
+                src={URL.createObjectURL(selectedImage)}
+                alt="Selected"
+                layout="fill"
+                objectFit="cover"
+              />
+            </Box>
+          ) : (
+            <MessageList>
+              {messages.map((msg, index) => (
                 <Box
-                  className={`p-2 rounded-lg w-10/12 ${
-                    msg.sender === user1
-                      ? "bg-blue-100 text-left"
-                      : "bg-pink-100 text-right"
-                  } mb-2`}
+                  key={index}
+                  className={`w-full flex items-center ${
+                    msg.sender === user1 ? "justify-end" : "justify-start"
+                  }`}
                 >
-                  <Typography className="text-[9px] text-left">
-                    {msg.sender === user1 ? "Hamza" : "Ali"}
-                  </Typography>
-                  <Typography className="text-sm text-left">
-                    {msg.text}
-                  </Typography>
-                  <Typography className="text-[9px] text-right">
-                    {msg.createdAt.toLocaleTimeString()}
-                  </Typography>
+                  <Box
+                    className={`p-2 rounded-lg w-10/12 ${
+                      msg.sender === user1
+                        ? "bg-blue-100 text-left"
+                        : "bg-pink-100 text-right"
+                    } mb-2`}
+                  >
+                    <Typography className="text-[9px] text-left">
+                      {msg.sender === user1 ? "Hamza" : "Ali"}
+                    </Typography>
+                    <Typography className="text-sm text-left">
+                      {msg.text}
+                    </Typography>
+                    <Typography className="text-[9px] text-right">
+                      {msg.createdAt.toLocaleTimeString()}
+                    </Typography>
+                    {msg.imageURL && (
+                      <Box>
+                        <img src={msg.imageURL} alt="Attached" />
+                      </Box>
+                    )}
+                  </Box>
                 </Box>
-              </Box>
-            ))}
-          </MessageList>
+              ))}
+            </MessageList>
+          )}
         </div>
       </MainContainer>
       <Box className="w-full flex justify-between items-center px-4 py-3 border-t">
         <InsertEmoticonIcon />
+        <label htmlFor="image-upload">
+          <ImageIcon className="text-blue-400" />
+        </label>
+        <input
+          id="image-upload"
+          type="file"
+          accept="image/*"
+          style={{ display: "none" }}
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              setSelectedImage(file);
+              handleImageUpload(file);
+            }
+          }}
+        />
         <input
           type="text"
           value={newMessage}

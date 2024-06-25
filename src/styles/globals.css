@@ -27,3 +27,7 @@
     -o-border-radius: 2px;
 }
 }
+
+body{
+  overflow-x:hidden;
+}

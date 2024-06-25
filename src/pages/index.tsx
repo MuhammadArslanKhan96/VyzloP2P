@@ -4,9 +4,19 @@ import Header from "@/components/Header/Header";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import MarketPlace from "@/components/Marketplace/MarketPlace";
 import AccountSidebar from "@/components/Account/AccountSidebar";
+import { Box } from "@mui/material";
+import { useAppContext } from "@/context/AppContext";
+import MyAds from "@/components/MyAds/Myads";
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
 export default function Home() {
   const [tab, setTab] = useState(true);
+  const { tabValue } = useAppContext();
+
   const toggleTabBuy = () => {
     setTab(true);
   };
@@ -39,7 +49,20 @@ export default function Home() {
   const toggleTutorialDropDown = () => {
     openTutorialDropDown(!TutorialDropDown);
   };
-
+  function TabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`vertical-tabpanel-${index}`}
+        aria-labelledby={`vertical-tab-${index}`}
+        {...other}
+      >
+        {value === index && <Box className="w-[130%]">{children}</Box>}
+      </div>
+    );
+  }
   return (
     <>
       <Header
@@ -77,11 +100,16 @@ export default function Home() {
           toggleAccMenu={toggleAccMenu}
         />
         {/* Content */}
-        <MarketPlace
-          tab={tab}
-          toggleTabBuy={toggleTabBuy}
-          toggleTabSell={toggleTabSell}
-        />
+        <TabPanel value={tabValue} index={0}>
+          <MarketPlace
+            tab={tab}
+            toggleTabBuy={toggleTabBuy}
+            toggleTabSell={toggleTabSell}
+          />{" "}
+        </TabPanel>
+        <TabPanel value={tabValue} index={1}>
+          <MyAds />
+        </TabPanel>
       </div>
     </>
   );

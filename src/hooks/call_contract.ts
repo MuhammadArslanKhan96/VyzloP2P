@@ -47,8 +47,8 @@ export const CreateEsCrow = async (): Promise<boolean> => {
   try {
     const gasPrice = await signer?.getGasPrice();
     const myContract = new ethers.Contract(contractAddress, ABI, signer);
-    const orderId = 17;
-    const takerAddress = "0xA6cA715bD8f2160D5AFD1B278DaB294d2AD160eF";
+    const orderId = 7659;
+    const takerAddress = "0x019a678785Eab4090E372ecef55c54a291545908";
     const value = 100000000000000;
     const makerPremium = false;
     const takerPremium = false;
@@ -75,7 +75,7 @@ export const CreateEsCrow = async (): Promise<boolean> => {
 export const SetMarkAsPaid = async (): Promise<boolean> => {
   try {
     const myContract = new ethers.Contract(contractAddress, ABI, signer);
-    const orderId = 17;
+    const orderId = 7659;
     await myContract.setMarkAsPaid(orderId);
     return true; 
   } catch (error) {
@@ -87,7 +87,7 @@ export const SetMarkAsPaid = async (): Promise<boolean> => {
 export const ReleaseEsCrow = async (): Promise<boolean> => {
   try {
     const myContract = new ethers.Contract(contractAddress, ABI, signer);
-    const orderId = 17;
+    const orderId = 7659;
     await myContract.releaseEscrowNativeCoin(orderId);
     return true; 
   } catch (error) {

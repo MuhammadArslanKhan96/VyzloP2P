@@ -16,7 +16,7 @@ const MarketPlace: React.FC<MarketplaceProps> = ({
   toggleTabSell,
 }) => {
   return (
-    <div className="bg-[#d4ebfc] max-lg:pt-16 pt-32 w-screen h-full min-h-screen">
+    <div className="bg-[#d4ebfc] max-lg:pt-16 pt-32  h-full min-h-screen">
       <div className="p-6">
         <div className="bg-white px-2 py-4 rounded-md border border-gray-300 flex justify-between max-sm:gap-2 whitespace-nowrap">
           <h1 className="text-[12px] lg:text-xl font-semibold">Marketplace</h1>

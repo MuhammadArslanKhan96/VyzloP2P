@@ -12,6 +12,8 @@ declare global {
 
 const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [wallet, setWallet] = useState<any>();
+  const [tabValue, setTabValue] = useState(0);
+
   const networkId = 80002;
   // const networkId = 7000; //For Mainnet Only
 
@@ -114,6 +116,8 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
         setWallet,
         getEthersInstance,
         getWalletFunction,
+        tabValue,
+        setTabValue,
       }}
     >
       {children}

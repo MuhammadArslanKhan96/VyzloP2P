@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import db from "../../../utils/firebaseConfig";
+import { db } from "../../../utils/firebaseConfig";
 import Link from "next/link";
 import { useAppContext } from "@/context/AppContext";
 import { Box, Modal, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 
 interface TableItem {
   key: string;
@@ -34,11 +35,13 @@ const App: React.FC<AppProps> = ({
   selectedCommunities,
   tab,
 }) => {
+  // const router = useRouter();
+  // const { id } = router.query;
   const [tableData, setTableData] = useState<TableItem[]>([]);
   const [filterType, setFilterType] = useState<string | null>(null); // 'buy', 'sell', or null
   const { wallet } = useAppContext();
   const [openModel, setOpenModel] = useState(false);
-
+  // const user2 = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
   useEffect(() => {
     async function fetchData() {
       const querySnapshot = await getDocs(collection(db, "P2POrder"));
@@ -50,7 +53,6 @@ const App: React.FC<AppProps> = ({
 
       setTableData(data);
     }
-
     fetchData();
   }, []);
 
@@ -144,44 +146,51 @@ const App: React.FC<AppProps> = ({
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {filteredData.map((item) => (
-              <tr key={item.key} className="bg-white">
-                <td className="px-6 py-4 text-sm text-gray-500">
-                  {item.advertiser}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-500">
-                  {item.value} {item.fiat}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-500">
-                  {item.payMethod}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-500">
-                  {item.fiat} {item.boundries}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-500 flex flex-col">
-                  <span className="font-semibold">
-                    {item.available} {item.symbol}
-                  </span>{" "}
-                  {item.blockChain}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-500">
-                  <Link
-                    href={wallet ? `/purchase/${item.wallet}` : "/"}
-                    onClick={checkWallet}
-                  >
-                    <button
-                      className={`text-sm px-4 py-2 rounded-md w-24 transition-all duration-300 text-white ${
-                        item.type === 0
-                          ? "bg-green-500 hover:bg-green-300"
-                          : "bg-red-500 hover:bg-red-300"
-                      }`}
+            {filteredData.map((item) => {
+              console.log();
+              return (
+                <tr key={item.key} className="bg-white">
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {item.advertiser}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {item.value} {item.fiat}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {item.payMethod}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {item.fiat} {item.boundries}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500 flex flex-col">
+                    <span className="font-semibold">
+                      {item.available} {item.symbol}
+                    </span>{" "}
+                    {item.blockChain}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    <Link
+                      href={
+                        wallet && item.type === 0
+                          ? `/purchase/${item.key}`
+                          : "/"
+                      }
+                      onClick={checkWallet}
                     >
-                      {item.type === 0 ? "Buy" : "Sell"} {item.symbol}
-                    </button>
-                  </Link>
-                </td>
-              </tr>
-            ))}
+                      <button
+                        className={`text-sm px-4 py-2 rounded-md w-24 transition-all duration-300 text-white ${
+                          item.type === 0
+                            ? "bg-green-500 hover:bg-green-300"
+                            : "bg-red-500 hover:bg-red-300"
+                        }`}
+                      >
+                        {item.type === 0 ? "Buy" : "Sell"} {item.symbol}
+                      </button>
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         {openModel && (
