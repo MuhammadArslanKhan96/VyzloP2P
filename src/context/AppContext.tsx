@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import { ethers } from "ethers";
-import { setWalletAddress } from "@/hooks/cooket";
+import { setWalletAddress } from "@/hooks/cookies";
 
 const AppContext = createContext({} as any); // Provide a default value to the context
 

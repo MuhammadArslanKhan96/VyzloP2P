@@ -236,8 +236,8 @@ import {
 } from "firebase/firestore";
 import db from "../../../utils/firebaseConfig";
 import { useRouter } from "next/router";
-import { useAppContext } from "@/context/AppContext";
-import { getWalletAddress } from "@/hooks/cooket";
+import { getWalletAddress } from "@/hooks/cookies";
+import getP2P from "@/hooks/getP2P";
 interface MessageType {
   id: string;
   text: string;
@@ -252,11 +252,17 @@ const ChatRoom = () => {
   const [walletAddress, setWalletAddressState] = useState<string | undefined>(
     ""
   );
-
+  const [advertiseName, setadvertiseName] = useState("");
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const user2 = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
   const user1 = walletAddress;
-
+  getP2P(user2)
+    .then((name) => {
+      setadvertiseName(name);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
   useEffect(() => {
     const address = getWalletAddress();
     if (address) {
@@ -307,7 +313,6 @@ const ChatRoom = () => {
   }, [user1, user2]);
 
   useEffect(() => {
-    // Scroll chat container to bottom on messages change
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =
         chatContainerRef.current.scrollHeight;
@@ -361,14 +366,14 @@ const ChatRoom = () => {
         <Box className="flex">
           <Avatar />
           <Box className="ml-1">
-            <Typography>
+            <Typography fontSize={14}>
               {user2
                 ? user2.length > 10
-                  ? `${user2.slice(0, 10)}...${user2.slice(-10)}`
+                  ? `${user2.slice(0, 6)}...${user2.slice(-6)}`
                   : user2
-                : "no name"}
+                : "00000"}
             </Typography>
-            <Typography>no name</Typography>
+            <Typography fontSize={14}>{advertiseName}</Typography>
           </Box>
         </Box>
         <IconButton>
