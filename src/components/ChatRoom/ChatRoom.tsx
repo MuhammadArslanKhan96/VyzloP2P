@@ -36,7 +36,7 @@ interface MessageType {
 }
 
 const ChatRoom = () => {
-  const { setMaker } = useAppContext();
+  const { maker, setMaker } = useAppContext();
   const router = useRouter();
   const { id } = router.query;
   const [messages, setMessages] = useState<MessageType[]>([]);
@@ -50,7 +50,7 @@ const ChatRoom = () => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [makerSeller, setMakerWallet] = useState("");
   const [name, setName] = useState<string | undefined>("");
-
+  const [seller, setSellerName] = useState("");
   const user2 = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
   const user1 = walletAddress;
   // useEffect(() => {
@@ -68,7 +68,7 @@ const ChatRoom = () => {
         console.error("Error:", error);
       } else {
         setMakerWallet(data?.wallet);
-        // console.log("Wallet Data:", data?.wallet);
+        setSellerName(data?.advertiser);
       }
     };
     fetchWalletAddress(user2);
@@ -155,14 +155,14 @@ const ChatRoom = () => {
 
   const cancelOrder = async () => {
     // Delete the messages collection
-    const messagesRef = collection(db, `P2POrder/${user2}/messages`);
-    const snapshot = await getDocs(messagesRef);
-    snapshot.forEach((doc) => {
-      deleteDoc(doc.ref);
-    });
+    // const messagesRef = collection(db, `P2POrder/${user2}/messages`);
+    // const snapshot = await getDocs(messagesRef);
+    // snapshot.forEach((doc) => {
+    //   deleteDoc(doc.ref);
+    // });
 
-    // Optionally, delete the parent P2POrder document
-    await deleteDoc(doc(db, `P2POrder/${user2}`));
+    // // Optionally, delete the parent P2POrder document
+    // await deleteDoc(doc(db, `P2POrder/${user2}`));
 
     await getP2P(user2, 0);
     router.push("/");
@@ -197,13 +197,13 @@ const ChatRoom = () => {
           <Avatar />
           <Box className="ml-1">
             <Typography fontSize={14}>
-              {name
-                ? name.length > 10
-                  ? `${name.slice(0, 6)}...${name.slice(-6)}`
-                  : name
-                : "00000"}
+              {maker
+                ? makerSeller
+                : name.length > 10
+                ? `${name.slice(0, 6)}...${name.slice(-6)}`
+                : name}
             </Typography>
-            <Typography fontSize={14}>no name</Typography>
+            <Typography fontSize={14}> {maker ? "unknown" : seller}</Typography>
           </Box>
         </Box>
         <Box>

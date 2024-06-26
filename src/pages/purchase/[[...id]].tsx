@@ -63,8 +63,8 @@ const Purchase = () => {
           console.error("Failed to create escrow");
         }
       } else if (activeStep === 2) {
-        // const res = await ReleaseEsCrow();
-        const res = true;
+        const res = await ReleaseEsCrow();
+        // const res = true;
         if (res) {
           setBtnText("released crypto");
           setTitle("Perfect");
