@@ -132,7 +132,7 @@ const Purchase = () => {
           </Box>
         </Box>
       </Box>
-      <Box className="bg-blue-100 p-5 md:flex  min-h-screen">
+      <Box className="bg-blue-100 p-5 md:flex  ">
         <Box
           sx={{
             backgroundColor: "white",

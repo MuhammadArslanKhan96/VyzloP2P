@@ -22,6 +22,7 @@ export default function VerticalTabs({ value, handleChange }: any) {
         bgcolor: "background.paper",
         display: "flex",
         height: 224,
+        paddingLeft: 4,
       }}
     >
       <Tabs
@@ -34,6 +35,7 @@ export default function VerticalTabs({ value, handleChange }: any) {
           borderLeft: 1,
           borderColor: "divider",
           textAlign: "left",
+          paddingLeft: 1,
         }}
       >
         <Tab
@@ -41,14 +43,18 @@ export default function VerticalTabs({ value, handleChange }: any) {
           {...a11yProps(0)}
           sx={{
             textTransform: "capitalize",
+            fontSize: 16,
+            textAlign: "left",
             "&.Mui-selected": { bgcolor: "transparent" },
           }}
         />
         <Tab
-          label="Item Two"
+          label="Ads"
           {...a11yProps(1)}
           sx={{
             textTransform: "capitalize",
+            fontSize: 16,
+            textAlign: "left",
             "&.Mui-selected": { bgcolor: "transparent" },
           }}
         />

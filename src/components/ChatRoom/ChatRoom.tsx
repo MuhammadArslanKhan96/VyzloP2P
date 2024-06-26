@@ -22,7 +22,7 @@ import {
 import { db, storage } from "../../../utils/firebaseConfig";
 import { useRouter } from "next/router";
 import { getWalletAddress } from "@/hooks/cookies";
-import getP2P from "@/hooks/getP2P";
+import { getP2P, getWallet } from "@/hooks/getP2P";
 import Image from "next/image";
 interface MessageType {
   id: string;
@@ -30,6 +30,7 @@ interface MessageType {
   createdAt: Date;
   sender?: string;
   imageURL?: string;
+  // makerSeller?: string;
 }
 
 const ChatRoom = () => {
@@ -44,13 +45,29 @@ const ChatRoom = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [uploadedImageURL, setUploadedImageURL] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [makerSeller, setMakerWallet] = useState("");
+
   const user2 = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
   const user1 = walletAddress;
-
   useEffect(() => {
     if (user2) {
       getP2P(user2, 1);
     }
+  }, [user2]);
+
+  useEffect(() => {
+    const fetchWalletAddress = async (user2: any) => {
+      const { data, loading, error } = await getWallet(user2);
+      if (loading) {
+        console.log("Loading...");
+      } else if (error) {
+        console.error("Error:", error);
+      } else {
+        setMakerWallet(data?.wallet);
+        console.log("Wallet Data:", data?.wallet);
+      }
+    };
+    fetchWalletAddress(user2);
   }, [user2]);
 
   useEffect(() => {
@@ -80,6 +97,7 @@ const ChatRoom = () => {
           createdAt: msg.data().createdAt.toDate(),
           sender: msg.data().sender,
           imageURL: msg.data().imageURL,
+          // makerSeller: msg.data().makerSeller,
         });
       });
       setMessages(loadedMessages);
@@ -107,6 +125,7 @@ const ChatRoom = () => {
       text: newMessage,
       createdAt: new Date(),
       sender: user1,
+      // makerSeller: makerSeller,
     };
 
     if (uploadedImageURL) {
@@ -131,14 +150,6 @@ const ChatRoom = () => {
     }
   };
 
-  const confirmSend = async () => {
-    if (selectedImage) {
-      await handleImageUpload(selectedImage);
-    }
-    handleSend();
-    setSelectedImage(null);
-  };
-
   const cancelOrder = async () => {
     await getP2P(user2, 0); // Set type to 0 on cancel order
     router.push("/");
@@ -158,10 +169,10 @@ const ChatRoom = () => {
           <Avatar />
           <Box className="ml-1">
             <Typography fontSize={14}>
-              {user2
-                ? user2.length > 10
-                  ? `${user2.slice(0, 6)}...${user2.slice(-6)}`
-                  : user2
+              {makerSeller
+                ? makerSeller.length > 10
+                  ? `${makerSeller.slice(0, 6)}...${makerSeller.slice(-6)}`
+                  : makerSeller
                 : "00000"}
             </Typography>
             <Typography fontSize={14}>{advertiseName}</Typography>
@@ -190,7 +201,7 @@ const ChatRoom = () => {
                 src={URL.createObjectURL(selectedImage)}
                 alt="Selected"
                 layout="fill"
-                objectFit="cover"
+                objectFit="contain"
               />
             </Box>
           ) : (

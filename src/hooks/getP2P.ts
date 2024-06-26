@@ -51,10 +51,10 @@
 // };
 
 // export default getP2P;
-import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
+import { collection, getDocs, updateDoc, doc, getDoc, query, where } from "firebase/firestore";
 import { db } from "../../utils/firebaseConfig";
 
-const getP2P = async (walletAddress: any, type: any) => {
+export const getP2P = async (walletAddress: any, type: any) => {
   try {
     const p2pCollection = collection(db, "P2POrder");
     const p2pQuerySnapshot = await getDocs(p2pCollection);
@@ -68,6 +68,7 @@ const getP2P = async (walletAddress: any, type: any) => {
             type: type,
           });
           console.log("Document updated successfully");
+          return data
         } else {
           console.log("Document type is already correct, no update needed");
         }
@@ -80,5 +81,43 @@ const getP2P = async (walletAddress: any, type: any) => {
   }
 };
 
-export default getP2P;
 
+export const getWallet = async (docId: string) => {
+  try {
+    const p2pCollection = collection(db, "P2POrder");
+    const p2pDoc = doc(p2pCollection, docId);
+    const p2pDocSnapshot = await getDoc(p2pDoc);
+    
+    if (p2pDocSnapshot.exists()) {
+      console.log(p2pDocSnapshot.data());
+      return { data: p2pDocSnapshot.data(), loading: false, error: null };
+    } else {
+      console.log("No such document!");
+      return { data: null, loading: false, error: "No such document!" };
+    }
+  } catch (error) {
+    console.error("Error getting document:", error);
+    return { data: null, loading: false, error: "Error getting document" };
+  }
+};
+export const getWalletMessage = async (makerWallet: string) => {
+  try {
+    const p2pCollection = collection(db, "P2POrder");
+    const p2pQuerySnapshot = await getDocs(p2pCollection);
+
+    for (const doc of p2pQuerySnapshot.docs) {
+      const messagesCollection = collection(db, "P2POrder", doc.id, "messages");
+      const messagesQuery = query(messagesCollection, where("makerSender", "==", makerWallet));
+      const messagesSnapshot = await getDocs(messagesQuery);
+      console.log(messagesSnapshot)
+      if (!messagesSnapshot.empty) {
+        return true;
+      }
+    }
+    
+    return false;
+  } catch (error) {
+    console.error("Error checking wallet address in messages:", error);
+    return false;
+  }
+};

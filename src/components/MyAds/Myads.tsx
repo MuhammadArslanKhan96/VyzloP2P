@@ -47,7 +47,7 @@ const MyAds = () => {
   ];
   return (
     <Box className="bg-[#d4ebfc] max-lg:pt-16 pt-32 w-screen  h-full min-h-screen pb-5">
-      <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[60%] rounded-lg bg-white mt-4">
+      <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[80%] rounded-lg bg-white mt-4">
         <div className="flex w-full gap-4 items-end ">
           <div className="flex gap-x- px-1  py-1 bg-blue-200 rounded-lg">
             <button className="text-bold py-1 bg-blue-500 text-white px-4 rounded-lg transition-all duration-400">
@@ -153,7 +153,7 @@ const MyAds = () => {
           </Button>
         </Box>
       </div>
-      <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[60%] rounded-lg bg-white mt-4">
+      <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[80%] rounded-lg bg-white mt-4">
         <Box className="w-full flex mb-10">
           <ArrowBackIcon />
           <Box className="flex flex-col">
@@ -184,7 +184,7 @@ const MyAds = () => {
           </Box>
         </Box>
       </div>
-      <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[60%] rounded-lg bg-white mt-4">
+      <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[80%] rounded-lg bg-white mt-4">
         <Box className="w-full flex mb-10">
           <ArrowBackIcon />
           <Box className="flex flex-col">
@@ -305,7 +305,7 @@ const MyAds = () => {
           </Box>
         </Box>
       </div>
-      <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[60%] rounded-lg bg-white mt-4">
+      <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[80%] rounded-lg bg-white mt-4">
         <Box className="w-full flex mb-10">
           <ArrowBackIcon />
           <Box className="flex flex-col">
@@ -323,17 +323,17 @@ const MyAds = () => {
             Now we need some important specifications.
           </Typography>
           <Box className="w-full flex justify-center gap-4 flex-wrap items-center mt-10 ">
-            <Box sx={{ m: 1, minWidth: 300 }}>
+            <Box sx={{ m: 1, minWidth: 400 }}>
               <Typography sx={{ color: "gray" }}>
                 Which curreny do you want to buy?
               </Typography>
-              <TextField sx={{ m: 1, minWidth: 300 }}></TextField>
+              <TextField sx={{ m: 1, minWidth: 400 }}></TextField>
             </Box>
-            <Box sx={{ m: 1, minWidth: 300 }}>
+            <Box sx={{ m: 1, minWidth: 400 }}>
               <Typography sx={{ color: "gray" }}>
                 In Which currecy do you want to make the payment?
               </Typography>
-              <TextField sx={{ m: 1, minWidth: 300 }}></TextField>
+              <TextField sx={{ m: 1, minWidth: 400 }}></TextField>
             </Box>
           </Box>
           <Box className="w-full flex justify-start items-center">
@@ -342,22 +342,22 @@ const MyAds = () => {
                 Do You want to set limit to your offer?
               </Typography>
               <Box className="w-full  flex justify-center flex-wrap items-center ">
-                <Box sx={{ m: 1, width: 145 }}>
+                <Box sx={{ m: 1, width: 160 }}>
                   <Typography sx={{ color: "gray", fontSize: 12 }}>
                     Miniumn offer
                   </Typography>
-                  <TextField sx={{ m: 1, width: 145 }}></TextField>
+                  <TextField sx={{ width: 160 }}></TextField>
                 </Box>
-                <Box sx={{ m: 1, width: 145 }}>
+                <Box sx={{ m: 1, width: 160 }}>
                   <Typography sx={{ color: "gray", fontSize: 12 }}>
                     Maxium offer
                   </Typography>
-                  <TextField sx={{ m: 1, width: 145 }}></TextField>
+                  <TextField sx={{ width: 160 }}></TextField>
                 </Box>
                 <Typography
                   color="initial"
                   sx={{ fontSize: 14, color: "gray" }}
-                  className="w-[70%]"
+                  className="w-[66%]"
                 >
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Accusamus alias voluptas corporis error cum sit iusto tempora
@@ -368,7 +368,7 @@ const MyAds = () => {
           </Box>
         </Box>
       </div>
-      <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[60%] rounded-lg bg-white mt-4">
+      <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[80%] rounded-lg bg-white mt-4">
         <Box className="w-full flex mb-10">
           <ArrowBackIcon />
           <Box className="flex flex-col">
@@ -449,7 +449,7 @@ const MyAds = () => {
           </Box>
         </Box>
       </div>
-      <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[60%] rounded-lg bg-white mt-4">
+      <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[80%] rounded-lg bg-white mt-4">
         <Box className="w-full flex mb-10">
           <ArrowBackIcon />
           <Box className="flex flex-col">
