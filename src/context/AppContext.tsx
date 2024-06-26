@@ -4,15 +4,16 @@ import { setWalletAddress } from "@/hooks/cookies";
 
 const AppContext = createContext({} as any); // Provide a default value to the context
 
-declare global {
-  interface Window {
-    ethers: ethers.Provider | any | null;
-  }
-}
+// declare global {
+//   interface Window {
+//     ethers: any | null;
+//   }
+// }
 
 const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [wallet, setWallet] = useState<any>();
   const [tabValue, setTabValue] = useState(0);
+  const [maker, setMaker] = useState<boolean>(false);
 
   const networkId = 80002;
   // const networkId = 7000; //For Mainnet Only
@@ -26,17 +27,20 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
       console.error("Error requesting accounts:", accountError);
     }
   };
-
   const getEthersInstance = async (
     networkId: number
-  ): Promise<ethers.Provider> => {
-    let ethersProvider: ethers.Provider;
+  ): Promise<
+    ethers.providers.JsonRpcProvider | ethers.providers.Web3Provider
+  > => {
+    let ethersProvider:
+      | ethers.providers.JsonRpcProvider
+      | ethers.providers.Web3Provider;
 
-    if (window.ethereum) {
-      ethersProvider = new ethers.BrowserProvider(window.ethereum as any);
+    if (window.ethereum && window.ethereum.isMetaMask) {
+      ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
     } else {
       const publicEndpoint = "https://rpc-amoy.polygon.technology";
-      ethersProvider = new ethers.JsonRpcProvider(publicEndpoint);
+      ethersProvider = new ethers.providers.JsonRpcProvider(publicEndpoint);
     }
 
     const currentNetworkId = await ethersProvider
@@ -68,21 +72,79 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
               ],
             });
           } catch (addError) {
-            // Handle "add" error
             console.error("Error adding Ethereum chain:", addError);
+            throw addError;
           }
+        } else {
+          console.error("Error switching Ethereum chain:", switchError);
+          throw switchError; // Rethrow or handle as needed
         }
-        // Handle other "switch" errors
-        console.error("Error switching Ethereum chain:", switchError);
       }
     }
 
-    if (window.ethereum) {
-      await getUserWalletAddresses();
+    if (window.ethereum && window.ethereum.isMetaMask) {
+      await getUserWalletAddresses(); // Replace with your function to handle user wallet addresses
     }
 
     return ethersProvider;
   };
+
+  // const getEthersInstance = async (
+  //   networkId: number
+  // ): Promise<ethers.Providers> => {
+  //   let ethersProvider: ethers.Provider;
+
+  //   if (window.ethereum) {
+  //     ethersProvider = new ethers.BrowserProvider(window.ethereum as any);
+  //   } else {
+  //     const publicEndpoint = "https://rpc-amoy.polygon.technology";
+  //     ethersProvider = new ethers.JsonRpcProvider(publicEndpoint);
+  //   }
+
+  //   const currentNetworkId = await ethersProvider
+  //     .getNetwork()
+  //     .then((network: any) => network.chainId);
+
+  //   if (Number(currentNetworkId) !== networkId && window.ethereum) {
+  //     try {
+  //       await (window.ethereum as any).request({
+  //         method: "wallet_switchEthereumChain",
+  //         params: [{ chainId: `0x${networkId.toString(16)}` }],
+  //       });
+  //     } catch (switchError: any) {
+  //       if (switchError.code === 4902) {
+  //         try {
+  //           await (window.ethereum as any).request({
+  //             method: "wallet_addEthereumChain",
+  //             params: [
+  //               {
+  //                 chainId: `0x${networkId.toString(16)}`,
+  //                 chainName: "Polygon Amoy Testnet",
+  //                 nativeCurrency: {
+  //                   name: "MATIC",
+  //                   symbol: "MATIC",
+  //                   decimals: 18,
+  //                 },
+  //                 rpcUrls: ["https://rpc-amoy.polygon.technology"],
+  //               },
+  //             ],
+  //           });
+  //         } catch (addError) {
+  //           // Handle "add" error
+  //           console.error("Error adding Ethereum chain:", addError);
+  //         }
+  //       }
+  //       // Handle other "switch" errors
+  //       console.error("Error switching Ethereum chain:", switchError);
+  //     }
+  //   }
+
+  //   if (window.ethereum) {
+  //     await getUserWalletAddresses();
+  //   }
+
+  //   return ethersProvider;
+  // };
 
   const getWalletFunction = async () => {
     if (window.ethereum) {
@@ -95,8 +157,10 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
         // Assuming wallet and setWallet are defined elsewhere in your code
         // Replace the following lines with your state management logic
         // Example:
+        console.log();
         Wallet && setWallet(Wallet);
-        // setWalletAddress(wallet);
+        console.log(Wallet);
+        setWalletAddress(Wallet);
       } catch (err) {
         console.error("Error requesting accounts:", err);
       }
@@ -113,6 +177,8 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
         getWalletFunction,
         tabValue,
         setTabValue,
+        maker,
+        setMaker,
       }}
     >
       {children}

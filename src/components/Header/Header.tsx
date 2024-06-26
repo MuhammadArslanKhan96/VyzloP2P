@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../../../public/images/images.jpg";
+import Logo from "../../../public/images/logoVyzlo.png";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { MdLanguage } from "react-icons/md";
 import Image from "next/image";
@@ -39,8 +39,8 @@ const Header = ({
       >
         <div className="flex items-center gap-12">
           <div className="hidden lg:flex items-center">
-            <Image src={Logo} alt="Logo" width={60} height={30} />
-            <h1 className="text-3xl">
+            <Image src={Logo} alt="Logo" width={50} height={30} />
+            <h1 className=" ml-2 text-3xl">
               <b>Vyzlo</b>
             </h1>
           </div>
@@ -50,9 +50,9 @@ const Header = ({
           />
         </div>
         <div className="flex items-center gap-2 lg:gap-6">
-          <button className="bg-[#d4ebfc] text-[#2196f3] px-4 py-1 rounded-lg flex items-center gap-2">
+          {/* <button className="bg-[#d4ebfc] text-[#2196f3] px-4 py-1 rounded-lg flex items-center gap-2">
             <MdLanguage className="text-[20px]" /> IS
-          </button>
+          </button> */}
           <button
             className="bg-[#d4ebfc] font-semibold px-4 py-1 rounded-lg"
             onClick={() => {

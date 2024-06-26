@@ -94,7 +94,7 @@ const Sidebar = ({
               ""
             )}
           </div>
-          <div className="py-4 px-8">
+          {/* <div className="py-4 px-8">
             <button
               onClick={toggleCommunityDropDown}
               className="flex justify-between items-center w-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 p-4 rounded-md"
@@ -118,7 +118,7 @@ const Sidebar = ({
             ) : (
               ""
             )}
-          </div>
+          </div> */}
           <div className="py-2 px-4">
             <button className="flex justify-between items-center w-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
               <h1 className="flex items-center p-4 gap-2">
@@ -157,7 +157,7 @@ const Sidebar = ({
               </h1>
             </button>
           </div>
-          <div className="p-2 px-4">
+          {/* <div className="p-2 px-4">
             <button
               onClick={toggleTutorialDropDown}
               className="flex justify-between items-center w-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-2 rounded-md"
@@ -194,7 +194,7 @@ const Sidebar = ({
             ) : (
               ""
             )}
-          </div>
+          </div> */}
           <div className="p-2 px-4">
             <button className="flex justify-between items-center w-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
               <h1 className="flex items-center p-4 gap-2">
@@ -206,7 +206,7 @@ const Sidebar = ({
         </div>
       </div>
       <div
-        className={`hidden transition-all bg-white h-full duration-300 ease-in-out fixed top-[50px] z-20 lg:flex flex-col gap-10 mt-10 items-center w-20 ${
+        className={`hidden transition-all bg-white h-full duration-300 ease-in-out fixed top-[42px] z-20 lg:flex flex-col gap-10 mt-10 items-center w-20 ${
           openMenu ? "-left-40" : "left-0"
         }`}
       >

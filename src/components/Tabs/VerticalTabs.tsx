@@ -21,7 +21,7 @@ export default function VerticalTabs({ value, handleChange }: any) {
         flexGrow: 1,
         bgcolor: "background.paper",
         display: "flex",
-        height: 224,
+        height: 100,
         paddingLeft: 4,
       }}
     >

@@ -31,9 +31,9 @@ const MarketPlace: React.FC<MarketplaceProps> = ({
         </div>
       </div>
       <Transactions />
-      <div className="flex justify-center py-5">
+      {/* <div className="flex justify-center py-5">
         <EscrowButtons />
-      </div>
+      </div> */}
       <Table
         tab={tab}
         toggleTabBuy={toggleTabBuy}

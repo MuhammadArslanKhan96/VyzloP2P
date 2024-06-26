@@ -13,6 +13,8 @@ import {
   onSnapshot,
   where,
   getDocs,
+  deleteDoc,
+  doc,
 } from "firebase/firestore";
 import {
   ref as storageRef,
@@ -22,18 +24,19 @@ import {
 import { db, storage } from "../../../utils/firebaseConfig";
 import { useRouter } from "next/router";
 import { getWalletAddress } from "@/hooks/cookies";
-import { getP2P, getWallet } from "@/hooks/getP2P";
+import walletP2P, { getP2P, getWallet } from "@/hooks/getP2P";
 import Image from "next/image";
+import { useAppContext } from "@/context/AppContext";
 interface MessageType {
   id: string;
   text: string;
   createdAt: Date;
   sender?: string;
   imageURL?: string;
-  // makerSeller?: string;
 }
 
 const ChatRoom = () => {
+  const { setMaker } = useAppContext();
   const router = useRouter();
   const { id } = router.query;
   const [messages, setMessages] = useState<MessageType[]>([]);
@@ -46,15 +49,16 @@ const ChatRoom = () => {
   const [uploadedImageURL, setUploadedImageURL] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [makerSeller, setMakerWallet] = useState("");
+  const [name, setName] = useState<string | undefined>("");
 
   const user2 = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
   const user1 = walletAddress;
-  useEffect(() => {
-    if (user2) {
-      getP2P(user2, 1);
-    }
-  }, [user2]);
-
+  // useEffect(() => {
+  //   if (user2) {
+  //     getP2P(user2, 1);
+  //   }
+  // }, [user2]);
+  // console.log(makerSeller, user1);
   useEffect(() => {
     const fetchWalletAddress = async (user2: any) => {
       const { data, loading, error } = await getWallet(user2);
@@ -64,7 +68,7 @@ const ChatRoom = () => {
         console.error("Error:", error);
       } else {
         setMakerWallet(data?.wallet);
-        console.log("Wallet Data:", data?.wallet);
+        // console.log("Wallet Data:", data?.wallet);
       }
     };
     fetchWalletAddress(user2);
@@ -73,6 +77,7 @@ const ChatRoom = () => {
   useEffect(() => {
     const address = getWalletAddress();
     if (address) {
+      console.log(address);
       setWalletAddressState(address);
     }
   }, []);
@@ -97,7 +102,6 @@ const ChatRoom = () => {
           createdAt: msg.data().createdAt.toDate(),
           sender: msg.data().sender,
           imageURL: msg.data().imageURL,
-          // makerSeller: msg.data().makerSeller,
         });
       });
       setMessages(loadedMessages);
@@ -125,7 +129,6 @@ const ChatRoom = () => {
       text: newMessage,
       createdAt: new Date(),
       sender: user1,
-      // makerSeller: makerSeller,
     };
 
     if (uploadedImageURL) {
@@ -151,10 +154,35 @@ const ChatRoom = () => {
   };
 
   const cancelOrder = async () => {
-    await getP2P(user2, 0); // Set type to 0 on cancel order
+    // Delete the messages collection
+    const messagesRef = collection(db, `P2POrder/${user2}/messages`);
+    const snapshot = await getDocs(messagesRef);
+    snapshot.forEach((doc) => {
+      deleteDoc(doc.ref);
+    });
+
+    // Optionally, delete the parent P2POrder document
+    await deleteDoc(doc(db, `P2POrder/${user2}`));
+
+    await getP2P(user2, 0);
     router.push("/");
   };
 
+  useEffect(() => {
+    if (messages.length > 0) {
+      setName(messages[0]?.sender || "");
+    }
+  }, [messages]);
+
+  useEffect(() => {
+    const getting = async () => {
+      console.log(user1);
+      const res = await walletP2P(user2, user1);
+      setMaker(res);
+      console.log(res);
+    };
+    getting();
+  }, [user1, user2]);
   return (
     <Box
       sx={{
@@ -169,13 +197,13 @@ const ChatRoom = () => {
           <Avatar />
           <Box className="ml-1">
             <Typography fontSize={14}>
-              {makerSeller
-                ? makerSeller.length > 10
-                  ? `${makerSeller.slice(0, 6)}...${makerSeller.slice(-6)}`
-                  : makerSeller
+              {name
+                ? name.length > 10
+                  ? `${name.slice(0, 6)}...${name.slice(-6)}`
+                  : name
                 : "00000"}
             </Typography>
-            <Typography fontSize={14}>{advertiseName}</Typography>
+            <Typography fontSize={14}>no name</Typography>
           </Box>
         </Box>
         <Box>
@@ -206,37 +234,39 @@ const ChatRoom = () => {
             </Box>
           ) : (
             <MessageList>
-              {messages.map((msg, index) => (
-                <Box
-                  key={index}
-                  className={`w-full flex items-center ${
-                    msg.sender === user1 ? "justify-end" : "justify-start"
-                  }`}
-                >
+              {messages.map((msg: any, index: any) => {
+                return (
                   <Box
-                    className={`p-2 rounded-lg w-10/12 ${
-                      msg.sender === user1
-                        ? "bg-blue-100 text-left"
-                        : "bg-pink-100 text-right"
-                    } mb-2`}
+                    key={index}
+                    className={`w-full flex items-center ${
+                      msg.sender === user1 ? "justify-end" : "justify-start"
+                    }`}
                   >
-                    <Typography className="text-[9px] text-left">
-                      {msg.sender === user1 ? "Hamza" : "Ali"}
-                    </Typography>
-                    <Typography className="text-sm text-left">
-                      {msg.text}
-                    </Typography>
-                    <Typography className="text-[9px] text-right">
-                      {msg.createdAt.toLocaleTimeString()}
-                    </Typography>
-                    {msg.imageURL && (
-                      <Box>
-                        <img src={msg.imageURL} alt="Attached" />
-                      </Box>
-                    )}
+                    <Box
+                      className={`p-2 rounded-lg w-10/12 ${
+                        msg.sender === user1
+                          ? "bg-blue-100 text-left"
+                          : "bg-pink-100 text-right"
+                      } mb-2`}
+                    >
+                      <Typography className="text-[9px] text-left">
+                        {msg.sender === user1 ? "unknown" : user1}
+                      </Typography>
+                      <Typography className="text-sm text-left">
+                        {msg.text}
+                      </Typography>
+                      <Typography className="text-[9px] text-right">
+                        {msg.createdAt.toLocaleTimeString()}
+                      </Typography>
+                      {msg.imageURL && (
+                        <Box>
+                          <img src={msg.imageURL} alt="Attached" />
+                        </Box>
+                      )}
+                    </Box>
                   </Box>
-                </Box>
-              ))}
+                );
+              })}
             </MessageList>
           )}
         </div>

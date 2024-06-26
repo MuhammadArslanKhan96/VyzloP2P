@@ -7,6 +7,7 @@ import {
   StepLabel,
   Step,
 } from "@mui/material";
+import { useAppContext } from "@/context/AppContext";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
@@ -25,6 +26,7 @@ import {
 } from "@/hooks/call_contract";
 
 const Purchase = () => {
+  const { maker } = useAppContext();
   const router = useRouter();
   const { id } = router.query;
   const takerAddress = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
@@ -36,35 +38,33 @@ const Purchase = () => {
     "You have to wait for the seller to put the cryptocurrencies in escrow. Do not make the payment until the above is done."
   );
   const [wallet, setWalletAddress] = useState<string | undefined>("");
-
   const steps = ["Crypto in escrow", "Fiat transferred", "Crypto released"];
+  // const [escrow, setEscrow] = useState<>();
+  const [fait, setFait] = useState(false);
+  const [transferrred, setTransferrred] = useState(true);
 
   const textChange = async () => {
     try {
       if (activeStep === 0) {
         const res = await CreateEsCrow();
+        // const res = true;
         if (res) {
-          setBtnText("Mark as Paid");
+          setActiveStep(1);
+          setBtnText("released crypto");
           setTitle("Keep in touch with the seller");
           setPara(
             "To continue, transfer the fiat under the established conditions and mark as paid."
           );
-          setActiveStep(1);
+          setFait(true);
+          console.log(1);
+          console.log(activeStep);
+          // setTransferrred(false);
         } else {
           console.error("Failed to create escrow");
         }
-      } else if (activeStep === 1) {
-        const res = await SetMarkAsPaid();
-        setBtnText("released crypto");
-        setTitle("Perfect");
-        setPara(
-          "Now you will have to wait for the seller to release the cryptocurrency."
-        );
-        if (res) {
-          setActiveStep(2);
-        }
       } else if (activeStep === 2) {
-        const res = await ReleaseEsCrow();
+        // const res = await ReleaseEsCrow();
+        const res = true;
         if (res) {
           setBtnText("released crypto");
           setTitle("Perfect");
@@ -72,6 +72,7 @@ const Purchase = () => {
             "Now you will have to wait for the seller to release the cryptocurrency."
           );
           setActiveStep(3);
+          console.log(3);
         } else {
           console.error("Failed to release crypto");
         }
@@ -84,6 +85,23 @@ const Purchase = () => {
         console.error("An error occurred:", error);
         alert("An error occurred while processing the transaction.");
       }
+    }
+  };
+
+  const fiatChange = async () => {
+    console.log(activeStep);
+    const res = await SetMarkAsPaid();
+    // const res = true;
+    setBtnText("released crypto");
+    setTitle("Perfect");
+    setPara(
+      "Now you will have to wait for the seller to release the cryptocurrency."
+    );
+    console.log(2);
+    if (res) {
+      setActiveStep(2);
+      console.log(2);
+      setFait(false);
     }
   };
 
@@ -383,13 +401,28 @@ const Purchase = () => {
               >
                 Cancel
               </Button>
-              <Button
-                sx={{ fontSize: 12 }}
-                className="text-gray-700 bg-gray-200 rounded"
-                onClick={textChange}
-              >
-                {btnText}
-              </Button>
+              {maker && (
+                <Button
+                  // disabled={transferrred}
+                  sx={{ fontSize: 12 }}
+                  className="text-gray-700 bg-gray-200 rounded"
+                  onClick={textChange}
+                >
+                  {btnText}
+                </Button>
+              )}
+              {maker === false && (
+                <Button
+                  // disabled={fait}
+                  sx={{ fontSize: 12 }}
+                  className={`text-gray-700 ${
+                    fait ? "bg-blue-100" : "bg-blue-500"
+                  } rounded`}
+                  onClick={fiatChange}
+                >
+                  Mark as Paid
+                </Button>
+              )}
             </Box>
           </Box>
         </Box>
