@@ -49,6 +49,7 @@ const Wallet = () => {
         )}
         <Sidebar
           openMenu={openMenu}
+          toggleMenu={toggleMenu}
           TutorialDropDown={TutorialDropDown}
           toggleTutorialDropDown={toggleTutorialDropDown}
           P2PDropDown={P2PDropDown}

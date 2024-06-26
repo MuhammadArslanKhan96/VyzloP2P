@@ -16,27 +16,23 @@ export default function VerticalTabs({ value, handleChange }: any) {
   setTabValue(value);
 
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        bgcolor: "background.paper",
-        display: "flex",
-        height: 100,
-        paddingLeft: 4,
-      }}
-    >
+    // <Box
+    //   sx={{
+    //     flexGrow: 1,
+    //     bgcolor: "background.paper",
+    //     display: "flex",
+    //     height: 100,
+    //     paddingLeft: 4,
+    //   }}
+    // >
+      <div>
       <Tabs
         orientation="vertical"
-        variant="scrollable"
+        // variant="scrollable"
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
-        sx={{
-          borderLeft: 1,
-          borderColor: "divider",
-          textAlign: "left",
-          paddingLeft: 1,
-        }}
+        
       >
         <Tab
           label="MarketPlace"
@@ -59,6 +55,7 @@ export default function VerticalTabs({ value, handleChange }: any) {
           }}
         />
       </Tabs>
-    </Box>
+      </div>
+    // </Box>
   );
 }

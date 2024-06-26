@@ -100,7 +100,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({
             </select>
           </div>
         </div>
-        <div className="whitespace-nowrap">
+        <div className="whitespace-nowrap mt-5">
           <button className="bg-[#d4ebfc] text-sm font-semibold p-2 rounded flex items-center gap-2">
             <RxUpdate />
             Do Not Update

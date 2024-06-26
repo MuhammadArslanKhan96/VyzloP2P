@@ -41,7 +41,7 @@ const Header = ({
           <div className="hidden lg:flex items-center">
             <Image src={Logo} alt="Logo" width={50} height={30} />
             <h1 className=" ml-2 text-3xl">
-              <b>Vyzlo</b>
+              <b>VYZLO</b>
             </h1>
           </div>
           <RxHamburgerMenu

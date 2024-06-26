@@ -41,7 +41,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({
             }}
           >
             <div>
-              <h1 className="font-bold text-[18px]">Subscription vyzlo</h1>
+              <h1 className="font-bold text-[18px]">Subscription VYZLO</h1>
               <p className="text-[15px]">
                 Subscribe to a plan and stop paying commissions.
               </p>
