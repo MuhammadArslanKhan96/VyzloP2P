@@ -26,7 +26,8 @@ import {
 } from "@/hooks/call_contract";
 import useFirestoreListener from "@/hooks/useFirestoreListener";
 import { UpdateP2POrder } from "@/hooks/getP2P";
-import { SupportedBlockchains, networkIds } from "@/constants/rpcs";
+import { networkIds } from "@/constants/rpcs";
+import { SupportedBlockchains } from "@/types";
 
 const Purchase = () => {
   const router = useRouter();

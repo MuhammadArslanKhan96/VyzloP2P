@@ -1,7 +1,6 @@
-export type SupportedBlockchains = "ZETA" | "POLYGON" | "BSC";
+import { Chain, SupportedBlockchains } from "@/types"
 
-
-export const chains: Record<SupportedBlockchains, { [key: string]: any }> = {
+export const chains: Record<SupportedBlockchains, Chain> = {
     POLYGON: {
         chainId: `0x${Number("80002").toString(16)}`,
         chainName: "Polygon Amoy Testnet",

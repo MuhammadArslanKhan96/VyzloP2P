@@ -6,21 +6,8 @@ import { useAppContext } from "@/context/AppContext";
 import { Box, Modal, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import useFirestoreListener from "@/hooks/useFirestoreListener";
+import { Order } from "@/types/order";
 
-interface TableItem {
-  key: string;
-  advertiser: string;
-  value: string;
-  fiat: string;
-  payMethod: string;
-  boundries: string;
-  available: string;
-  symbol: string;
-  blockChain: string;
-  type: string | number;
-  wallet: string;
-  isOpen?: boolean;
-}
 
 interface AppProps {
   selectedBlockchain: string;
@@ -39,12 +26,12 @@ const App: React.FC<AppProps> = ({
 }) => {
   // const router = useRouter();
   // const { id } = router.query;
-  const [tableData, setTableData] = useState<TableItem[]>([]);
+  const [tableData, setTableData] = useState<Order[]>([]);
   const [filterType, setFilterType] = useState<string | null>(null); // 'buy', 'sell', or null
   const { wallet } = useAppContext();
   const [openModel, setOpenModel] = useState(false);
 
-  const getData = (tableData: TableItem[]) => setTableData(tableData.filter(order => !order.isOpen))
+  const getData = (tableData: Order[]) => setTableData(tableData.filter(order => !order.isOpen))
 
   const listener = useFirestoreListener("P2POrder", getData);
 

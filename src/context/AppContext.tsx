@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState } from "react";
 import { ethers } from "ethers";
 import { setWalletAddress } from "@/hooks/cookies";
-import { SupportedBlockchains, chains } from "@/constants/rpcs";
+import { chains } from "@/constants/rpcs";
+import { SupportedBlockchains } from "@/types";
 
 const AppContext = createContext({} as any); // Provide a default value to the context
 
