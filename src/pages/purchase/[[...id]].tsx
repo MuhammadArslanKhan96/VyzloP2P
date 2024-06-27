@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Box,
   Button,
@@ -25,18 +25,19 @@ import {
   SetMarkAsPaid,
 } from "@/hooks/call_contract";
 import useFirestoreListener from "@/hooks/useFirestoreListener";
-import { UpdateP2PStatus } from "@/hooks/getP2P";
+import { UpdateP2POrder } from "@/hooks/getP2P";
+import { networkIds } from "@/constants/rpcs";
+import { SupportedBlockchains } from "@/types";
 
 const Purchase = () => {
-  const { maker } = useAppContext();
   const router = useRouter();
   const { id } = router.query;
   const docId =
     Array.isArray(id) && id.length > 0
       ? id[0]
       : typeof id === "string"
-      ? id
-      : "";
+        ? id
+        : "";
   const [p2pOrder, setP2pOrder] = useState<any>(null);
   const statusText = [
     {
@@ -60,36 +61,49 @@ const Purchase = () => {
       para: "Now you will have to wait for the seller to release the cryptocurrency.",
     },
   ];
+  const { getEthersInstance } = useAppContext(); 
   const [wallet, setWalletAddress] = useState<string | undefined>("");
   const steps = ["Crypto in escrow", "Fiat transferred", "Crypto released"];
 
+  const maker = p2pOrder?.type === 1;
+
   const getNewData = (p2pOrder: any) => {
-    console.log(p2pOrder);
     setP2pOrder(p2pOrder);
+
+    getEthersInstance(networkIds[`${p2pOrder?.blockChain as SupportedBlockchains}`], p2pOrder?.blockChain).catch((error: any) => {
+      console.error("Error:", error);
+    });
   };
 
-  const eventListener = useFirestoreListener("P2POrder", docId, getNewData);
+  const eventListener = useFirestoreListener("P2POrder", getNewData, docId);
 
   const updateStatus = async () => {
     try {
       if (p2pOrder?.status === "0") {
-        const res = await CreateEsCrow();
+        const res = await CreateEsCrow(p2pOrder?.takerAddress);
         if (res) {
-          await UpdateP2PStatus(docId, "1");
+          await UpdateP2POrder(docId, {
+            status: "1",
+            orderId: res
+          });
         } else {
           console.error("Failed to create escrow");
         }
       } else if (p2pOrder?.status === "1") {
-        const res = await SetMarkAsPaid();
+        const res = await SetMarkAsPaid(p2pOrder?.orderId);
         if (res) {
-          await UpdateP2PStatus(docId, "1");
+          await UpdateP2POrder(docId, {
+            status: "1"
+          });
         } else {
           console.error("Failed to mark as paid");
         }
       } else if (p2pOrder?.status === "2") {
-        const res = await ReleaseEsCrow();
+        const res = await ReleaseEsCrow(p2pOrder?.orderId);
         if (res) {
-          await UpdateP2PStatus(docId, "2");
+          await UpdateP2POrder(docId, {
+            status: "2"
+          });
         } else {
           console.error("Failed to release crypto");
         }
@@ -107,7 +121,17 @@ const Purchase = () => {
 
   useEffect(() => {
     if (docId) {
+      if (wallet) {
+        UpdateP2POrder(docId, { isOpen: true, takerAddress: p2pOrder?.type === 0 ? wallet : p2pOrder?.wallet });
+      }
       eventListener();
+    }
+
+
+    return () => {
+      if (docId) {
+        UpdateP2POrder(docId, { isOpen: false });
+      }
     }
   }, [docId]);
 
@@ -117,6 +141,11 @@ const Purchase = () => {
       setWalletAddress(address);
     }
   }, []);
+
+  const [chatDisplay, setChatDisplay] = useState(false)
+  // const screenWidth = window ? window?.innerWidth : 1000;
+
+
   // MS BT order Id and timer
   return (
     <>
@@ -166,7 +195,7 @@ const Purchase = () => {
             width: { xs: "100%", md: "50%" },
             padding: 2,
           }}
-          className="rounded-lg"
+          className={`${chatDisplay ? "hidden" : ""} md:block rounded-lg`}
         >
           <Box>
             <Typography
@@ -360,7 +389,7 @@ const Purchase = () => {
               <Box sx={{ fontSize: 14 }}>
                 Escrow ID:{" "}
                 <Typography sx={{ display: "inline-block", fontSize: 14 }}>
-                  107748224558073
+                  {p2pOrder?.orderId || "N/A"}
                 </Typography>
               </Box>
             </Box>
@@ -414,9 +443,8 @@ const Purchase = () => {
                 <Button
                   disabled={p2pOrder?.status === "1"}
                   sx={{ fontSize: 12 }}
-                  className={`text-gray-700 ${
-                    p2pOrder?.status === "1" ? "bg-blue-100" : "bg-blue-500"
-                  } rounded`}
+                  className={`text-gray-700 ${p2pOrder?.status === "1" ? "bg-blue-100" : "bg-blue-500"
+                    } rounded`}
                   onClick={updateStatus}
                 >
                   {statusText[p2pOrder?.status]?.btnText}
@@ -430,18 +458,29 @@ const Purchase = () => {
                       : false
                   }
                   sx={{ fontSize: 12 }}
-                  className={`text-gray-700 ${
-                    p2pOrder?.status === "0" ? "bg-blue-100" : "bg-blue-500"
-                  } rounded`}
+                  className={`text-gray-700 ${p2pOrder?.status === "0" || p2pOrder?.status
+                    ? Number(p2pOrder?.status) > 1
+                    : false ? "bg-blue-100" : "bg-blue-500"
+                    } rounded`}
                   onClick={updateStatus}
                 >
-                  Mark as Paid
+                  {p2pOrder?.status === "1" ? 'Mark as Paid' : (p2pOrder?.status
+                    ? Number(p2pOrder?.status) > 1
+                    : false) ? "Marked As Paid" : "Waiting"}
                 </Button>
               )}
+
+              <Button
+                sx={{ fontSize: 12 }}
+                className={`text-gray-700 md:hidden bg-green-500 ms-3`}
+                onClick={() => setChatDisplay(true)}
+              >
+                Chat
+              </Button>
             </Box>
           </Box>
         </Box>
-        <ChatRoom />
+        <ChatRoom setChatDisplay={setChatDisplay} chatDisplay={chatDisplay} />
       </Box>
     </>
   );

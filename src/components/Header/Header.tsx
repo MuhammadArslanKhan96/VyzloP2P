@@ -20,12 +20,8 @@ const Header = ({
   openAccMenu,
   openMenu,
 }: HeaderProps) => {
-  const { getEthersInstance, getWalletFunction, wallet } = useAppContext();
+  const { getWalletFunction, wallet } = useAppContext();
   const walletConnect = async () => {
-    const networkId = 80002;
-    getEthersInstance(networkId).catch((error: any) => {
-      console.error("Error:", error);
-    });
     getWalletFunction();
   };
   //   console.log(wallet?.slice(0, 5));

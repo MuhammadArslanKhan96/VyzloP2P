@@ -1,24 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../../utils/firebaseConfig";
 import Link from "next/link";
 import { useAppContext } from "@/context/AppContext";
 import { Box, Modal, Typography } from "@mui/material";
-import { useRouter } from "next/router";
-
-interface TableItem {
-  key: string;
-  advertiser: string;
-  value: string;
-  fiat: string;
-  payMethod: string;
-  boundries: string;
-  available: string;
-  symbol: string;
-  blockChain: string;
-  type: number;
-  wallet: string;
-}
+import useFirestoreListener from "@/hooks/useFirestoreListener";
+import { Order } from "@/types/order";
 
 interface AppProps {
   selectedBlockchain: string;
@@ -35,25 +20,17 @@ const App: React.FC<AppProps> = ({
   selectedCommunities,
   tab,
 }) => {
-  // const router = useRouter();
-  // const { id } = router.query;
-  const [tableData, setTableData] = useState<TableItem[]>([]);
+  const [tableData, setTableData] = useState<Order[]>([]);
   const [filterType, setFilterType] = useState<string | null>(null); // 'buy', 'sell', or null
   const { wallet } = useAppContext();
   const [openModel, setOpenModel] = useState(false);
-  // const user2 = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
+
+  const getData = (tableData: Order[]) => setTableData(tableData.filter(order => !order.isOpen))
+
+  const listener = useFirestoreListener("P2POrder", getData);
+
   useEffect(() => {
-    async function fetchData() {
-      const querySnapshot = await getDocs(collection(db, "P2POrder"));
-      const data: TableItem[] = [];
-
-      querySnapshot.forEach((doc) => {
-        data.push({ key: doc.id, ...doc.data() } as TableItem);
-      });
-
-      setTableData(data);
-    }
-    fetchData();
+    listener();
   }, []);
 
   const handleFilter = (type: any) => {
@@ -147,7 +124,6 @@ const App: React.FC<AppProps> = ({
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {filteredData.map((item) => {
-              console.log();
               return (
                 <tr key={item.key} className="bg-white">
                   <td className="px-6 py-4 text-sm text-gray-500">
@@ -171,8 +147,8 @@ const App: React.FC<AppProps> = ({
                   <td className="px-6 py-4 text-sm text-gray-500">
                     <Link
                       href={
-                        wallet && item.type === 0
-                          ? `/purchase/${item.key}`
+                        // wallet && item.type === 0 ?
+                          wallet ? `/purchase/${item.key}`
                           : "/"
                       }
                       onClick={checkWallet}

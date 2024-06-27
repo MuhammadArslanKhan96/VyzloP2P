@@ -37,12 +37,12 @@ const TabPanel = React.memo(
 
     return (
       <div
+        className="w-full border bg-blue-100"
         role="tabpanel"
         hidden={value !== index}
         id={`vertical-tabpanel-${index}`}
         aria-labelledby={`vertical-tab-${index}`}
         {...other}
-        className="border bg-blue-100"
       >
         {value === index && (
           <Box
