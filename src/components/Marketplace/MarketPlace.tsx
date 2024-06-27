@@ -4,6 +4,7 @@ import Transactions from "../Transactions/Transactions";
 import Table from "../Table/Table";
 import EscrowButtons from "../EscrowButtons/EscrowButtons";
 import { Box } from "@mui/material";
+import { useTelegram } from "@/context/TelegramProvider";
 
 interface MarketplaceProps {
   tab: boolean;
@@ -16,6 +17,10 @@ const MarketPlace: React.FC<MarketplaceProps> = ({
   toggleTabBuy,
   toggleTabSell,
 }) => {
+
+  const { user, webApp } = useTelegram();
+
+
   return (
     <Box className="bg-[#d4ebfc] max-lg:pt-16 pt-32 w-screen  h-full min-h-screen pb-5">
       <div className="p-6 w-[90%] mx-auto">
@@ -30,6 +35,9 @@ const MarketPlace: React.FC<MarketplaceProps> = ({
           </div>
         </div>
       </div>
+
+      <h1>{JSON.stringify(user)}</h1>
+
       <Transactions />
       {/* <div className="flex justify-center py-5">
         <EscrowButtons />

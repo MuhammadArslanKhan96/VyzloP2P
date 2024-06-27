@@ -7,6 +7,7 @@ import AccountSidebar from "@/components/Account/AccountSidebar";
 import { Box } from "@mui/material";
 import { useAppContext } from "@/context/AppContext";
 import MyAds from "@/components/MyAds/Myads";
+import { useTelegram } from "@/context/TelegramProvider";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -16,6 +17,9 @@ interface TabPanelProps {
 export default function Home() {
   const [tab, setTab] = useState(true);
   const { tabValue } = useAppContext();
+  const { user, webApp } = useTelegram();
+
+  console.log(user)
 
   const toggleTabBuy = () => {
     setTab(true);
@@ -106,7 +110,7 @@ export default function Home() {
             tab={tab}
             toggleTabBuy={toggleTabBuy}
             toggleTabSell={toggleTabSell}
-          />{" "}
+          />
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
           <MyAds />
