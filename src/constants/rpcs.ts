@@ -44,3 +44,9 @@ export const networkIds = {
     BSC: 97,
     POLYGON: 80002
 }
+
+export const addresses = {
+    ZETA: "0x2B8F40e76c2077a4b0aFb5c4dfe3A41b239E21Cf",
+    BSC: "0xE904b252A50007Ca54e4f69b8D915383810ea19F",
+    POLYGON: "0x91873fC97aa7c88f70c11fE089e603b15001Ac21"
+}

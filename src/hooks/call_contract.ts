@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { contractAddress } from "@/content/utils";
+// import { contractAddress } from "@/content/utils";
 import ABI from "@/content/ABI.json";
 
 
@@ -13,7 +13,7 @@ let provider: ethers.BrowserProvider;
 
 let signer: ethers.Signer | any | undefined;
 
-export const CreateEsCrow = async (takerAddress: string): Promise<boolean | number> => {
+export const CreateEsCrow = async (takerAddress: string, contractAddress: string): Promise<boolean | number> => {
   if (typeof window !== "undefined") {
     provider = new ethers.BrowserProvider(window.ethereum as any);
 
@@ -46,7 +46,7 @@ export const CreateEsCrow = async (takerAddress: string): Promise<boolean | numb
   }
 };
 
-export const SetMarkAsPaid = async (orderId: number): Promise<boolean> => {
+export const SetMarkAsPaid = async (orderId: number, contractAddress: string): Promise<boolean> => {
   if (typeof window !== "undefined") {
   provider = new ethers.BrowserProvider(window.ethereum as any);
 
@@ -63,7 +63,7 @@ export const SetMarkAsPaid = async (orderId: number): Promise<boolean> => {
   }
 };
 
-export const ReleaseEsCrow = async (orderId: number): Promise<boolean> => {
+export const ReleaseEsCrow = async (orderId: number, contractAddress: string): Promise<boolean> => {
   if (typeof window !== "undefined") {
     provider = new ethers.BrowserProvider(window.ethereum as any);
   

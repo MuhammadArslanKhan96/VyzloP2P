@@ -1,3 +1,4 @@
+import { networkIds } from "@/constants/rpcs";
 import { useAppContext } from "@/context/AppContext";
 import { SupportedBlockchains } from "@/types";
 import React from "react";
@@ -63,7 +64,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({
                 name="Blockchain"
                 onChange={(e) => {
                   setSelectedBlockchain(e.target.value)
-                  getEthersInstance(e.target.value as SupportedBlockchains);
+                  getEthersInstance(networkIds[e.target.value as SupportedBlockchains], e.target.value as SupportedBlockchains);
                 }}
               >
                 <option value="" className="text-sm">
