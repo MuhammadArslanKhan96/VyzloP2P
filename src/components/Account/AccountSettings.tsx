@@ -30,7 +30,9 @@ const AccountSettings = () => {
 
   const [openAccMenu, setOpenAccMenu] = useState(false);
   const toggleAccMenu = () => {
+    console.log("first");
     setOpenAccMenu(!openAccMenu);
+    console.log("second");
   };
   return (
     <>

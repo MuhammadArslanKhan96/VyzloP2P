@@ -38,27 +38,27 @@ const Sidebar = ({
   const [value, setValue] = useState(0);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (
-        sidebarRef.current &&
-        !sidebarRef.current.contains(event.target as Node)
-      ) {
-        console.log("Clicked outside sidebar, closing...");
-        toggleMenu();
-      }
-    };
+  // useEffect(() => {
+  //   const handleOutsideClick = (event: MouseEvent) => {
+  //     if (
+  //       sidebarRef.current &&
+  //       !sidebarRef.current.contains(event.target as Node)
+  //     ) {
+  //       console.log("Clicked outside sidebar, closing...");
+  //       toggleMenu();
+  //     }
+  //   };
 
-    if (openMenu) {
-      document.addEventListener("mousedown", handleOutsideClick);
-    } else {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    }
+  //   if (openMenu) {
+  //     document.addEventListener("mousedown", handleOutsideClick);
+  //   } else {
+  //     document.removeEventListener("mousedown", handleOutsideClick);
+  //   }
 
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [openMenu]);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleOutsideClick);
+  //   };
+  // }, [openMenu]);
 
   const handleChange = (event: any, newValue: any) => {
     setValue(newValue);

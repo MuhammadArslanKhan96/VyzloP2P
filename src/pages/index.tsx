@@ -13,10 +13,28 @@ interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
+  openMenu: boolean;
+  setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  openAccMenu: boolean;
+  setOpenAccMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }
 // eslint-disable-next-line react/display-name
 const TabPanel = React.memo(
-  ({ children, value, index, ...other }: TabPanelProps) => {
+  ({
+    children,
+    value,
+    index,
+    openMenu,
+    setOpenMenu,
+    openAccMenu,
+    setOpenAccMenu,
+    ...other
+  }: TabPanelProps) => {
+    const handleBoxClick = () => {
+      setOpenMenu(false); // Close the main menu
+      setOpenAccMenu(false); // Close the account menu
+    };
+
     return (
       <div
         role="tabpanel"
@@ -24,18 +42,25 @@ const TabPanel = React.memo(
         id={`vertical-tabpanel-${index}`}
         aria-labelledby={`vertical-tab-${index}`}
         {...other}
+        className="border bg-blue-100"
       >
-        {value === index && <Box className="w-[130%]">{children}</Box>}
+        {value === index && (
+          <Box
+            className={`w-[130%] ${openMenu ? "ml-20 scale-x-90" : ""}`}
+            onClick={handleBoxClick}
+          >
+            {children}
+          </Box>
+        )}
       </div>
     );
   }
 );
+
 export default function Home() {
   const [tab, setTab] = useState(true);
   const { tabValue } = useAppContext();
   const { user, webApp } = useTelegram();
-
-  console.log(user)
 
   const toggleTabBuy = () => {
     setTab(true);
@@ -107,14 +132,28 @@ export default function Home() {
           toggleAccMenu={toggleAccMenu}
         />
         {/* Content */}
-        <TabPanel value={tabValue} index={0}>
+        <TabPanel
+          value={tabValue}
+          index={0}
+          openMenu={openMenu}
+          setOpenMenu={setOpenMenu}
+          openAccMenu={openAccMenu}
+          setOpenAccMenu={setOpenAccMenu}
+        >
           <MarketPlace
             tab={tab}
             toggleTabBuy={toggleTabBuy}
             toggleTabSell={toggleTabSell}
           />
         </TabPanel>
-        <TabPanel value={tabValue} index={1}>
+        <TabPanel
+          value={tabValue}
+          index={1}
+          openMenu={openMenu}
+          setOpenMenu={setOpenMenu}
+          openAccMenu={openAccMenu}
+          setOpenAccMenu={setOpenAccMenu}
+        >
           <MyAds />
         </TabPanel>
       </div>

@@ -340,16 +340,16 @@ const MyAds = () => {
               </Box>
               <Box className="flex flex-col  justify-center items-center  w-full">
                 <Typography sx={{ color: "black", fontWeight: "bold" }}>
-                  Great!!
+                  Great!
                 </Typography>
                 <Typography sx={{ color: "black" }}>
-                  Now we will you ask to give us some details of the
+                  Now we will ask you to give us some details of the
                   transaction.
                 </Typography>
                 <Box className="w-full flex justify-center gap-4 flex-wrap items-center mt-10 ">
                   <Box sx={{ m: 1, minWidth: 300 }}>
                     <Typography sx={{ color: "gray" }}>
-                      Which network are you going to maket the exchange
+                      Which network are you going to use to make the exchange?
                     </Typography>
                     <FormControl sx={{ m: 1, minWidth: 300 }}>
                       <InputLabel id="demo-simple-select-autowidth-label">
@@ -370,7 +370,7 @@ const MyAds = () => {
                   </Box>
                   <Box sx={{ m: 1, minWidth: 300 }}>
                     <Typography sx={{ color: "gray" }}>
-                      Which curreny do you want to buy?
+                      Which currency do you want to buy?
                     </Typography>
                     <FormControl sx={{ m: 1, minWidth: 300 }}>
                       <InputLabel id="demo-simple-select-autowidth-label">
@@ -417,7 +417,7 @@ const MyAds = () => {
               </Box>
               <Box className="flex flex-col  justify-center items-center  w-full">
                 <Typography sx={{ color: "black", fontWeight: "bold" }}>
-                  Great!!
+                  Great!
                 </Typography>
                 <Typography sx={{ color: "black" }}>
                   Now we need some important specifications.
@@ -482,10 +482,11 @@ const MyAds = () => {
               </Box>
               <Box className="flex flex-col  justify-center items-center  w-full ">
                 <Typography sx={{ color: "black", fontWeight: "bold" }}>
-                  Almost finished On this step,!!
+                  Almost finished On this step!
                 </Typography>
                 <Typography sx={{ color: "black" }}>
-                  You can additional information according to your prefernces.
+                  You can add additional information according to your
+                  preferences.
                 </Typography>
                 <Box className="w-full flex justify-center  gap-8 items-center mt-10  ">
                   <Box className="w-[40%]">
@@ -515,20 +516,19 @@ const MyAds = () => {
                         </RadioGroup>
                       </FormControl>
                     </Box>
-                    <Typography sx={{ fontWeight: "bold" }}>
-                      Location:
-                    </Typography>
+                    <Typography>Location:</Typography>
                     <TextField
                       id="outlined-basic"
                       label="Location"
                       variant="outlined"
                       className="w-[90%] rounded-lg"
                     />{" "}
-                    <Typography sx={{ fontWeight: "bold", marginBlock: 2 }}>
-                      You can add additional here:
+                    <Typography sx={{ marginBlock: 2 }}>
+                      You can add conditions here:
                     </Typography>
                     <TextareaAutosize
                       minRows={4}
+                      maxRows={4}
                       placeholder="Enter your text here"
                       style={{ width: "100%" }}
                       className="border rounded-lg p-2 resize-none overflow-y-auto"
@@ -541,19 +541,21 @@ const MyAds = () => {
                     <TextareaAutosize
                       onChange={messageHandle}
                       minRows={4}
+                      maxRows={4}
                       placeholder="Enter your text here"
                       style={{ width: "100%" }}
                       className="border rounded-lg p-2 overflow-y-auto resize-none"
                     />{" "}
-                    <Typography sx={{ fontWeight: "bold", marginTop: 2 }}>
+                    <Typography sx={{ marginTop: 2 }}>
                       you can add up to three restrications:
                     </Typography>
                     <TextareaAutosize
                       onChange={termsHandle}
                       minRows={2}
+                      maxRows={2}
                       placeholder="Enter your text here"
                       style={{ width: "100%" }}
-                      className="border rounded-lg p-2 overflow-y-auto resize-none"
+                      className="border rounded-lg p-2 overflow-y-auto resize-none "
                     />
                   </Box>
                 </Box>
@@ -566,18 +568,18 @@ const MyAds = () => {
                 <ArrowBackIcon onClick={preModel} />
                 <Box className="flex flex-col">
                   <Typography color="initial">
-                    creation of a purchase annoucement.
+                    creation of a purchase announcement.
                   </Typography>
                   <Typography color="initial">Step 5 of 5</Typography>
                 </Box>
               </Box>
               <Box className="flex flex-col  justify-center items-center  w-full ">
                 <Typography sx={{ color: "black" }}>
-                  Great to Finish here is a preview for you to review the
-                  details ,!!
+                  Great! to finish, here is a review for you to review the
+                  details!
                 </Typography>
                 <Typography sx={{ color: "black" }}>
-                  if its all good. it time to publish your ad!!
+                  If it's all good. it time to publish your ad!
                 </Typography>
                 <Box className="w-full flex justify-center  gap-8 items-center mt-10  ">
                   <Box className="w-[40%]">
@@ -592,7 +594,6 @@ const MyAds = () => {
                             variant="h6"
                             color="initial"
                             fontSize={16}
-                            fontWeight={700}
                           >
                             {value}
                           </Typography>
@@ -622,11 +623,7 @@ const MyAds = () => {
                             Check
                           </Button>
                         ) : (
-                          <Typography
-                            key={index}
-                            color="initial"
-                            className="font-bold"
-                          >
+                          <Typography key={index} color="initial">
                             {value}
                           </Typography>
                         );

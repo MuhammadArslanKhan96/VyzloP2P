@@ -83,7 +83,7 @@ const App: React.FC<AppProps> = ({
   const handleClose = () => setOpenModel(false);
   return (
     <>
-      <div className="flex justify-center space-x-4 my-4">
+      {/* <div className="flex justify-center space-x-4 my-4">
         <button
           onClick={() => handleFilter(null)}
           className="text-sm px-4 py-2 rounded-md transition-all duration-300 text-white bg-blue-500 hover:bg-blue-300"
@@ -102,7 +102,7 @@ const App: React.FC<AppProps> = ({
         >
           Sell
         </button>
-      </div>
+      </div> */}
       <div className="mx-auto w-full xl:w-[72vw] h-full min-h-fit max-h-[50vw] overflow-auto selectscroll">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
