@@ -1,3 +1,5 @@
+import { useAppContext } from "@/context/AppContext";
+import { SupportedBlockchains } from "@/types";
 import React from "react";
 import { RxUpdate } from "react-icons/rx";
 
@@ -20,6 +22,8 @@ const TableHeader: React.FC<TableHeaderProps> = ({
   toggleTabSell,
   setSelectedCommunities,
 }) => {
+  const { getEthersInstance } = useAppContext();
+
   return (
     <>
       <div className="hidden md:flex px-8 py-4  justify-center items-center gap-x-6 mx-auto w-full  rounded-lg bg-white mt-4">
@@ -55,7 +59,10 @@ const TableHeader: React.FC<TableHeaderProps> = ({
               <select
                 className="cursor-pointer bg-[#d4ebfc] rounded p-1"
                 name="Blockchain"
-                onChange={(e) => setSelectedBlockchain(e.target.value)}
+                onChange={(e) => {
+                  setSelectedBlockchain(e.target.value)
+                  getEthersInstance(e.target.value as SupportedBlockchains);
+                }}
               >
                 <option value="" className="text-sm">
                   All
@@ -66,7 +73,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({
                 <option value="BSC" className="text-sm">
                   BSC
                 </option>
-                <option value="Polygon" className="text-sm">
+                <option value="POLYGON" className="text-sm">
                   Polygon
                 </option>
               </select>
@@ -113,12 +120,12 @@ const TableHeader: React.FC<TableHeaderProps> = ({
               </select>
             </div>
           </div>
-          <div className="whitespace-nowrap mt-5">
+          {/* <div className="whitespace-nowrap mt-5">
             <button className="bg-[#d4ebfc] text-sm font-semibold p-2 rounded flex items-center gap-2">
               <RxUpdate />
               Do Not Update
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
 

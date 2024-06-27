@@ -32,7 +32,12 @@ const MarketPlace: React.FC<MarketplaceProps> = ({
           </div>
         </div>
       </div> */}
-      <Transactions />
+      
+      <div className="flex justify-end">
+        
+      </div>
+      {/* <Transactions /> */}
+
       <Table
         tab={tab}
         toggleTabBuy={toggleTabBuy}

@@ -61,7 +61,7 @@ const Purchase = () => {
       para: "Now you will have to wait for the seller to release the cryptocurrency.",
     },
   ];
-  const { getEthersInstance } = useAppContext(); 
+  const { getEthersInstance } = useAppContext();
   const [wallet, setWalletAddress] = useState<string | undefined>("");
   const steps = ["Crypto in escrow", "Fiat transferred", "Crypto released"];
 
@@ -70,7 +70,7 @@ const Purchase = () => {
   const getNewData = (p2pOrder: any) => {
     setP2pOrder(p2pOrder);
 
-    getEthersInstance(networkIds[`${p2pOrder?.blockChain as SupportedBlockchains}`], p2pOrder?.blockChain).catch((error: any) => {
+    getEthersInstance(networkIds[`${p2pOrder?.blockChain?.toUpperCase() as SupportedBlockchains}`], p2pOrder?.blockChain?.toUpperCase()).catch((error: any) => {
       console.error("Error:", error);
     });
   };
@@ -122,7 +122,7 @@ const Purchase = () => {
   useEffect(() => {
     if (docId) {
       if (wallet) {
-        UpdateP2POrder(docId, { isOpen: true, takerAddress: p2pOrder?.type === 0 ? wallet : p2pOrder?.wallet });
+        UpdateP2POrder(docId, { isOpen: true, takerAddress: !!p2pOrder ? p2pOrder?.type === 0 ? wallet : p2pOrder?.wallet : wallet });
       }
       eventListener();
     }
@@ -133,7 +133,7 @@ const Purchase = () => {
         UpdateP2POrder(docId, { isOpen: false });
       }
     }
-  }, [docId]);
+  }, [docId, wallet]);
 
   useEffect(() => {
     const address = getWalletAddress();
