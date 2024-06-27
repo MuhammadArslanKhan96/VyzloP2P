@@ -2,6 +2,13 @@ import { ethers } from "ethers";
 import { contractAddress } from "@/content/utils";
 import ABI from "@/content/ABI.json";
 
+
+declare global {
+  interface Window {
+    ethereum: any | null;
+  }
+}
+
 // declare global {
 //   interface Window {
 //     ethereum: ethers.Provider | null;
@@ -12,9 +19,13 @@ import ABI from "@/content/ABI.json";
 // let signer: ethers.Provider | ethers.Signer | any | undefined;
 
 export const CreateEsCrow = async () => {
-  const provider = new ethers.BrowserProvider(window.ethereum as any);
-  const gasPrice = await provider.signer?.getGasPrice();
+  // const provider = new ethers.BrowserProvider(window.ethereum as any);
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  // const gasPrice = await provider.signer?.getGasPrice();
+  const gasPrice = await provider.getGasPrice();
   const myContract = new ethers.Contract(contractAddress, ABI, signer);
+  // const myContract = new ethers.Contract(contractAddress, ABI, signer);
   const orderId = 17;
   const takerAddress = "0xA6cA715bD8f2160D5AFD1B278DaB294d2AD160eF";
   const value = 100000000000000;
@@ -75,6 +86,8 @@ export const CreateEsCrow = async () => {
 
 export const SetMarkAsPaid = async (): Promise<boolean> => {
   try {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
     const myContract = new ethers.Contract(contractAddress, ABI, signer);
     const orderId = 7659;
     await myContract.setMarkAsPaid(orderId);
@@ -87,6 +100,8 @@ export const SetMarkAsPaid = async (): Promise<boolean> => {
 
 export const ReleaseEsCrow = async (): Promise<boolean> => {
   try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();  
     const myContract = new ethers.Contract(contractAddress, ABI, signer);
     const orderId = 7659;
     await myContract.releaseEscrowNativeCoin(orderId);

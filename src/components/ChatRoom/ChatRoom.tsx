@@ -49,7 +49,7 @@ const ChatRoom = () => {
   const [uploadedImageURL, setUploadedImageURL] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [makerSeller, setMakerWallet] = useState("");
-  const [name, setName] = useState<string | undefined>("");
+  const [name, setName] = useState<string>("");
   const [seller, setSellerName] = useState("");
   const user2 = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
   const user1 = walletAddress;

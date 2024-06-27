@@ -46,8 +46,9 @@ const Purchase = () => {
   const textChange = async () => {
     try {
       if (activeStep === 0) {
-        const res = await CreateEsCrow();
-        // const res = true;
+        // const res = await CreateEsCrow();
+        await CreateEsCrow();
+        const res = true;
         if (res) {
           setActiveStep(1);
           setBtnText("released crypto");
@@ -415,9 +416,8 @@ const Purchase = () => {
                 <Button
                   // disabled={fait}
                   sx={{ fontSize: 12 }}
-                  className={`text-gray-700 ${
-                    fait ? "bg-blue-100" : "bg-blue-500"
-                  } rounded`}
+                  className={`text-gray-700 ${fait ? "bg-blue-100" : "bg-blue-500"
+                    } rounded`}
                   onClick={fiatChange}
                 >
                   Mark as Paid

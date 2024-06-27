@@ -4,11 +4,11 @@ import { setWalletAddress } from "@/hooks/cookies";
 
 const AppContext = createContext({} as any); // Provide a default value to the context
 
-// declare global {
-//   interface Window {
-//     ethers: any | null;
-//   }
-// }
+declare global {
+  interface Window {
+    ethereum: any | null;
+  }
+}
 
 const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [wallet, setWallet] = useState<any>();
