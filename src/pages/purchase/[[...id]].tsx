@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Box,
   Button,
@@ -35,8 +35,8 @@ const Purchase = () => {
     Array.isArray(id) && id.length > 0
       ? id[0]
       : typeof id === "string"
-      ? id
-      : "";
+        ? id
+        : "";
   const [p2pOrder, setP2pOrder] = useState<any>(null);
   const statusText = [
     {
@@ -117,6 +117,11 @@ const Purchase = () => {
       setWalletAddress(address);
     }
   }, []);
+
+  const [chatDisplay, setChatDisplay] = useState(false)
+  // const screenWidth = window ? window?.innerWidth : 1000;
+
+
   // MS BT order Id and timer
   return (
     <>
@@ -166,7 +171,7 @@ const Purchase = () => {
             width: { xs: "100%", md: "50%" },
             padding: 2,
           }}
-          className="rounded-lg"
+          className={`${chatDisplay ? "hidden" : ""} md:block rounded-lg`}
         >
           <Box>
             <Typography
@@ -414,9 +419,8 @@ const Purchase = () => {
                 <Button
                   disabled={p2pOrder?.status === "1"}
                   sx={{ fontSize: 12 }}
-                  className={`text-gray-700 ${
-                    p2pOrder?.status === "1" ? "bg-blue-100" : "bg-blue-500"
-                  } rounded`}
+                  className={`text-gray-700 ${p2pOrder?.status === "1" ? "bg-blue-100" : "bg-blue-500"
+                    } rounded`}
                   onClick={updateStatus}
                 >
                   {statusText[p2pOrder?.status]?.btnText}
@@ -430,18 +434,25 @@ const Purchase = () => {
                       : false
                   }
                   sx={{ fontSize: 12 }}
-                  className={`text-gray-700 ${
-                    p2pOrder?.status === "0" ? "bg-blue-100" : "bg-blue-500"
-                  } rounded`}
+                  className={`text-gray-700 ${p2pOrder?.status === "0" ? "bg-blue-100" : "bg-blue-500"
+                    } rounded`}
                   onClick={updateStatus}
                 >
                   Mark as Paid
                 </Button>
               )}
+
+              <Button
+                sx={{ fontSize: 12 }}
+                className={`text-gray-700 md:hidden bg-green-500 ms-3`}
+                onClick={() => setChatDisplay(true)}
+              >
+                Chat
+              </Button>
             </Box>
           </Box>
         </Box>
-        <ChatRoom />
+        <ChatRoom setChatDisplay={setChatDisplay} chatDisplay={chatDisplay} />
       </Box>
     </>
   );
