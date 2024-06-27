@@ -18,7 +18,6 @@ interface TabPanelProps {
   openAccMenu: boolean;
   setOpenAccMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }
-// eslint-disable-next-line react/display-name
 const TabPanel = React.memo(
   ({
     children,
@@ -31,8 +30,8 @@ const TabPanel = React.memo(
     ...other
   }: TabPanelProps) => {
     const handleBoxClick = () => {
-      setOpenMenu(false); // Close the main menu
-      setOpenAccMenu(false); // Close the account menu
+      setOpenMenu(false);
+      setOpenAccMenu(false);
     };
 
     return (

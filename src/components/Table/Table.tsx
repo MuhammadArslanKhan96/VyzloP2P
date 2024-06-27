@@ -17,7 +17,7 @@ const Table: React.FC<TableProps> = ({ tab, toggleTabBuy, toggleTabSell }) => {
 
   return (
     <>
-      <div className="bg-white mx-4 md:mx-auto mt-4 mb-4 md:w-full max-w-[100vw] sm:max-w-[80vw] overflow-x-auto rounded-lg">
+      <div className="bg-white mx-4 md:mx-auto mt-4 mb-4 md:w-full max-w-[100vw] sm:max-w-[80vw] overflow-x-auto rounded-lg relative">
         <TableHeader
           tab={tab}
           toggleTabBuy={toggleTabBuy}
