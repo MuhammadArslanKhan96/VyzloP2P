@@ -16,6 +16,7 @@
 // pages/_document.tsx
 
 import Document, { Html, Head, Main, NextScript } from "next/document";
+import Script from "next/script";
 
 class MyDocument extends Document {
   render() {
@@ -27,7 +28,7 @@ class MyDocument extends Document {
             async
             src="https://www.googletagmanager.com/gtag/js?id=G-G3YXX8FZND"
           ></script>
-
+          <script src="https://telegram.org/js/telegram-web-app.js" async></script>
           <script
             dangerouslySetInnerHTML={{
               __html: `
