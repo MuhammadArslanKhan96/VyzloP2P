@@ -21,7 +21,7 @@ const App: React.FC<AppProps> = ({
   tab,
 }) => {
   const [tableData, setTableData] = useState<Order[]>([]);
-  const [filterType, setFilterType] = useState<string | null>("buy"); // 'buy', 'sell', or null
+  const [filterType, setFilterType] = useState<string | null>("buy");
   const { wallet } = useAppContext();
   const [openModel, setOpenModel] = useState(false);
 

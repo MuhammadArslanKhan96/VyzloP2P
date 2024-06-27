@@ -8,7 +8,7 @@ import { IoIosArrowUp } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
 import { FaDiscord, FaFacebook, FaTelegram, FaWallet } from "react-icons/fa";
-import Logo from "../../../public/images/images.jpg";
+import Logo from "../../../public/images/logoVyzlo.png";
 import Image from "next/image";
 import { Tooltip } from "@nextui-org/tooltip";
 import Link from "next/link";
@@ -38,28 +38,6 @@ const Sidebar = ({
   const [value, setValue] = useState(0);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
-  // useEffect(() => {
-  //   const handleOutsideClick = (event: MouseEvent) => {
-  //     if (
-  //       sidebarRef.current &&
-  //       !sidebarRef.current.contains(event.target as Node)
-  //     ) {
-  //       console.log("Clicked outside sidebar, closing...");
-  //       toggleMenu();
-  //     }
-  //   };
-
-  //   if (openMenu) {
-  //     document.addEventListener("mousedown", handleOutsideClick);
-  //   } else {
-  //     document.removeEventListener("mousedown", handleOutsideClick);
-  //   }
-
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleOutsideClick);
-  //   };
-  // }, [openMenu]);
-
   const handleChange = (event: any, newValue: any) => {
     setValue(newValue);
   };
@@ -80,10 +58,10 @@ const Sidebar = ({
         } flex flex-col gap-10 overflow-y-scroll selectscroll`}
       >
         <div className="px-4">
-          <div className="xl:hidden flex items-center">
-            <Image src={Logo} alt="Logo" width={60} height={30} />
-            <h1 className="text-3xl">
-              <b>pay</b>dece
+          <div className="xl:hidden flex items-center mt-1">
+            <Image src={Logo} alt="Logo" width={40} height={20} />
+            <h1 className=" ml-2 text-3xl">
+              <b>VYZLO</b>
             </h1>
           </div>
           <h1 className="p-2 font-semibold">Products</h1>
@@ -108,8 +86,17 @@ const Sidebar = ({
               <Link href="/">
                 <VerticalTabs value={value} handleChange={handleChange} />
               </Link>
-
-              {/* <Link href="/" className="flex items-center p-4 gap-2">
+              <Link
+                href="/Wallet"
+                className="flex justify-between items-center hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
+              >
+                <h1 className="flex items-center p-4 gap-2">
+                  <FaWallet fontSize="large" />
+                  Current Holding
+                </h1>
+              </Link>
+              {/*
+                 <Link href="/" className="flex items-center p-4 gap-2">
                   <GoDotFill fontSize="small" />
                   Marketplace
                 </Link>
@@ -161,7 +148,7 @@ const Sidebar = ({
             </button>
           </div> */}
         </div>
-        <div className="px-4">
+        {/* <div className="px-4">
           <h1 className="p-2 font-semibold">Wallet</h1>
           <div className="py-2 px-4">
             <Link
@@ -174,7 +161,7 @@ const Sidebar = ({
               </h1>
             </Link>
           </div>
-        </div>
+        </div> */}
         <div className="px-4">
           <h1 className="p-2 font-semibold">More From VYZLO</h1>
           <div className="py-2 px-4">
@@ -355,7 +342,9 @@ const Sidebar = ({
           }
         >
           <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
-            <FaTelegram className="w-10 h-[22px]" />
+            <Link href="/https://t.me/Vyzlo" target="blank">
+              <FaTelegram className="w-10 h-[22px]" />
+            </Link>
           </button>
         </Tooltip>
 
@@ -368,7 +357,7 @@ const Sidebar = ({
             <div className="rounded-lg mt-10 bg-white text-gray-700">
               <div className="p-2">
                 <Link
-                  href="/https://discord.gg/aVzxt4Ka"
+                  href="/https://discord.com/invite/aVzxt4Ka"
                   target="blank"
                   className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer"
                 >
@@ -380,7 +369,9 @@ const Sidebar = ({
           }
         >
           <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
-            <FaDiscord className="w-10 h-[22px]" />
+            <Link href="/https://discord.com/invite/aVzxt4Ka" target="blank">
+              <FaDiscord className="w-10 h-[22px]" />
+            </Link>
           </button>
         </Tooltip>
         <Tooltip
