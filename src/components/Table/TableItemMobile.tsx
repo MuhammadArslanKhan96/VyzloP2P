@@ -31,7 +31,7 @@ const App: React.FC<AppProps> = ({
   const { wallet } = useAppContext();
   const [openModel, setOpenModel] = useState(false);
 
-  const getData = (tableData: Order[]) => setTableData(tableData.filter(order => !order.isOpen))
+  const getData = (tableData: Order[]) => setTableData(tableData.filter(order => wallet === order.wallet ? true : !order.isOpen))
 
   const listener = useFirestoreListener("P2POrder", getData);
 
@@ -90,7 +90,7 @@ const App: React.FC<AppProps> = ({
                   <div className="flex-2">
                     <div className="font-bold">{item.value} {item.fiat}</div>
                     <div className="text-xs pb-1">Available {item.available}{item.symbol}</div>
-                    <div className="text-xs">Boundaries {item.fiat} {item.boundries}</div>
+                    <div className="text-xs">Limit {item.fiat} {item.boundries}</div>
                   </div>
 
                   <div className="flex flex-col items-end flex-1 gap-1">

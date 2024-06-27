@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { setWalletAddress } from "@/hooks/cookies";
 import { chains } from "@/constants/rpcs";
@@ -79,21 +79,20 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     return ethersProvider;
   };
 
-  const getWalletFunction = async () => {
+  const getWalletFunction = async (connect?: boolean) => {
     if (window.ethereum) {
       try {
+        const walletConnected = localStorage.getItem("walletConnected");
+        if (walletConnected === null && !connect) return;
+
         const res = await (window.ethereum as any).request({
           method: "eth_requestAccounts",
         });
         const Wallet = res.length > 0 ? res[0] : null;
-        console.log(wallet, "YO");
-        // Assuming wallet and setWallet are defined elsewhere in your code
-        // Replace the following lines with your state management logic
-        // Example:
-        console.log();
         Wallet && setWallet(Wallet);
-        console.log(Wallet);
         setWalletAddress(Wallet);
+
+        localStorage.setItem("walletConnected", "true");
       } catch (err) {
         console.error("Error requesting accounts:", err);
       }
@@ -101,6 +100,11 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
       alert("Install MetaMask extension!!");
     }
   };
+
+  useEffect(() => {
+    getWalletFunction();
+  }, []);
+
   return (
     <AppContext.Provider
       value={{

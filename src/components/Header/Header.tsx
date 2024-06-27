@@ -22,7 +22,7 @@ const Header = ({
 }: HeaderProps) => {
   const { getWalletFunction, wallet } = useAppContext();
   const walletConnect = async () => {
-    getWalletFunction();
+    getWalletFunction(true);
   };
   //   console.log(wallet?.slice(0, 5));
   return (
@@ -55,7 +55,7 @@ const Header = ({
               !wallet && walletConnect();
             }}
           >
-            {wallet ? wallet?.slice(0, 5) + "..." : "Connect Wallet"}
+            {wallet ? wallet?.slice(0, 5) + "..." + wallet?.slice(-6) : "Connect Wallet"}
           </button>
           <button
             className="flex gap-2 bg-[#d4ebfc] text-[#2196f3] p-3 rounded-full hover:text-white hover:bg-blue-500 transition-all duration-500"

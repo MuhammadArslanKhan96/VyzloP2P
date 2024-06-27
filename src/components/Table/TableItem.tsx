@@ -26,7 +26,11 @@ const App: React.FC<AppProps> = ({
   const [openModel, setOpenModel] = useState(false);
 
   const getData = (tableData: Order[]) =>
-    setTableData(tableData.filter((order) => !order.isOpen));
+    setTableData(
+      tableData.filter((order) =>
+        wallet === order.wallet ? true : !order.isOpen
+      )
+    );
 
   const listener = useFirestoreListener("P2POrder", getData);
 
@@ -114,7 +118,7 @@ const App: React.FC<AppProps> = ({
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Boundaries
+                Limit
               </th>
               <th
                 scope="col"
