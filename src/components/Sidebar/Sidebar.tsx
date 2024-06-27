@@ -40,9 +40,12 @@ const Sidebar = ({
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
         console.log("Clicked outside sidebar, closing...");
-        toggleMenu(); 
+        toggleMenu();
       }
     };
 
@@ -62,9 +65,9 @@ const Sidebar = ({
   };
   return (
     <div
-    ref={sidebarRef}
+      ref={sidebarRef}
       className={`transition-all duration-300 ease-in-out  bg-white ${
-        openMenu ?  "md:w-[20vw] lg:w-[18vw]" : "lg:w-16"
+        openMenu ? "md:w-[20vw] lg:w-[18vw]" : "lg:w-16"
       }`}
     >
       {" "}
@@ -101,10 +104,12 @@ const Sidebar = ({
               {!P2PDropDown ? <IoIosArrowDown /> : <IoIosArrowUp />}
             </button>
             {P2PDropDown ? ( */}
-              <>
+            <>
+              <Link href="/">
                 <VerticalTabs value={value} handleChange={handleChange} />
-                {/*
-                 <Link href="/" className="flex items-center p-4 gap-2">
+              </Link>
+
+              {/* <Link href="/" className="flex items-center p-4 gap-2">
                   <GoDotFill fontSize="small" />
                   Marketplace
                 </Link>
@@ -112,7 +117,7 @@ const Sidebar = ({
                   <GoDotFill fontSize="small" />
                   My Ads
                 </Link> */}
-              </>
+            </>
             {/* ) : (
               ""
             )} */}
@@ -174,28 +179,31 @@ const Sidebar = ({
           <h1 className="p-2 font-semibold">More From VYZLO</h1>
           <div className="py-2 px-4">
             <a href="https://t.me/Vyzlo" target="blank">
-            <button className="flex justify-between items-center  hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
-              <h1 className="flex items-center p-4 gap-2">
-                <FaTelegram />
-                Telegram
-              </h1>
-            </button>
+              <button className="flex justify-between items-center  hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
+                <h1 className="flex items-center p-4 gap-2">
+                  <FaTelegram />
+                  Telegram
+                </h1>
+              </button>
             </a>
             <a href=" https://discord.gg/aVzxt4Ka " target="blank">
-            <button className="flex justify-between items-center  hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
-              <h1 className="flex items-center p-4 gap-2">
-              <FaDiscord />
-                Discord
-              </h1>
-            </button>
+              <button className="flex justify-between items-center  hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
+                <h1 className="flex items-center p-4 gap-2">
+                  <FaDiscord />
+                  Discord
+                </h1>
+              </button>
             </a>
-            <a href="https://www.facebook.com/profile.php?id=61558965401403" target="blank" >
-            <button className="flex justify-between items-center  hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
-              <h1 className="flex items-center p-4 gap-2">
-              <FaFacebook />
-                Facebook
-              </h1>
-            </button>
+            <a
+              href="https://www.facebook.com/profile.php?id=61558965401403"
+              target="blank"
+            >
+              <button className="flex justify-between items-center  hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
+                <h1 className="flex items-center p-4 gap-2">
+                  <FaFacebook />
+                  Facebook
+                </h1>
+              </button>
             </a>
           </div>
           {/* <div className="p-2 px-4">
@@ -323,7 +331,7 @@ const Sidebar = ({
           }
         >
           <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
-           <FaWallet className="w-10 h-[22px]" />
+            <FaWallet className="w-10 h-[22px]" />
           </button>
         </Tooltip>
         <Tooltip
@@ -347,7 +355,7 @@ const Sidebar = ({
           }
         >
           <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
-           <FaTelegram className="w-10 h-[22px]" />
+            <FaTelegram className="w-10 h-[22px]" />
           </button>
         </Tooltip>
 
@@ -372,7 +380,7 @@ const Sidebar = ({
           }
         >
           <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
-           <FaDiscord className="w-10 h-[22px]" />
+            <FaDiscord className="w-10 h-[22px]" />
           </button>
         </Tooltip>
         <Tooltip
@@ -396,7 +404,7 @@ const Sidebar = ({
           }
         >
           <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
-           <FaFacebook className="w-10 h-[22px]" />
+            <FaFacebook className="w-10 h-[22px]" />
           </button>
         </Tooltip>
         {/* <Tooltip
@@ -457,4 +465,3 @@ export default Sidebar;
 function toggleMenu() {
   throw new Error("Function not implemented.");
 }
-

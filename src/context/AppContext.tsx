@@ -29,18 +29,15 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   };
   const getEthersInstance = async (
     networkId: number
-  ): Promise<
-    ethers.providers.JsonRpcProvider | ethers.providers.Web3Provider
-  > => {
-    let ethersProvider:
-      | ethers.providers.JsonRpcProvider
-      | ethers.providers.Web3Provider;
+  ): Promise<ethers.JsonRpcProvider | ethers.BrowserProvider> => {
+    let ethersProvider: ethers.JsonRpcProvider | ethers.BrowserProvider;
 
     if (window.ethereum && window.ethereum.isMetaMask) {
-      ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
+      ethersProvider = new ethers.BrowserProvider(window.ethereum);
     } else {
-      const publicEndpoint = "https://rpc-amoy.polygon.technology";
-      ethersProvider = new ethers.providers.JsonRpcProvider(publicEndpoint);
+      const publicEndpoint =
+        "https://polygon-amoy.blockpi.network/v1/rpc/public";
+      ethersProvider = new ethers.JsonRpcProvider(publicEndpoint);
     }
 
     const currentNetworkId = await ethersProvider
@@ -67,7 +64,9 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
                     symbol: "MATIC",
                     decimals: 18,
                   },
-                  rpcUrls: ["https://rpc-amoy.polygon.technology"],
+                  rpcUrls: [
+                    "https://polygon-amoy.blockpi.network/v1/rpc/public",
+                  ],
                 },
               ],
             });
@@ -88,63 +87,6 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
 
     return ethersProvider;
   };
-
-  // const getEthersInstance = async (
-  //   networkId: number
-  // ): Promise<ethers.Providers> => {
-  //   let ethersProvider: ethers.Provider;
-
-  //   if (window.ethereum) {
-  //     ethersProvider = new ethers.BrowserProvider(window.ethereum as any);
-  //   } else {
-  //     const publicEndpoint = "https://rpc-amoy.polygon.technology";
-  //     ethersProvider = new ethers.JsonRpcProvider(publicEndpoint);
-  //   }
-
-  //   const currentNetworkId = await ethersProvider
-  //     .getNetwork()
-  //     .then((network: any) => network.chainId);
-
-  //   if (Number(currentNetworkId) !== networkId && window.ethereum) {
-  //     try {
-  //       await (window.ethereum as any).request({
-  //         method: "wallet_switchEthereumChain",
-  //         params: [{ chainId: `0x${networkId.toString(16)}` }],
-  //       });
-  //     } catch (switchError: any) {
-  //       if (switchError.code === 4902) {
-  //         try {
-  //           await (window.ethereum as any).request({
-  //             method: "wallet_addEthereumChain",
-  //             params: [
-  //               {
-  //                 chainId: `0x${networkId.toString(16)}`,
-  //                 chainName: "Polygon Amoy Testnet",
-  //                 nativeCurrency: {
-  //                   name: "MATIC",
-  //                   symbol: "MATIC",
-  //                   decimals: 18,
-  //                 },
-  //                 rpcUrls: ["https://rpc-amoy.polygon.technology"],
-  //               },
-  //             ],
-  //           });
-  //         } catch (addError) {
-  //           // Handle "add" error
-  //           console.error("Error adding Ethereum chain:", addError);
-  //         }
-  //       }
-  //       // Handle other "switch" errors
-  //       console.error("Error switching Ethereum chain:", switchError);
-  //     }
-  //   }
-
-  //   if (window.ethereum) {
-  //     await getUserWalletAddresses();
-  //   }
-
-  //   return ethersProvider;
-  // };
 
   const getWalletFunction = async () => {
     if (window.ethereum) {

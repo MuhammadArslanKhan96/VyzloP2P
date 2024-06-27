@@ -24,56 +24,72 @@ import {
   ReleaseEsCrow,
   SetMarkAsPaid,
 } from "@/hooks/call_contract";
+import useFirestoreListener from "@/hooks/useFirestoreListener";
+import { UpdateP2PStatus } from "@/hooks/getP2P";
 
 const Purchase = () => {
   const { maker } = useAppContext();
   const router = useRouter();
   const { id } = router.query;
-  const takerAddress = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
-  console.log("takerAddress", takerAddress);
-  const [activeStep, setActiveStep] = useState(0);
-  const [btnText, setBtnText] = useState("create escrow");
-  const [title, setTitle] = useState("Before we begin");
-  const [para, setPara] = useState(
-    "You have to wait for the seller to put the cryptocurrencies in escrow. Do not make the payment until the above is done."
-  );
+  const docId =
+    Array.isArray(id) && id.length > 0
+      ? id[0]
+      : typeof id === "string"
+      ? id
+      : "";
+  const [p2pOrder, setP2pOrder] = useState<any>(null);
+  const statusText = [
+    {
+      btnText: "Create Escrow",
+      title: "Before we begin",
+      para: "You have to wait for the seller to put the cryptocurrencies in escrow. Do not make the payment until the above is done.",
+    },
+    {
+      btnText: "Release Escrow",
+      title: "Keep in touch with the seller",
+      para: "To continue, transfer the fiat under the established conditions and mark as paid.",
+    },
+    {
+      btnText: "Release Escrow",
+      title: "Keep in touch with the seller",
+      para: "To continue, transfer the fiat under the established conditions and mark as paid.",
+    },
+    {
+      btnText: "Released Escrow",
+      title: "Perfect",
+      para: "Now you will have to wait for the seller to release the cryptocurrency.",
+    },
+  ];
   const [wallet, setWalletAddress] = useState<string | undefined>("");
   const steps = ["Crypto in escrow", "Fiat transferred", "Crypto released"];
-  // const [escrow, setEscrow] = useState<>();
-  const [fait, setFait] = useState(false);
-  const [transferrred, setTransferrred] = useState(true);
 
-  const textChange = async () => {
+  const getNewData = (p2pOrder: any) => {
+    console.log(p2pOrder);
+    setP2pOrder(p2pOrder);
+  };
+
+  const eventListener = useFirestoreListener("P2POrder", docId, getNewData);
+
+  const updateStatus = async () => {
     try {
-      if (activeStep === 0) {
-        // const res = await CreateEsCrow();
-        await CreateEsCrow();
-        const res = true;
+      if (p2pOrder?.status === "0") {
+        const res = await CreateEsCrow();
         if (res) {
-          setActiveStep(1);
-          setBtnText("released crypto");
-          setTitle("Keep in touch with the seller");
-          setPara(
-            "To continue, transfer the fiat under the established conditions and mark as paid."
-          );
-          setFait(true);
-          console.log(1);
-          console.log(activeStep);
-          // setTransferrred(false);
+          await UpdateP2PStatus(docId, "1");
         } else {
           console.error("Failed to create escrow");
         }
-      } else if (activeStep === 2) {
-        const res = await ReleaseEsCrow();
-        // const res = true;
+      } else if (p2pOrder?.status === "1") {
+        const res = await SetMarkAsPaid();
         if (res) {
-          setBtnText("released crypto");
-          setTitle("Perfect");
-          setPara(
-            "Now you will have to wait for the seller to release the cryptocurrency."
-          );
-          setActiveStep(3);
-          console.log(3);
+          await UpdateP2PStatus(docId, "1");
+        } else {
+          console.error("Failed to mark as paid");
+        }
+      } else if (p2pOrder?.status === "2") {
+        const res = await ReleaseEsCrow();
+        if (res) {
+          await UpdateP2PStatus(docId, "2");
         } else {
           console.error("Failed to release crypto");
         }
@@ -89,22 +105,11 @@ const Purchase = () => {
     }
   };
 
-  const fiatChange = async () => {
-    console.log(activeStep);
-    const res = await SetMarkAsPaid();
-    // const res = true;
-    setBtnText("released crypto");
-    setTitle("Perfect");
-    setPara(
-      "Now you will have to wait for the seller to release the cryptocurrency."
-    );
-    console.log(2);
-    if (res) {
-      setActiveStep(2);
-      console.log(2);
-      setFait(false);
+  useEffect(() => {
+    if (docId) {
+      eventListener();
     }
-  };
+  }, [docId]);
 
   useEffect(() => {
     const address = getWalletAddress();
@@ -117,7 +122,10 @@ const Purchase = () => {
     <>
       <Box className="w-full md:flex justify-end items-center my-1 py-1 ">
         <Box sx={{ width: "100%" }}>
-          <Stepper activeStep={activeStep} alternativeLabel>
+          <Stepper
+            activeStep={p2pOrder?.status ? Number(p2pOrder?.status) : 0}
+            alternativeLabel
+          >
             {steps.map((label, index) => (
               <Step key={label}>
                 <StepLabel style={{ fontSize: 12 }}>{label}</StepLabel>
@@ -389,12 +397,12 @@ const Purchase = () => {
               color="initial"
               sx={{ color: "black", fontWeight: "bold", fontSize: 16 }}
             >
-              {title}
+              {statusText[p2pOrder?.status]?.title}
             </Typography>
             <Typography
               sx={{ textAlign: "center", marginBlock: 1, fontSize: 14 }}
             >
-              {para}
+              {statusText[p2pOrder?.status]?.para}
             </Typography>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <Button
@@ -404,21 +412,28 @@ const Purchase = () => {
               </Button>
               {maker && (
                 <Button
-                  // disabled={transferrred}
+                  disabled={p2pOrder?.status === "1"}
                   sx={{ fontSize: 12 }}
-                  className="text-gray-700 bg-gray-200 rounded"
-                  onClick={textChange}
+                  className={`text-gray-700 ${
+                    p2pOrder?.status === "1" ? "bg-blue-100" : "bg-blue-500"
+                  } rounded`}
+                  onClick={updateStatus}
                 >
-                  {btnText}
+                  {statusText[p2pOrder?.status]?.btnText}
                 </Button>
               )}
               {maker === false && (
                 <Button
-                  // disabled={fait}
+                  disabled={
+                    p2pOrder?.status === "0" || p2pOrder?.status
+                      ? Number(p2pOrder?.status) > 1
+                      : false
+                  }
                   sx={{ fontSize: 12 }}
-                  className={`text-gray-700 ${fait ? "bg-blue-100" : "bg-blue-500"
-                    } rounded`}
-                  onClick={fiatChange}
+                  className={`text-gray-700 ${
+                    p2pOrder?.status === "0" ? "bg-blue-100" : "bg-blue-500"
+                  } rounded`}
+                  onClick={updateStatus}
                 >
                   Mark as Paid
                 </Button>

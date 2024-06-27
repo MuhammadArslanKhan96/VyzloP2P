@@ -25,14 +25,13 @@ export default function VerticalTabs({ value, handleChange }: any) {
     //     paddingLeft: 4,
     //   }}
     // >
-      <div>
+    <div>
       <Tabs
         orientation="vertical"
         // variant="scrollable"
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
-        
       >
         <Tab
           label="MarketPlace"
@@ -45,7 +44,7 @@ export default function VerticalTabs({ value, handleChange }: any) {
           }}
         />
         <Tab
-          label="Ads"
+          label="Order"
           {...a11yProps(1)}
           sx={{
             textTransform: "capitalize",
@@ -55,7 +54,7 @@ export default function VerticalTabs({ value, handleChange }: any) {
           }}
         />
       </Tabs>
-      </div>
+    </div>
     // </Box>
   );
 }
