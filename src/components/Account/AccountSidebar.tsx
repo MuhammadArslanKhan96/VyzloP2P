@@ -15,11 +15,11 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({
   toggleAccMenu,
 }) => {
   return (
-    <div className={`transition-all duration-300 ease-in-out rounded-xl`}>
+    <div className={`transition-all duration-300 ease-in-out rounded-xl  `}>
       <div
         className={`bg-white fixed z-20 transition-all duration-300 ease-in-out ${
           openAccMenu
-            ? "w-[80vw] !pb-28 sm:w-[30vw] top-0 xl:top-[92px] xl:w-[22vw] right-0 h-full min-h-screen"
+            ? "w-[80vw] !pb-28 sm:w-[30vw] top-0 xl:top-[83px] xl:w-[22vw] right-0 h-full min-h-screen"
             : "h-0 top-0 lg:top-20 -right-40 w-0"
         } flex flex-col py-2 overflow-y-scroll selectscroll`}
       >

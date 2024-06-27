@@ -184,7 +184,7 @@ interface UserData {
   value:string
 }
 
-export  const postUserCollection = async (data: UserData) => {
+export  const Transactions = async (data: UserData) => {
   try {
     const userCollection = collection(db, 'Transactions');
     const userDocRef = await addDoc(userCollection, data);
@@ -193,5 +193,28 @@ export  const postUserCollection = async (data: UserData) => {
   } catch (error) {
     console.error('Error adding document: ', error);
     throw new Error('Error adding document');
+  }
+};
+
+export const UpdateP2PStatus = async (docID: any, status: string) => {
+  try {
+    const p2pCollection = collection(db, "P2POrder");
+    const p2pQuerySnapshot = await getDocs(p2pCollection);
+    p2pQuerySnapshot.forEach(async (p2pDoc) => {
+      if (p2pDoc.id === docID) {
+        const data = p2pDoc.data();
+        if (data.status !== status) {
+          await updateDoc(doc(db, "P2POrder", p2pDoc.id), {
+            status: status,
+          });
+          console.log("Document updated successfully");
+        } else {
+          console.log("Document status is already correct, no update needed");
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error updating document: ', error);
+    throw new Error('Error updating document');
   }
 };
