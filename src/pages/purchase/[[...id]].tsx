@@ -26,6 +26,7 @@ import {
 } from "@/hooks/call_contract";
 import useFirestoreListener from "@/hooks/useFirestoreListener";
 import { UpdateP2POrder } from "@/hooks/getP2P";
+import { SupportedBlockchains, networkIds } from "@/constants/rpcs";
 
 const Purchase = () => {
   const router = useRouter();
@@ -59,14 +60,18 @@ const Purchase = () => {
       para: "Now you will have to wait for the seller to release the cryptocurrency.",
     },
   ];
+  const { getEthersInstance } = useAppContext(); 
   const [wallet, setWalletAddress] = useState<string | undefined>("");
   const steps = ["Crypto in escrow", "Fiat transferred", "Crypto released"];
 
   const maker = p2pOrder?.type === 1;
 
   const getNewData = (p2pOrder: any) => {
-    console.log(p2pOrder);
     setP2pOrder(p2pOrder);
+
+    getEthersInstance(networkIds[`${p2pOrder?.blockChain as SupportedBlockchains}`], p2pOrder?.blockChain).catch((error: any) => {
+      console.error("Error:", error);
+    });
   };
 
   const eventListener = useFirestoreListener("P2POrder", getNewData, docId);

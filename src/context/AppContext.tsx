@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import { ethers } from "ethers";
 import { setWalletAddress } from "@/hooks/cookies";
+import { SupportedBlockchains, chains } from "@/constants/rpcs";
 
 const AppContext = createContext({} as any); // Provide a default value to the context
 
@@ -28,7 +29,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
   const getEthersInstance = async (
-    networkId: number
+    networkId: number, network: SupportedBlockchains
   ): Promise<ethers.JsonRpcProvider | ethers.BrowserProvider> => {
     let ethersProvider: ethers.JsonRpcProvider | ethers.BrowserProvider;
 
@@ -56,18 +57,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
             await (window.ethereum as any).request({
               method: "wallet_addEthereumChain",
               params: [
-                {
-                  chainId: `0x${networkId.toString(16)}`,
-                  chainName: "Polygon Amoy Testnet",
-                  nativeCurrency: {
-                    name: "MATIC",
-                    symbol: "MATIC",
-                    decimals: 18,
-                  },
-                  rpcUrls: [
-                    "https://polygon-amoy.blockpi.network/v1/rpc/public",
-                  ],
-                },
+                chains[network],
               ],
             });
           } catch (addError) {
