@@ -681,10 +681,10 @@ const MyAds = () => {
             </Box>
             <Box className="flex flex-col justify-center items-center">
               <Typography sx={{ color: "black", fontWeight: "bold" }}>
-                HI! To begin with
+                Hi! To begin with
               </Typography>
               <Typography sx={{ color: "black" }}>
-                what kind of do you want to create ?
+                what kind of ad do you want to create ?
               </Typography>
               <Box className="w-full flex justify-start gap-x-3 mt-10">
                 <Button

@@ -16,9 +16,7 @@ const MarketPlace: React.FC<MarketplaceProps> = ({
   toggleTabBuy,
   toggleTabSell,
 }) => {
-
   const { user, webApp } = useTelegram();
-
 
   return (
     <Box className="bg-[#d4ebfc] max-lg:pt-16 pt-32   sm:w-screen  h-full min-h-screen pb-5">
@@ -34,10 +32,7 @@ const MarketPlace: React.FC<MarketplaceProps> = ({
           </div>
         </div>
       </div>
-
-      <h1>{JSON.stringify(user)}</h1>
-
-      <Transactions />
+      {/* <Transactions /> */}
       <Table
         tab={tab}
         toggleTabBuy={toggleTabBuy}
