@@ -14,6 +14,22 @@ interface TabPanelProps {
   index: number;
   value: number;
 }
+// eslint-disable-next-line react/display-name
+const TabPanel = React.memo(
+  ({ children, value, index, ...other }: TabPanelProps) => {
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`vertical-tabpanel-${index}`}
+        aria-labelledby={`vertical-tab-${index}`}
+        {...other}
+      >
+        {value === index && <Box className="w-[130%]">{children}</Box>}
+      </div>
+    );
+  }
+);
 export default function Home() {
   const [tab, setTab] = useState(true);
   const { tabValue } = useAppContext();
@@ -53,20 +69,6 @@ export default function Home() {
   const toggleTutorialDropDown = () => {
     openTutorialDropDown(!TutorialDropDown);
   };
-  function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`vertical-tabpanel-${index}`}
-        aria-labelledby={`vertical-tab-${index}`}
-        {...other}
-      >
-        {value === index && <Box className="w-[100%]">{children}</Box>}
-      </div>
-    );
-  }
   return (
     <>
       <Header

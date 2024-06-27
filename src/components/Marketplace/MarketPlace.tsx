@@ -2,7 +2,6 @@ import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import Transactions from "../Transactions/Transactions";
 import Table from "../Table/Table";
-import EscrowButtons from "../EscrowButtons/EscrowButtons";
 import { Box } from "@mui/material";
 import { useTelegram } from "@/context/TelegramProvider";
 
@@ -22,7 +21,7 @@ const MarketPlace: React.FC<MarketplaceProps> = ({
 
 
   return (
-    <Box className="bg-[#d4ebfc] max-lg:pt-16 pt-32 w-screen  h-full min-h-screen pb-5">
+    <Box className="bg-[#d4ebfc] max-lg:pt-16 pt-32   sm:w-screen  h-full min-h-screen pb-5">
       <div className="p-6 w-[90%] mx-auto">
         <div className="bg-white px-4 lg:px-10 py-4 rounded-md border border-gray-300 flex justify-between max-sm:gap-2 whitespace-nowrap">
           <h1 className="text-[12px] lg:text-xl font-semibold">Marketplace</h1>
@@ -39,9 +38,6 @@ const MarketPlace: React.FC<MarketplaceProps> = ({
       <h1>{JSON.stringify(user)}</h1>
 
       <Transactions />
-      {/* <div className="flex justify-center py-5">
-        <EscrowButtons />
-      </div> */}
       <Table
         tab={tab}
         toggleTabBuy={toggleTabBuy}

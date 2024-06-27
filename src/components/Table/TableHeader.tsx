@@ -21,12 +21,26 @@ const TableHeader: React.FC<TableHeaderProps> = ({
   setSelectedCommunities,
 }) => {
   return (
-    <div className="flex px-8 py-4 justify-center items-center gap-x-6 mx-auto w-full xl:w-[50%] rounded-lg bg-white mt-4">
-      <div className="flex w-full gap-4 items-center">
-        {/* <div className="flex gap-2 p-2">
-                    <button className={`text-gray-400 py-1 px-4 rounded-lg transition-all duration-400 ${tab ? "text-white bg-blue-500" : ""}`} onClick={toggleTabBuy}>Buy</button>
-                    <button className={`text-gray-400 px-4 py-1 rounded-lg transition-all duration-400 ${!tab ? "text-white bg-blue-500" : ""}`} onClick={toggleTabSell}>Sell</button>
-                </div> */}
+    <div className="flex px-8 py-4  justify-center items-center gap-x-6 mx-auto w-full  rounded-lg bg-white mt-4">
+      <div className="flex  max-auto gap-4 items-end">
+        <div className="flex gap-2 p-1 bg-blue-100 rounded-lg">
+          <button
+            className={`text-gray-400 py-1 px-4 rounded-lg transition-all duration-400 ${
+              tab ? "text-white bg-blue-500" : ""
+            }`}
+            onClick={toggleTabBuy}
+          >
+            Buy
+          </button>
+          <button
+            className={`text-gray-400 px-4 py-1 rounded-lg transition-all duration-400 ${
+              !tab ? "text-white bg-blue-500" : ""
+            }`}
+            onClick={toggleTabSell}
+          >
+            Sell
+          </button>
+        </div>
         <div className="flex gap-x-10">
           {/* <div className="flex flex-col">
                         <label htmlFor="Communities" className='text-sm'>Communities</label>

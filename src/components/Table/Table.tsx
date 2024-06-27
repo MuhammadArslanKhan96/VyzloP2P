@@ -14,7 +14,7 @@ const Table: React.FC<TableProps> = ({ tab, toggleTabBuy, toggleTabSell }) => {
   const [selectedBlockchain, setSelectedBlockchain] = useState("");
   const [selectedCommunities, setSelectedCommunities] = useState("");
   return (
-    <div className="bg-white mx-auto mt-4 mb-4 w-full max-w-[80vw] overflow-x-scroll rounded-lg">
+    <div className="bg-white mx-auto mt-4 mb-4 w-full max-w-[100vw] sm:max-w-[80vw] overflow-x-scroll rounded-lg">
       <TableHeader
         tab={tab}
         toggleTabBuy={toggleTabBuy}

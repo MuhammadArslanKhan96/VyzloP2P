@@ -27,6 +27,7 @@ import { getWalletAddress } from "@/hooks/cookies";
 import walletP2P, { getP2P, getWallet } from "@/hooks/getP2P";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
+import { IoCloseCircleOutline } from "react-icons/io5";
 interface MessageType {
   id: string;
   text: string;
@@ -53,11 +54,11 @@ const ChatRoom = () => {
   const [seller, setSellerName] = useState("");
   const user2 = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
   const user1 = walletAddress;
-  // useEffect(() => {
-  //   if (user2) {
-  //     getP2P(user2, 1);
-  //   }
-  // }, [user2]);
+  useEffect(() => {
+    if (user2) {
+      getP2P(user2, 1);
+    }
+  }, [user2]);
   // console.log(makerSeller, user1);
   useEffect(() => {
     const fetchWalletAddress = async (user2: any) => {
@@ -153,16 +154,17 @@ const ChatRoom = () => {
     }
   };
 
-  const cancelOrder = async () => {
-    // Delete the messages collection
-    // const messagesRef = collection(db, `P2POrder/${user2}/messages`);
-    // const snapshot = await getDocs(messagesRef);
-    // snapshot.forEach((doc) => {
-    //   deleteDoc(doc.ref);
-    // });
+  const handleCloseImage = () => {
+    setSelectedImage(null);
+    setUploadedImageURL(null);
+  };
 
-    // // Optionally, delete the parent P2POrder document
-    // await deleteDoc(doc(db, `P2POrder/${user2}`));
+  const cancelOrder = async () => {
+    const messagesRef = collection(db, `P2POrder/${user2}/messages`);
+    const snapshot = await getDocs(messagesRef);
+    snapshot.forEach((doc) => {
+      deleteDoc(doc.ref);
+    });
 
     await getP2P(user2, 0);
     router.push("/");
@@ -198,10 +200,8 @@ const ChatRoom = () => {
           <Box className="ml-1">
             <Typography fontSize={14}>
               {maker
-                ? makerSeller
-                : name.length > 10
-                ? `${name.slice(0, 6)}...${name.slice(-6)}`
-                : name}
+                ? `${name?.slice(0, 6)}...${name?.slice(-6)}`
+                : `${makerSeller.slice(0, 6)}...${makerSeller.slice(-6)}`}
             </Typography>
             <Typography fontSize={14}> {maker ? "unknown" : seller}</Typography>
           </Box>
@@ -224,7 +224,19 @@ const ChatRoom = () => {
           ref={chatContainerRef}
         >
           {selectedImage !== null ? (
-            <Box className="w-full flex flex-col items-center p-4 ">
+            <Box className="w-full flex flex-col items-center p-4  overflow-hidden">
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  top: 80,
+                  right: 10,
+                  zIndex: 10,
+                  backgroundColor: "white",
+                }}
+                onClick={handleCloseImage}
+              >
+                <IoCloseCircleOutline />
+              </IconButton>
               <Image
                 src={URL.createObjectURL(selectedImage)}
                 alt="Selected"
@@ -243,19 +255,31 @@ const ChatRoom = () => {
                     }`}
                   >
                     <Box
-                      className={`p-2 rounded-lg w-10/12 ${
+                      className={`p-2 rounded-lg w-[60%] ${
                         msg.sender === user1
                           ? "bg-blue-100 text-left"
                           : "bg-pink-100 text-right"
                       } mb-2`}
                     >
-                      <Typography className="text-[9px] text-left">
-                        {msg.sender === user1 ? "unknown" : user1}
+                      <Typography
+                        className={`text-[9px]  ${
+                          maker ? "text-right" : "text-left"
+                        }`}
+                      >
+                        {maker ? "unknown" : seller}
                       </Typography>
-                      <Typography className="text-sm text-left">
+                      <Typography
+                        className={`text-sm  ${
+                          maker ? "text-right" : "text-left"
+                        }`}
+                      >
                         {msg.text}
                       </Typography>
-                      <Typography className="text-[9px] text-right">
+                      <Typography
+                        className={`text-[9px] ${
+                          maker ? "text-left" : "text-right"
+                        }`}
+                      >
                         {msg.createdAt.toLocaleTimeString()}
                       </Typography>
                       {msg.imageURL && (
