@@ -24,22 +24,24 @@ const TableHeader: React.FC<TableHeaderProps> = ({
     <>
       <div className="hidden md:flex px-8 py-4  justify-center items-center gap-x-6 mx-auto w-full  rounded-lg bg-white mt-4">
         <div className="flex  max-auto gap-4 items-end">
-          <div className="flex gap-2 p-1 bg-blue-100 rounded-lg">
+          {/* <div className="flex gap-2 p-1 bg-blue-100 rounded-lg">
             <button
-              className={`text-gray-400 py-1 px-4 rounded-lg transition-all duration-400 ${tab ? "text-white bg-blue-500" : ""
-                }`}
+              className={`text-gray-400 py-1 px-4 rounded-lg transition-all duration-400 ${
+                tab ? "text-white bg-blue-500" : ""
+              }`}
               onClick={toggleTabBuy}
             >
               Buy
             </button>
             <button
-              className={`text-gray-400 px-4 py-1 rounded-lg transition-all duration-400 ${!tab ? "text-white bg-blue-500" : ""
-                }`}
+              className={`text-gray-400 px-4 py-1 rounded-lg transition-all duration-400 ${
+                !tab ? "text-white bg-blue-500" : ""
+              }`}
               onClick={toggleTabSell}
             >
               Sell
             </button>
-          </div>
+          </div> */}
           <div className="flex gap-x-10">
             {/* <div className="flex flex-col">
                         <label htmlFor="Communities" className='text-sm'>Communities</label>
@@ -122,18 +124,20 @@ const TableHeader: React.FC<TableHeaderProps> = ({
         </div>
       </div>
 
-      <div className="flex md:hidden">
-        <div className="flex gap-2 p-1 rounded-lg">
+      <div className="flex md:hidden ">
+        <div className="flex gap-2 w-fit  p-1 rounded-lg ">
           <button
-            className={`text-gray-400 py-1 px-4 rounded-lg transition-all duration-400 ${tab ? "text-white bg-blue-500" : ""
-              }`}
+            className={`text-gray-400 py-1 px-4 rounded-lg transition-all duration-400 ${
+              tab ? "text-white bg-blue-500" : ""
+            }`}
             onClick={toggleTabBuy}
           >
             Buy
           </button>
           <button
-            className={`text-gray-400 px-4 py-1 rounded-lg transition-all duration-400 ${!tab ? "text-white bg-blue-500" : ""
-              }`}
+            className={`text-gray-400 px-4 py-1 rounded-lg transition-all duration-400 ${
+              !tab ? "" : "text-white bg-blue-500"
+            }`}
             onClick={toggleTabSell}
           >
             Sell
@@ -142,8 +146,13 @@ const TableHeader: React.FC<TableHeaderProps> = ({
       </div>
 
       <div className="flex md:hidden items-center gap-2 p-3 pb-0">
-        <select onChange={(e) => setSelectedBlockchain(e.target.value)} className="bg-transparent border-none leading-tight focus:outline-none text-sm">
-          <option value="" className="text-sm">All</option>
+        <select
+          onChange={(e) => setSelectedBlockchain(e.target.value)}
+          className="bg-transparent border-none leading-tight focus:outline-none text-sm"
+        >
+          <option value="" className="text-sm">
+            All
+          </option>
           <option value="ZETA" className="text-sm">
             ZETA
           </option>
@@ -156,8 +165,11 @@ const TableHeader: React.FC<TableHeaderProps> = ({
         </select>
         <select
           onChange={(e) => setSelectedCrypto(e.target.value)}
-          className="bg-transparent border-none leading-tight focus:outline-none text-sm">
-          <option value="" className="text-sm">All</option>
+          className="bg-transparent border-none leading-tight focus:outline-none text-sm"
+        >
+          <option value="" className="text-sm">
+            All
+          </option>
           <option value="USDT" className="text-sm">
             USDT
           </option>
@@ -171,12 +183,17 @@ const TableHeader: React.FC<TableHeaderProps> = ({
 
         <select
           onChange={(e) => setSelectedFiat(e.target.value)}
-          className="bg-transparent border-none leading-tight focus:outline-none text-sm">
-          <option value="" className="text-sm">All</option>
+          className="bg-transparent border-none leading-tight focus:outline-none text-sm"
+        >
+          <option value="" className="text-sm">
+            All
+          </option>
           <option value="EUR">EUR</option>
           <option value="ARS">ARS</option>
           <option value="COP">COP</option>
-          <option selected value="USD">USD</option>
+          <option selected value="USD">
+            USD
+          </option>
         </select>
       </div>
     </>

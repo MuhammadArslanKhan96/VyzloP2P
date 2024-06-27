@@ -21,11 +21,12 @@ const App: React.FC<AppProps> = ({
   tab,
 }) => {
   const [tableData, setTableData] = useState<Order[]>([]);
-  const [filterType, setFilterType] = useState<string | null>(null); // 'buy', 'sell', or null
+  const [filterType, setFilterType] = useState<string | null>("buy"); // 'buy', 'sell', or null
   const { wallet } = useAppContext();
   const [openModel, setOpenModel] = useState(false);
 
-  const getData = (tableData: Order[]) => setTableData(tableData.filter(order => !order.isOpen))
+  const getData = (tableData: Order[]) =>
+    setTableData(tableData.filter((order) => !order.isOpen));
 
   const listener = useFirestoreListener("P2POrder", getData);
 
@@ -60,26 +61,33 @@ const App: React.FC<AppProps> = ({
   const handleClose = () => setOpenModel(false);
   return (
     <>
-      {/* <div className="flex justify-center space-x-4 my-4">
-        <button
+      <div className="flex justify-center space-x-4 my-4 ">
+        {/* <button
           onClick={() => handleFilter(null)}
           className="text-sm px-4 py-2 rounded-md transition-all duration-300 text-white bg-blue-500 hover:bg-blue-300"
         >
           All
-        </button>
+        </button>*/}
+      </div>
+      <div className="flex gap-2 p-1 bg-blue-100 rounded-lg w-fit absolute top-12 left-[150px]">
         <button
           onClick={() => handleFilter("buy")}
-          className="text-sm px-4 py-2 rounded-md transition-all duration-300 text-white bg-green-500 hover:bg-green-300"
+          className={`text-gray-400 py-1 px-4 rounded-lg transition-all duration-400 ${
+            filterType === "buy" ? "text-white bg-blue-500" : "bg-blue-100"
+          }`}
         >
           Buy
         </button>
         <button
           onClick={() => handleFilter("sell")}
-          className="text-sm px-4 py-2 rounded-md transition-all duration-300 text-white bg-red-500 hover:bg-red-300"
+          className={`text-gray-400 px-4 py-1 rounded-lg transition-all duration-400 ${
+            filterType === "sell" ? "text-white bg-blue-500" : "bg-blue-100"
+          }`}
         >
           Sell
         </button>
-      </div> */}
+      </div>
+
       <div className="mx-auto w-full xl:w-[72vw] h-full min-h-fit max-h-[50vw] overflow-auto selectscroll">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
@@ -148,8 +156,7 @@ const App: React.FC<AppProps> = ({
                     <Link
                       href={
                         // wallet && item.type === 0 ?
-                          wallet ? `/purchase/${item.key}`
-                          : "/"
+                        wallet ? `/purchase/${item.key}` : "/"
                       }
                       onClick={checkWallet}
                     >

@@ -32,7 +32,7 @@ const MarketPlace: React.FC<MarketplaceProps> = ({
           </div>
         </div>
       </div> */}
-      <Transactions />
+      {/* <Transactions /> */}
       <Table
         tab={tab}
         toggleTabBuy={toggleTabBuy}

@@ -44,7 +44,7 @@ export default function VerticalTabs({ value, handleChange }: any) {
           }}
         />
         <Tab
-          label="Order"
+          label="Create Ads"
           {...a11yProps(1)}
           sx={{
             textTransform: "capitalize",
