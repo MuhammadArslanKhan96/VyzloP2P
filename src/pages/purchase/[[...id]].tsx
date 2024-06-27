@@ -26,7 +26,7 @@ import {
 } from "@/hooks/call_contract";
 import useFirestoreListener from "@/hooks/useFirestoreListener";
 import { UpdateP2POrder } from "@/hooks/getP2P";
-import { networkIds } from "@/constants/rpcs";
+import { addresses, networkIds } from "@/constants/rpcs";
 import { SupportedBlockchains } from "@/types";
 
 const Purchase = () => {
@@ -80,7 +80,7 @@ const Purchase = () => {
   const updateStatus = async () => {
     try {
       if (p2pOrder?.status === "0") {
-        const res = await CreateEsCrow(p2pOrder?.takerAddress);
+        const res = await CreateEsCrow(p2pOrder?.takerAddress, addresses[`${p2pOrder?.blockChain?.toUpperCase() as SupportedBlockchains}`]);
         if (res) {
           await UpdateP2POrder(docId, {
             status: "1",
@@ -90,7 +90,7 @@ const Purchase = () => {
           console.error("Failed to create escrow");
         }
       } else if (p2pOrder?.status === "1") {
-        const res = await SetMarkAsPaid(p2pOrder?.orderId);
+        const res = await SetMarkAsPaid(p2pOrder?.orderId, addresses[`${p2pOrder?.blockChain?.toUpperCase() as SupportedBlockchains}`]);
         if (res) {
           await UpdateP2POrder(docId, {
             status: "1"
@@ -99,7 +99,7 @@ const Purchase = () => {
           console.error("Failed to mark as paid");
         }
       } else if (p2pOrder?.status === "2") {
-        const res = await ReleaseEsCrow(p2pOrder?.orderId);
+        const res = await ReleaseEsCrow(p2pOrder?.orderId, addresses[`${p2pOrder?.blockChain?.toUpperCase() as SupportedBlockchains}`]);
         if (res) {
           await UpdateP2POrder(docId, {
             status: "2"
