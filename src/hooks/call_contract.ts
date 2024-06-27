@@ -13,7 +13,7 @@ let provider: ethers.BrowserProvider;
 
 let signer: ethers.Signer | any | undefined;
 
-export const CreateEsCrow = async (): Promise<boolean> => {
+export const CreateEsCrow = async (takerAddress: string): Promise<boolean | number> => {
   if (typeof window !== "undefined") {
     provider = new ethers.BrowserProvider(window.ethereum as any);
 
@@ -22,8 +22,7 @@ export const CreateEsCrow = async (): Promise<boolean> => {
   try {
     // const gasPrice = await signer?.getGasPrice();
     const myContract = new ethers.Contract(contractAddress, ABI, signer);
-    const orderId = 7352;
-    const takerAddress = "0x256A844E147c6F0321A9606378306fe13c9e49a9";
+    const orderId = Date.now();
     const value = 100000000000000;
     const makerPremium = false;
     const takerPremium = false;
@@ -40,14 +39,14 @@ export const CreateEsCrow = async (): Promise<boolean> => {
         value: value,
       }
     );
-    return true;
+    return orderId;
   } catch (error) {
     console.error("Transaction failed:", error);
     return false;
   }
 };
 
-export const SetMarkAsPaid = async (): Promise<boolean> => {
+export const SetMarkAsPaid = async (orderId: number): Promise<boolean> => {
   if (typeof window !== "undefined") {
   provider = new ethers.BrowserProvider(window.ethereum as any);
 
@@ -55,7 +54,6 @@ export const SetMarkAsPaid = async (): Promise<boolean> => {
 }
   try {
     const myContract = new ethers.Contract(contractAddress, ABI, signer);
-    const orderId = 7352;
     console.log(signer);
     await myContract.setMarkAsPaid(orderId);
     return true;
@@ -65,7 +63,7 @@ export const SetMarkAsPaid = async (): Promise<boolean> => {
   }
 };
 
-export const ReleaseEsCrow = async (): Promise<boolean> => {
+export const ReleaseEsCrow = async (orderId: number): Promise<boolean> => {
   if (typeof window !== "undefined") {
     provider = new ethers.BrowserProvider(window.ethereum as any);
   
@@ -73,7 +71,6 @@ export const ReleaseEsCrow = async (): Promise<boolean> => {
   }
   try {
     const myContract = new ethers.Contract(contractAddress, ABI, signer);
-    const orderId = 7352;
     await myContract.releaseEscrowNativeCoin(orderId);
     return true;
   } catch (error) {

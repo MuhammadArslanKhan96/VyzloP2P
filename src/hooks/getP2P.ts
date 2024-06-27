@@ -2,28 +2,28 @@
 // import {db} from "../../utils/firebaseConfig";
 
 // const getP2P = async (walletAddress:any) => {
-  // try {
-  //   const p2pCollection = collection(db, 'P2POrder');
-  //   let p2pQuery = query(p2pCollection);
+// try {
+//   const p2pCollection = collection(db, 'P2POrder');
+//   let p2pQuery = query(p2pCollection);
 
-  //   if (walletAddress) {
-  //     p2pQuery = query(p2pCollection, where("wallet", "==", walletAddress));
-  //   }
+//   if (walletAddress) {
+//     p2pQuery = query(p2pCollection, where("wallet", "==", walletAddress));
+//   }
 
-  //   const p2pGetDoc = await getDocs(p2pQuery);
-  //   const filteredData = p2pGetDoc.docs.map((doc) => doc.data());
-  //   if (filteredData.length > 0) {
-  //       const advertiser = filteredData[0].advertiser;
-  //       console.log("Advertiser:", advertiser);
-  //       return advertiser;
-  //     } else {
-  //       console.log("No data found for the given wallet address.");
-  //       return null;
-  //     }
-  // } catch (error) {
-  //   console.error('Error fetching data:', error);
-  //   return { data: [], loading: false, error: 'Error fetching data' };
-  // }
+//   const p2pGetDoc = await getDocs(p2pQuery);
+//   const filteredData = p2pGetDoc.docs.map((doc) => doc.data());
+//   if (filteredData.length > 0) {
+//       const advertiser = filteredData[0].advertiser;
+//       console.log("Advertiser:", advertiser);
+//       return advertiser;
+//     } else {
+//       console.log("No data found for the given wallet address.");
+//       return null;
+//     }
+// } catch (error) {
+//   console.error('Error fetching data:', error);
+//   return { data: [], loading: false, error: 'Error fetching data' };
+// }
 // };
 
 // export default getP2P;
@@ -43,7 +43,7 @@
 //     const filteredItem = filteredData.find(item => item.id === walletAddress);
 //     console.log(filteredItem)
 //      return filteredItem?.type
-   
+
 //   } catch (error) {
 //     console.error('Error fetching data:', error);
 //     return { data: [], loading: false, error: 'Error fetching data' };
@@ -87,7 +87,7 @@ export const getWallet = async (docId: string) => {
     const p2pCollection = collection(db, "P2POrder");
     const p2pDoc = doc(p2pCollection, docId);
     const p2pDocSnapshot = await getDoc(p2pDoc);
-    
+
     if (p2pDocSnapshot.exists()) {
       // console.log(p2pDocSnapshot.data());
       return { data: p2pDocSnapshot.data(), loading: false, error: null };
@@ -114,7 +114,7 @@ export const getWalletMessage = async (makerWallet: string) => {
         return true;
       }
     }
-    
+
     return false;
   } catch (error) {
     console.error("Error checking wallet address in messages:", error);
@@ -128,7 +128,7 @@ export const getWalletMessage = async (makerWallet: string) => {
 //     const p2pCollection = collection(db, 'P2POrder');
 //     const q = query(p2pCollection, where('docId', '==', doc), where('walletAddress', '==', walletAddress));
 //     const querySnapshot = await getDocs(q);
-    
+
 //     const data = querySnapshot.docs.map(doc => ({
 //       id: doc.id,
 //       ...doc.data()
@@ -143,17 +143,17 @@ export const getWalletMessage = async (makerWallet: string) => {
 
 
 
-const walletP2P = async (docId: any, walletAddress:any) => {
+const walletP2P = async (docId: any, walletAddress: any) => {
   try {
     const p2pDocRef = doc(db, 'P2POrder', docId);
     const docSnapshot = await getDoc(p2pDocRef);
     if (docSnapshot.exists()) {
       const data = docSnapshot.data() as DocumentData;
-      if (data.wallet.toLowerCase() === walletAddress) {
-        return true ; 
+      if (data.wallet.toLowerCase() === walletAddress && data.type === 1) {
+        return true;
       } else {
         console.log('Wallet address does not match or document structure is incorrect');
-        return false; 
+        return false;
       }
     } else {
       console.log('Document does not exist');
@@ -169,22 +169,22 @@ export default walletP2P;
 
 
 interface UserData {
-  cryptoSymbol:string;
-  currentTime:any;
+  cryptoSymbol: string;
+  currentTime: any;
   fiatCurrency: string;
   makerPremium: number;
-  orderId:string;
-  pricePerToken:string;
-  sellerAddress:string;
-  status:string;
-  takerAddress:string;
-  takerPremium:string;
-  type:string;
-  uid:number;
-  value:string
+  orderId: string;
+  pricePerToken: string;
+  sellerAddress: string;
+  status: string;
+  takerAddress: string;
+  takerPremium: string;
+  type: string;
+  uid: number;
+  value: string
 }
 
-export  const Transactions = async (data: UserData) => {
+export const Transactions = async (data: UserData) => {
   try {
     const userCollection = collection(db, 'Transactions');
     const userDocRef = await addDoc(userCollection, data);
@@ -196,23 +196,16 @@ export  const Transactions = async (data: UserData) => {
   }
 };
 
-export const UpdateP2PStatus = async (docID: any, status: string) => {
+interface Object {
+  [key: string]: any
+}
+
+export const UpdateP2POrder = async (docID: any, order: Object) => {
   try {
-    const p2pCollection = collection(db, "P2POrder");
-    const p2pQuerySnapshot = await getDocs(p2pCollection);
-    p2pQuerySnapshot.forEach(async (p2pDoc) => {
-      if (p2pDoc.id === docID) {
-        const data = p2pDoc.data();
-        if (data.status !== status) {
-          await updateDoc(doc(db, "P2POrder", p2pDoc.id), {
-            status: status,
-          });
-          console.log("Document updated successfully");
-        } else {
-          console.log("Document status is already correct, no update needed");
-        }
-      }
+    await updateDoc(doc(db, "P2POrder", docID), {
+      ...order
     });
+    console.log("Document updated successfully");
   } catch (error) {
     console.error('Error updating document: ', error);
     throw new Error('Error updating document');

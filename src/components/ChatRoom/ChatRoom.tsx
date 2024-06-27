@@ -11,10 +11,8 @@ import {
   query,
   orderBy,
   onSnapshot,
-  where,
   getDocs,
   deleteDoc,
-  doc,
 } from "firebase/firestore";
 import {
   ref as storageRef,
@@ -45,7 +43,6 @@ const ChatRoom = () => {
   const [walletAddress, setWalletAddressState] = useState<string | undefined>(
     ""
   );
-  const [advertiseName, setAdvertiseName] = useState("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [uploadedImageURL, setUploadedImageURL] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -54,12 +51,8 @@ const ChatRoom = () => {
   const [seller, setSellerName] = useState("");
   const user2 = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
   const user1 = walletAddress;
-  useEffect(() => {
-    if (user2) {
-      getP2P(user2, 1);
-    }
-  }, [user2]);
-  // console.log(makerSeller, user1);
+
+
   useEffect(() => {
     const fetchWalletAddress = async (user2: any) => {
       const { data, loading, error } = await getWallet(user2);
@@ -78,7 +71,6 @@ const ChatRoom = () => {
   useEffect(() => {
     const address = getWalletAddress();
     if (address) {
-      console.log(address);
       setWalletAddressState(address);
     }
   }, []);
