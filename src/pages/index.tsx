@@ -19,13 +19,14 @@ const TabPanel = React.memo(
   ({ children, value, index, ...other }: TabPanelProps) => {
     return (
       <div
+        className="w-full"
         role="tabpanel"
         hidden={value !== index}
         id={`vertical-tabpanel-${index}`}
         aria-labelledby={`vertical-tab-${index}`}
         {...other}
       >
-        {value === index && <Box className="w-[130%]">{children}</Box>}
+        {value === index && <Box className="w-[100%]">{children}</Box>}
       </div>
     );
   }
