@@ -63,7 +63,7 @@ export default function Home() {
         aria-labelledby={`vertical-tab-${index}`}
         {...other}
       >
-        {value === index && <Box className="w-[130%]">{children}</Box>}
+        {value === index && <Box className="w-[100%]">{children}</Box>}
       </div>
     );
   }

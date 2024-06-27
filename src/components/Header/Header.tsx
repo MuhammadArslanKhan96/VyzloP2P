@@ -54,7 +54,7 @@ const Header = ({
             <MdLanguage className="text-[20px]" /> IS
           </button> */}
           <button
-            className="bg-[#d4ebfc] font-semibold px-4 py-1 rounded-lg"
+            className="me-8 sm:me-0 bg-[#d4ebfc] font-semibold px-4 py-1 rounded-lg"
             onClick={() => {
               !wallet && walletConnect();
             }}

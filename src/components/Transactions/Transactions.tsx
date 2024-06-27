@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Transactions = () => {
   return (
-    <div className="flex max-sm:flex-col max-sm:gap-y-4 max-sm:text-[12px] text-center justify-center items-center gap-x-6 mx-auto w-[80%]">
+    <div className="hidden md:flex max-sm:flex-col max-sm:gap-y-4 max-sm:text-[12px] text-center justify-center items-center gap-x-6 mx-auto w-[80%]">
       <div className="flex flex-col items-center justify-center bg-white p-4 rounded-xl gap-y-2 h-48 w-[80%] sm:w-[30%]">
         <h1 className="text-gray-500 font-bold">Transacted USD volume</h1>
         <p className="text-xl">$9143407.52</p>
