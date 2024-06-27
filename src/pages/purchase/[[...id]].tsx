@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Box,
   Button,
@@ -141,6 +141,11 @@ const Purchase = () => {
       setWalletAddress(address);
     }
   }, []);
+
+  const [chatDisplay, setChatDisplay] = useState(false)
+  // const screenWidth = window ? window?.innerWidth : 1000;
+
+
   // MS BT order Id and timer
   return (
     <>
@@ -190,7 +195,7 @@ const Purchase = () => {
             width: { xs: "100%", md: "50%" },
             padding: 2,
           }}
-          className="rounded-lg"
+          className={`${chatDisplay ? "hidden" : ""} md:block rounded-lg`}
         >
           <Box>
             <Typography
@@ -464,10 +469,18 @@ const Purchase = () => {
                     : false) ? "Marked As Paid" : "Waiting"}
                 </Button>
               )}
+
+              <Button
+                sx={{ fontSize: 12 }}
+                className={`text-gray-700 md:hidden bg-green-500 ms-3`}
+                onClick={() => setChatDisplay(true)}
+              >
+                Chat
+              </Button>
             </Box>
           </Box>
         </Box>
-        <ChatRoom />
+        <ChatRoom setChatDisplay={setChatDisplay} chatDisplay={chatDisplay} />
       </Box>
     </>
   );

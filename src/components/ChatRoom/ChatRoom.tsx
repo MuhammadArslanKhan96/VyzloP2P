@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Avatar, Box, Typography, IconButton, Button } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SendIcon from "@mui/icons-material/Send";
@@ -34,7 +34,7 @@ interface MessageType {
   imageURL?: string;
 }
 
-const ChatRoom = () => {
+const ChatRoom = ({ setChatDisplay, chatDisplay }: { setChatDisplay: Function, chatDisplay: boolean }) => {
   const { maker, setMaker } = useAppContext();
   const router = useRouter();
   const { id } = router.query;
@@ -177,17 +177,19 @@ const ChatRoom = () => {
     };
     getting();
   }, [user1, user2]);
+
   return (
     <Box
       sx={{
         position: "relative",
         width: { xs: "100%", md: "30%" },
-        marginTop: { xs: 10, md: 0 },
+        marginTop: { md: 0 },
       }}
-      className="border bg-white rounded-lg h-[500px] ml-0 md:ml-3 flex flex-col justify-between"
+      className={`${!chatDisplay ? "hidden" : ""} md:flex border bg-white rounded-lg h-[500px] ml-0 md:ml-3 flex flex-col justify-between`}
     >
       <Box className="w-full flex justify-between items-center border-b p-4">
         <Box className="flex">
+          <button onClick={() => setChatDisplay(false)} className="border-0 md:hidden">◀</button>
           <Avatar />
           <Box className="ml-1">
             <Typography fontSize={14}>
@@ -199,6 +201,7 @@ const ChatRoom = () => {
           </Box>
         </Box>
         <Box>
+
           <Button
             sx={{ fontSize: 10, borderRadius: 2 }}
             className="bg-blue-100/50"
@@ -206,6 +209,8 @@ const ChatRoom = () => {
           >
             Cancel order
           </Button>
+
+
           <MoreVertIcon />
         </Box>
       </Box>
@@ -242,35 +247,30 @@ const ChatRoom = () => {
                 return (
                   <Box
                     key={index}
-                    className={`w-full flex items-center ${
-                      msg.sender === user1 ? "justify-end" : "justify-start"
-                    }`}
+                    className={`w-full flex items-center ${msg.sender === user1 ? "justify-end" : "justify-start"
+                      }`}
                   >
                     <Box
-                      className={`p-2 rounded-lg w-[60%] ${
-                        msg.sender === user1
-                          ? "bg-blue-100 text-left"
-                          : "bg-pink-100 text-right"
-                      } mb-2`}
+                      className={`p-2 rounded-lg w-[60%] ${msg.sender === user1
+                        ? "bg-blue-100 text-left"
+                        : "bg-pink-100 text-right"
+                        } mb-2`}
                     >
                       <Typography
-                        className={`text-[9px]  ${
-                          maker ? "text-right" : "text-left"
-                        }`}
+                        className={`text-[9px]  ${maker ? "text-right" : "text-left"
+                          }`}
                       >
                         {maker ? "unknown" : seller}
                       </Typography>
                       <Typography
-                        className={`text-sm  ${
-                          maker ? "text-right" : "text-left"
-                        }`}
+                        className={`text-sm  ${maker ? "text-right" : "text-left"
+                          }`}
                       >
                         {msg.text}
                       </Typography>
                       <Typography
-                        className={`text-[9px] ${
-                          maker ? "text-left" : "text-right"
-                        }`}
+                        className={`text-[9px] ${maker ? "text-left" : "text-right"
+                          }`}
                       >
                         {msg.createdAt.toLocaleTimeString()}
                       </Typography>
