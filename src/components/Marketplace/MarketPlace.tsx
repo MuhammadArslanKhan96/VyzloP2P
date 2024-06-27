@@ -4,6 +4,7 @@ import Transactions from "../Transactions/Transactions";
 import Table from "../Table/Table";
 import { Box } from "@mui/material";
 import { useTelegram } from "@/context/TelegramProvider";
+import Link from "next/link";
 
 interface MarketplaceProps {
   tab: boolean;
@@ -32,9 +33,9 @@ const MarketPlace: React.FC<MarketplaceProps> = ({
           </div>
         </div>
       </div> */}
-      
-      <div className="flex justify-end">
-        
+
+      <div className="flex justify-end mx-4 md:mx-auto mt-4 mb-4 md:w-full max-w-[100vw] sm:max-w-[80vw]">
+        <Link href="/create-ad" className="text-[12px] lg:text-xl bg-blue-500 border border-blue-500 transition-all ease-in-out duration-300 rounded-lg px-4 py-2 text-white hover:bg-transparent hover:text-blue-500">Create Ads</Link>
       </div>
       {/* <Transactions /> */}
 
