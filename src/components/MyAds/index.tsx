@@ -10,21 +10,30 @@ import {
     Snackbar,
     Typography
 } from "@mui/material";
-import { FormEvent, useCallback, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import FirstStep from "./FirstStep";
 import CreateLayout from "./Layout";
 import MyAds from "./Myads";
 import ReviewSection from "./ReviewSection";
 import SecondStep from "./SecondStep";
+import { update } from "firebase/database";
 
 const MyAdsPage = () => {
     const [activeModel, setActiveModel] = useState(0);
     const [nextStep, setNextStep] = useState(false);
     const [newAds, setNewAds] = useState(false);
     const [networkData, setNetworkData] = useState<any[]>([]);
+    const fields = [
+        ["wallet", "blockChain", "cryptoSymbol", "fiatCurrency", "min", "max", "paymentMethod", "price"],
+        ["country", "condition", "message", "terms"]
+    ];
+    const fieldsNames = [
+        ["wallet", "Network", "Coin", "Fiat Currency", "Minimum Offer", "Maximum Offer", "Payment Method", "Price"],
+        ["Country", "Condition", "Message", "Terms"]
+    ];
 
     const { wallet, getEthersInstance } = useAppContext();
-    const [createOrder, setCreateOrder] = useState({
+    const [createOrder, setCreateOrder] = useState<{ [key: string]: any }>({
         blockChain: "",
         cryptoSymbol: "",
         fiatCurrency: "",
@@ -69,7 +78,15 @@ const MyAdsPage = () => {
         updateFields("method", method);
         setNextStep(true);
     }
-    const updateStep = (isPrev?: boolean) => {
+    const updateStep = async (isPrev?: boolean) => {
+        let valid = true;
+
+        if (!isPrev && activeModel < 2) {
+            valid = await validateStep(activeModel);
+        }
+
+        if (!valid) return;
+
         setActiveModel((prevModel) => isPrev ? (prevModel - 1 < 0 ? 0 : prevModel - 1) : (prevModel < 2 ? prevModel + 1 : prevModel));
         if (isPrev) {
             if (activeModel === 0) {
@@ -121,6 +138,34 @@ const MyAdsPage = () => {
         const { name, value } = e.target;
         updateFields(name, value);
     }
+
+    const validateStep = (currentStep: number) => {
+        try {
+            const validationFields: string[] = fields[currentStep];
+            validationFields.forEach((fieldName) => {
+                const fieldExists = !!createOrder[fieldName];
+
+                if (!fieldExists) {
+                    throw new Error(`${fieldName === "wallet"
+                        ? "Please connect your wallet "
+                        : `${fieldsNames[currentStep][validationFields.indexOf(fieldName)]} Field cannot be left blank`
+                    } `)
+                }
+            });
+            return true;
+        } catch (error: any) {
+            setNotification({
+                open: true,
+                message: error.message,
+                severity: "error",
+            });
+            return false;
+        }
+    }
+
+    useEffect(() => {
+        updateFields("wallet", wallet);
+    }, [wallet])
 
     return (
         <Box className="bg-[#d4ebfc] max-lg:pt-16 pt-32 sm:w-screen  h-full min-h-screen pb-5">
