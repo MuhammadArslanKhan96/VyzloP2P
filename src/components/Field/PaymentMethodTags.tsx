@@ -6,6 +6,7 @@ import {
   Select,
   MenuItem,
   Button,
+  Box,
 } from "@mui/material";
 
 const PaymentMethodTags = ({
@@ -44,7 +45,19 @@ const PaymentMethodTags = ({
   // };
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex flex-col justify-center items-start">
+      <Box className="flex justify-center">
+        <TextField
+          type="text"
+          id="custom-method"
+          label="Type Custom Payment Method"
+          value={customMethod}
+          onChange={handleCustomMethodChange}
+          sx={{ m: 1, minWidth: 300 }}
+        />
+        <Button onClick={handleAddCustomMethod}>Add</Button>
+      </Box>
+
       <FormControl sx={{ m: 1, minWidth: 400 }}>
         <InputLabel id="payment-method-label">Payment Method</InputLabel>
         <Select
@@ -60,17 +73,6 @@ const PaymentMethodTags = ({
           ))}
         </Select>
       </FormControl>
-
-      <TextField
-        type="text"
-        id="custom-method"
-        label="Type Custom Payment Method"
-        value={customMethod}
-        onChange={handleCustomMethodChange}
-        sx={{ m: 1, minWidth: 300 }}
-      />
-
-      <Button onClick={handleAddCustomMethod}>Add</Button>
     </div>
   );
 };
