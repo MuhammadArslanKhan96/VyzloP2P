@@ -29,6 +29,8 @@ import { GetToken } from "@/hooks/getTokensByIdName";
 import { useAppContext } from "@/context/AppContext";
 import Link from "next/link";
 import PaymentMethodTags from "../Field/PaymentMethodTags";
+import Location from "../Location/Location";
+import CountrySelector from "../Location/Location";
 const MyAds = () => {
   const [age, setAge] = React.useState("");
 
@@ -84,7 +86,7 @@ const MyAds = () => {
   const salesMethod = () => {
     setCreateOrder((prevOrder: any) => ({
       ...prevOrder,
-      method: "sales",
+      method: "sale",
     }));
     setNextStep(true);
   };
@@ -131,7 +133,7 @@ const MyAds = () => {
     }));
   };
   const nextModel = () => {
-    setActiveModel((prevModel) => (prevModel < 3 ? prevModel + 1 : prevModel));
+    setActiveModel((prevModel) => (prevModel < 2 ? prevModel + 1 : prevModel));
   };
 
   const preModel = () => {
@@ -217,6 +219,19 @@ const MyAds = () => {
 
   return (
     <Box className="bg-[#d4ebfc] max-lg:pt-16 pt-32 sm:w-screen  h-full min-h-screen pb-5">
+      <Snackbar
+        open={notification.open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={notification.severity as "success" | "error"}
+        >
+          {notification.message}
+        </Alert>
+      </Snackbar>
       {newAds && (
         <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[80%] rounded-lg bg-white mt-4">
           <Box className="flex flex-col justify-center items-center">
@@ -249,7 +264,7 @@ const MyAds = () => {
                   <Typography color="initial">
                     creation of a purchase annoucement.
                   </Typography>
-                  <Typography color="initial">Step 2 of 5</Typography>
+                  <Typography color="initial">Step 2 of 4</Typography>
                 </Box>
               </Box>
               <Box className="flex flex-col  justify-center items-center  w-full">
@@ -260,68 +275,99 @@ const MyAds = () => {
                   Now we will ask you to give us some details of the
                   transaction.
                 </Typography>
-                <Box className="w-full flex justify-center gap-4 flex-wrap items-center mt-10 ">
-                  <Box sx={{ m: 1, minWidth: 300 }}>
-                    <Typography sx={{ color: "gray" }}>
-                      Which network are you going to use to make the exchange?
-                    </Typography>
-                    <FormControl sx={{ m: 1, minWidth: 300 }}>
-                      <InputLabel id="demo-simple-select-autowidth-label">
-                        Network
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-autowidth-label"
-                        id="demo-simple-select-autowidth"
-                        value={createOrder.blockChain}
-                        onChange={handleNetworkChange}
-                        label="Network"
-                      >
-                        <MenuItem value="BSC">BSC</MenuItem>
-                        <MenuItem value="POLYGON">POLYGON</MenuItem>
-                        <MenuItem value="ZETA">ZETA</MenuItem>
-                      </Select>
-                    </FormControl>
+                <Box className="w-full flex flex-col justify-center  items-center mt-10 ">
+                  <Box className="w-full flex flex-wrap justify-center  gap-x-10 ">
+                    <Box sx={{ m: 1, minWidth: 300 }}>
+                      <Typography sx={{ color: "gray" }}>
+                        Which network are you going to use to make the exchange?
+                      </Typography>
+                      <FormControl sx={{ m: 1, minWidth: 300 }}>
+                        <InputLabel id="demo-simple-select-autowidth-label">
+                          Network
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-autowidth-label"
+                          id="demo-simple-select-autowidth"
+                          value={createOrder.blockChain}
+                          onChange={handleNetworkChange}
+                          label="Network"
+                        >
+                          <MenuItem value="BSC">BSC</MenuItem>
+                          <MenuItem value="POLYGON">POLYGON</MenuItem>
+                          <MenuItem value="ZETA">ZETA</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Box>
+                    <Box sx={{ m: 1, minWidth: 300 }}>
+                      <Typography sx={{ color: "gray" }}>
+                        Which currency do you want to buy?
+                      </Typography>
+                      <FormControl sx={{ m: 1, minWidth: 300 }}>
+                        <InputLabel id="demo-simple-select-autowidth-label">
+                          coin
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-autowidth-label"
+                          id="demo-simple-select-autowidth"
+                          value={createOrder.cryptoSymbol}
+                          onChange={coinChange}
+                          label="coin"
+                        >
+                          {networkData.length > 0 ? (
+                            networkData.map((item: any, index: any) =>
+                              Object.keys(item).map((key) => (
+                                <MenuItem key={key} value={key}>
+                                  {key}
+                                </MenuItem>
+                              ))
+                            )
+                          ) : (
+                            <MenuItem disabled>No coins available</MenuItem>
+                          )}
+                        </Select>
+                      </FormControl>
+                    </Box>
                   </Box>
-                  <Box sx={{ m: 1, minWidth: 300 }}>
-                    <Typography sx={{ color: "gray" }}>
-                      Which currency do you want to buy?
-                    </Typography>
-                    <FormControl sx={{ m: 1, minWidth: 300 }}>
-                      <InputLabel id="demo-simple-select-autowidth-label">
-                        coin
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-autowidth-label"
-                        id="demo-simple-select-autowidth"
-                        value={createOrder.cryptoSymbol}
-                        onChange={coinChange}
-                        label="coin"
-                      >
-                        {networkData.length > 0 ? (
-                          networkData.map((item: any, index: any) =>
-                            Object.keys(item).map((key) => (
-                              <MenuItem key={key} value={key}>
-                                {key}
-                              </MenuItem>
-                            ))
-                          )
-                        ) : (
-                          <MenuItem disabled>No coins available</MenuItem>
-                        )}
-                      </Select>
-                    </FormControl>
-                  </Box>
-                  <Box sx={{ m: 1, minWidth: 800 }}>
-                    <Typography sx={{ color: "gray" }}>
-                      Which one or more payment methods
-                    </Typography>
-                    <PaymentMethodTags mutlipleMethod={paymentMethod} />
+                  <Box>
+                    <Box sx={{ m: 1, minWidth: 400, maxWidth: 400 }}>
+                      <Box>
+                        <Typography sx={{ color: "gray" }}>
+                          Which fiat currency do you want to buy?
+                        </Typography>
+                        <TextField sx={{ m: 1, minWidth: 400 }}></TextField>
+                      </Box>
+                      <Box className="flex flex-col justify-start  items-start ">
+                        <Typography sx={{ color: "gray" }}>
+                          Do You want to set limit to your offer?{" "}
+                        </Typography>
+                        <Box className="flex justify-start items-center">
+                          <Box sx={{ m: 1, width: 160 }}>
+                            <Typography sx={{ color: "gray", fontSize: 12 }}>
+                              Miniumn offer
+                            </Typography>
+                            <TextField sx={{ width: 160 }}></TextField>
+                          </Box>
+                          <Box sx={{ m: 1, width: 160 }}>
+                            <Typography sx={{ color: "gray", fontSize: 12 }}>
+                              Maxium offer
+                            </Typography>
+                            <TextField sx={{ width: 160 }}></TextField>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Box>
+                    <Box sx={{ m: 1, minWidth: 800 }}>
+                      <Typography sx={{ color: "gray" }}>
+                        Which one or more payment methods
+                      </Typography>
+                      <PaymentMethodTags mutlipleMethod={paymentMethod} />
+                    </Box>
                   </Box>
                 </Box>
               </Box>
             </div>
           )}
-          {activeModel === 1 && (
+          {/* {activeModel === 2 && (
             <div className="flex  flex-col  justify-center items-center gap-x-6 mx-auto w-full ">
               <Box className="w-full flex mb-10">
                 <ArrowBackIcon onClick={preModel} />
@@ -332,19 +378,49 @@ const MyAds = () => {
                   <Typography color="initial">Step 3 of 5</Typography>
                 </Box>
               </Box>
-              <Box className="flex flex-col  justify-center items-center  w-full">
+              <Box className="flex flex-col  justify-center items-center  w-full ">
                 <Typography sx={{ color: "black", fontWeight: "bold" }}>
                   Great!
                 </Typography>
                 <Typography sx={{ color: "black" }}>
                   Now we need some important specifications.
                 </Typography>
-                <Box className="w-full flex justify-center gap-4 flex-wrap items-center mt-10 ">
-                  <Box sx={{ m: 1, minWidth: 400 }}>
-                    <Typography sx={{ color: "gray" }}>
-                      Which curreny do you want to buy?
-                    </Typography>
-                    <TextField sx={{ m: 1, minWidth: 400 }}></TextField>
+                <Box className="w-full flex justify-center  gap-12 flex-wrap items-start mt-10">
+                  <Box sx={{ m: 1, minWidth: 400, maxWidth: 400 }}>
+                    <Box>
+                      <Typography sx={{ color: "gray" }}>
+                        Which curreny do you want to buy?
+                      </Typography>
+                      <TextField sx={{ m: 1, minWidth: 400 }}></TextField>
+                    </Box>
+                    <Box className="flex flex-col justify-start  items-start ">
+                      <Typography sx={{ color: "gray" }}>
+                        Do You want to set limit to your offer?{" "}
+                      </Typography>
+                      <Box className="flex justify-start items-center">
+                        <Box sx={{ m: 1, width: 160 }}>
+                          <Typography sx={{ color: "gray", fontSize: 12 }}>
+                            Miniumn offer
+                          </Typography>
+                          <TextField sx={{ width: 160 }}></TextField>
+                        </Box>
+                        <Box sx={{ m: 1, width: 160 }}>
+                          <Typography sx={{ color: "gray", fontSize: 12 }}>
+                            Maxium offer
+                          </Typography>
+                          <TextField sx={{ width: 160 }}></TextField>
+                        </Box>
+                      </Box>
+
+                      <Typography
+                        color="initial"
+                        sx={{ fontSize: 14, color: "gray" }}
+                        // className="w-[66%]"
+                      >
+                        vyzlo charges a 1% fee over the transaction total amount
+                        to both parties Premium users are exempt from this 1%
+                      </Typography>
+                    </Box>
                   </Box>
                   <Box sx={{ m: 1, minWidth: 400 }}>
                     <Typography sx={{ color: "gray" }}>
@@ -353,39 +429,10 @@ const MyAds = () => {
                     <TextField sx={{ m: 1, minWidth: 400 }}></TextField>
                   </Box>
                 </Box>
-                <Box className="w-full flex justify-start items-center">
-                  <Box className="w-1/2  flex flex-col justify-center items-center ">
-                    <Typography color="initial">
-                      Do You want to set limit to your offer?
-                    </Typography>
-                    <Box className="w-full  flex justify-center flex-wrap items-center ">
-                      <Box sx={{ m: 1, width: 160 }}>
-                        <Typography sx={{ color: "gray", fontSize: 12 }}>
-                          Miniumn offer
-                        </Typography>
-                        <TextField sx={{ width: 160 }}></TextField>
-                      </Box>
-                      <Box sx={{ m: 1, width: 160 }}>
-                        <Typography sx={{ color: "gray", fontSize: 12 }}>
-                          Maxium offer
-                        </Typography>
-                        <TextField sx={{ width: 160 }}></TextField>
-                      </Box>
-                      <Typography
-                        color="initial"
-                        sx={{ fontSize: 14, color: "gray" }}
-                        className="w-[66%]"
-                      >
-                        vyzlo charges a 1% fee over the transaction total amount
-                        to both parties Premium users are exempt from this 1%
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
               </Box>
             </div>
-          )}
-          {activeModel === 2 && (
+          )} */}
+          {activeModel === 1 && (
             <div className="flex  flex-col  justify-center items-center gap-x-6 mx-auto w-full ">
               <Box className="w-full flex mb-10">
                 <ArrowBackIcon onClick={preModel} />
@@ -393,7 +440,7 @@ const MyAds = () => {
                   <Typography color="initial">
                     creation of a purchase annoucement.
                   </Typography>
-                  <Typography color="initial">Step 4 of 5</Typography>
+                  <Typography color="initial">Step 3 of 4</Typography>
                 </Box>
               </Box>
               <Box className="flex flex-col  justify-center items-center  w-full ">
@@ -406,7 +453,7 @@ const MyAds = () => {
                 </Typography>
                 <Box className="w-full flex justify-center  gap-8 items-center mt-10  ">
                   <Box className="w-[40%]">
-                    <Typography>
+                    {/* <Typography>
                       {" "}
                       How do you want your ad to be seen?
                     </Typography>
@@ -431,14 +478,9 @@ const MyAds = () => {
                           />
                         </RadioGroup>
                       </FormControl>
-                    </Box>
-                    <Typography>Location:</Typography>
-                    <TextField
-                      id="outlined-basic"
-                      label="Location"
-                      variant="outlined"
-                      className="w-[90%] rounded-lg"
-                    />{" "}
+                    </Box> */}
+                    {/* <Location /> */}
+                    <CountrySelector />
                     <Typography sx={{ marginBlock: 2 }}>
                       You can add conditions here:
                     </Typography>
@@ -478,7 +520,7 @@ const MyAds = () => {
               </Box>
             </div>
           )}
-          {activeModel === 3 && (
+          {activeModel === 2 && (
             <div className="flex  flex-col justify-center items-center gap-x-6 w-full   ">
               <Box className="w-full flex mb-10">
                 <ArrowBackIcon onClick={preModel} />
@@ -486,7 +528,7 @@ const MyAds = () => {
                   <Typography color="initial">
                     creation of a purchase announcement.
                   </Typography>
-                  <Typography color="initial">Step 5 of 5</Typography>
+                  <Typography color="initial">Step 4 of 4</Typography>
                 </Box>
               </Box>
               <Box className="flex flex-col  justify-center items-center  w-full ">
@@ -563,7 +605,7 @@ const MyAds = () => {
               className="text-blue-500 bg-white border border-blue-500 mr-2"
               onClick={preModel}
             >
-              Prvious
+              Previous
             </Button>
             {activeModel === 3 ? (
               <Button
@@ -574,7 +616,7 @@ const MyAds = () => {
               </Button>
             ) : (
               <Button
-                className="bg-gray-400 px-2 py-1 border text-white hover:bg-gray-300"
+                className="bg-blue-500 px-2 py-1 border text-white hover:bg-blue-400"
                 onClick={nextModel}
               >
                 Next
@@ -589,7 +631,7 @@ const MyAds = () => {
               <ArrowBackIcon onClick={preModel} />
               <Box className="flex flex-col">
                 <Typography color="initial">Create new Ad</Typography>
-                <Typography color="initial">Step 1 of 5</Typography>
+                <Typography color="initial">Step 1 of 4</Typography>
               </Box>
             </Box>
             <Box className="flex flex-col justify-center items-center">
@@ -617,18 +659,7 @@ const MyAds = () => {
           </div>
         )
       )}
-      <Snackbar
-        open={notification.open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-      >
-        <Alert
-          onClose={handleClose}
-          severity={notification.severity as "success" | "error"}
-        >
-          {notification.message}
-        </Alert>
-      </Snackbar>
+
       <Dialog
         open={open}
         keepMounted
