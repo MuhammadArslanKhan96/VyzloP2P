@@ -43,10 +43,6 @@ const App: React.FC<AppProps> = ({
     setFilterType(type);
   };
 
-  console.log(tableData, tab)
-
-  // const type = tab === true ? 1 : 0;
-
   const filteredData = tableData
     ? tableData.filter((item) => {
       return (

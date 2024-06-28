@@ -110,7 +110,6 @@ const MyAds = () => {
         ...prevOrder,
         cryptoSymbol: selectedItem[1].symbol,
       }));
-      console.log("Selected value:", selectedItem[1].symbol);
     }
   };
   const messageHandle = (event: any) => {
@@ -126,7 +125,6 @@ const MyAds = () => {
     }));
   };
   const paymentMethod = (paymentMethods: any) => {
-    console.log(paymentMethods);
     setCreateOrder((prevOrder: any) => ({
       ...prevOrder,
       paymentMethod: paymentMethods,
@@ -202,7 +200,6 @@ const MyAds = () => {
 
     try {
       const res = await CreateOrder(createOrder);
-      console.log("Order created successfully:", res);
       setNotification({
         open: true,
         message: "Order created successfully",

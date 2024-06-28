@@ -14,10 +14,8 @@
 //   const filteredData = p2pGetDoc.docs.map((doc) => doc.data());
 //   if (filteredData.length > 0) {
 //       const advertiser = filteredData[0].advertiser;
-//       console.log("Advertiser:", advertiser);
 //       return advertiser;
 //     } else {
-//       console.log("No data found for the given wallet address.");
 //       return null;
 //     }
 // } catch (error) {
@@ -41,7 +39,6 @@
 //     }));
 
 //     const filteredItem = filteredData.find(item => item.id === walletAddress);
-//     console.log(filteredItem)
 //      return filteredItem?.type
 
 //   } catch (error) {
@@ -67,10 +64,8 @@ export const getP2P = async (walletAddress: any, type: any) => {
           await updateDoc(doc(db, "P2POrder", p2pDoc.id), {
             type: type,
           });
-          console.log("Document updated successfully");
           return data
         } else {
-          console.log("Document type is already correct, no update needed");
         }
       }
     });
@@ -89,10 +84,8 @@ export const getWallet = async (docId: string) => {
     const p2pDocSnapshot = await getDoc(p2pDoc);
 
     if (p2pDocSnapshot.exists()) {
-      // console.log(p2pDocSnapshot.data());
       return { data: p2pDocSnapshot.data(), loading: false, error: null };
     } else {
-      // console.log("No such document!");
       return { data: null, loading: false, error: "No such document!" };
     }
   } catch (error) {
@@ -109,7 +102,6 @@ export const getWalletMessage = async (makerWallet: string) => {
       const messagesCollection = collection(db, "P2POrder", doc.id, "messages");
       const messagesQuery = query(messagesCollection, where("makerSender", "==", makerWallet));
       const messagesSnapshot = await getDocs(messagesQuery);
-      // console.log(messagesSnapshot)
       if (!messagesSnapshot.empty) {
         return true;
       }
@@ -152,11 +144,9 @@ const walletP2P = async (docId: any, walletAddress: any) => {
       if (data.wallet.toLowerCase() === walletAddress && data.type === 1) {
         return true;
       } else {
-        console.log('Wallet address does not match or document structure is incorrect');
         return false;
       }
     } else {
-      console.log('Document does not exist');
       return null; // Return null if the document does not exist
     }
   } catch (error) {
@@ -188,7 +178,6 @@ export const Transactions = async (data: UserData) => {
   try {
     const userCollection = collection(db, 'Transactions');
     const userDocRef = await addDoc(userCollection, data);
-    console.log('Document written with ID: ', userDocRef.id);
     return userDocRef;
   } catch (error) {
     console.error('Error adding document: ', error);
@@ -205,7 +194,6 @@ export const UpdateP2POrder = async (docID: any, order: Object) => {
     await updateDoc(doc(db, "P2POrder", docID), {
       ...order
     });
-    console.log("Document updated successfully");
   } catch (error) {
     console.error('Error updating document: ', error);
     throw new Error('Error updating document');

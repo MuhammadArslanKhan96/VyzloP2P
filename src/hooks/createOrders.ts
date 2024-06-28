@@ -21,7 +21,6 @@ export const CreateOrder = async (data: UserData) => {
     const time = new Date().toISOString(); 
     const userCollection = collection(db, 'createOrder');
     const userDocRef = await addDoc(userCollection, { time, ...data });
-    console.log('Document written with ID: ', userDocRef.id);
     return userDocRef;
   } catch (error) {
     console.error('Error adding document: ', error);

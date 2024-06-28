@@ -57,7 +57,6 @@ const ChatRoom = ({ setChatDisplay, chatDisplay }: { setChatDisplay: Function, c
     const fetchWalletAddress = async (user2: any) => {
       const { data, loading, error } = await getWallet(user2);
       if (loading) {
-        console.log("Loading...");
       } else if (error) {
         console.error("Error:", error);
       } else {
@@ -170,10 +169,8 @@ const ChatRoom = ({ setChatDisplay, chatDisplay }: { setChatDisplay: Function, c
 
   useEffect(() => {
     const getting = async () => {
-      console.log(user1);
       const res = await walletP2P(user2, user1);
       setMaker(res);
-      console.log(res);
     };
     getting();
   }, [user1, user2]);
