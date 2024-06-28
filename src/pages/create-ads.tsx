@@ -1,11 +1,11 @@
 import React from "react";
-import MyAds from "@/components/MyAds/Myads";
+import MyAdsPage from "@/components/MyAds";
 
 const Createad = () => {
   return (
     <>
       <div className="flex">
-        <MyAds />
+        <MyAdsPage />
       </div>
     </>
   );

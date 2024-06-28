@@ -77,7 +77,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     return ethersProvider;
   };
 
-  const getBalance = useCallback(async (Wallet?: string) => {
+  const getBalance = async (Wallet?: string) => {
     const provider = new ethers.BrowserProvider(window.ethereum);
     const selectedChain = await provider.getNetwork();
     const chainId = Number(selectedChain.chainId);
@@ -88,7 +88,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     const balanceEth = await provider.getBalance(Wallet ? Wallet : wallet);
     const balance = ethers.formatEther(balanceEth);
     setBalance(parseFloat(balance))
-  }, [wallet]);
+  };
 
   const getWalletFunction = async (connect?: boolean) => {
     if (window.ethereum) {
@@ -119,16 +119,19 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
         Wallet && await getBalance(Wallet);
 
 
-        window.ethereum.on("connect", getBalance);
-
-        window.ethereum.on("accountsChanged", (res: string[]) => {
-          const Wallet = res.length > 0 ? res[0] : null;
-          Wallet && setWallet(Wallet);
-          setWalletAddress(Wallet);
-          getBalance()
+        window.ethereum.on("connect", (accounts: string[]) => {
+          getBalance(accounts[0])
         });
 
-        window.ethereum.on("chainChanged", getBalance);
+        window.ethereum.on("accountsChanged", (accounts: string[]) => {
+          setWallet(accounts[0]);
+          setWalletAddress(accounts[0]);
+          getBalance(accounts[0])
+        });
+
+        window.ethereum.on("chainChanged", () => {
+          getBalance();
+        });
 
         window.ethereum.on("disconnect", () => {
           setWalletAddress(null);
