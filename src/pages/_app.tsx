@@ -12,6 +12,11 @@ import { PagesProgressBar as ProgressBar } from "next-nprogress-bar";
 export default function App({ Component, pageProps }: AppProps) {
   const [openMenu, setOpenMenu] = useState(false);
   const [openAccMenu, setOpenAccMenu] = useState(false);
+  const [openList, setOpenList] = useState(false);
+
+  const toggleList = () => {
+    setOpenList(!openList)
+  }
 
   const toggleMenu = () => {
     setOpenMenu(!openMenu);
@@ -49,6 +54,8 @@ export default function App({ Component, pageProps }: AppProps) {
         <AppContextProvider>
           {!hideSidebarAndHeader && (
             <Header
+              openList={openList}
+              toggleList={toggleList}
               openMenu={openMenu}
               toggleMenu={toggleMenu}
               openAccMenu={openAccMenu}

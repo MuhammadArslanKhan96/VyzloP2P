@@ -245,7 +245,7 @@ const MyAds = () => {
         </Alert>
       </Snackbar>
       {newAds && (
-        <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[80%] rounded-lg bg-white mt-4">
+        <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[80%] rounded-lg bg-white max-lg:mt-16">
           <Box className="flex flex-col justify-center items-center">
             <Image src={noADs} alt="no ads" />
             <Typography
@@ -279,12 +279,12 @@ const MyAds = () => {
                   <Typography color="initial">Step 2 of 4</Typography>
                 </Box>
               </Box>
-              <Box className="flex flex-col  justify-center items-center  w-full">
+              <Box className="flex flex-col justify-center items-center w-full">
                 <Typography sx={{ color: "black", fontWeight: "bold" }}>
                   Great!
                 </Typography>
                 <Typography sx={{ color: "black" }}>
-                  Now we will ask you to give us some details of the
+                  Now we will ask you to provide us some details of the
                   transaction.
                 </Typography>
                 <Box className="w-full flex flex-col justify-center  items-center mt-10 ">
@@ -641,9 +641,9 @@ const MyAds = () => {
         </div>
       ) : (
         newAds === false && (
-          <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[80%] rounded-lg bg-white mt-4">
-            <Box className="w-full flex mb-10">
-              <ArrowBackIcon onClick={preModel} />
+          <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full lg:w-[70%] xl:w-[80%] rounded-lg bg-white max-lg:mt-16">
+            <Box className="w-full flex mb-10 items-start">
+              <ArrowBackIcon onClick={preModel} fontSize="small" className="mt-[2px] mr-2" />
               <Box className="flex flex-col">
                 <Typography color="initial">Create new Ad</Typography>
                 <Typography color="initial">Step 1 of 4</Typography>
@@ -701,7 +701,7 @@ const MyAds = () => {
         </DialogContent>
         <DialogActions></DialogActions>
       </Dialog>
-    </Box>
+    </Box >
   );
 };
 
