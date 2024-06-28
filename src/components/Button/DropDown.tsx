@@ -17,7 +17,6 @@ export default function DropDown() {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
 
   const handleClick = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
   };
 
   const handleMenuItemClick = (

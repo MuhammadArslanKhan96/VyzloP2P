@@ -6,7 +6,6 @@ export const GetToken = async (docId: string) => {
     const q = query(userCol, where('__name__', '==', docId)); 
     const userCitySnapshot = await getDocs(q);
     const userList = userCitySnapshot.docs.map((doc) => doc.data());   
-    console.log('list', userList);
     return { data: userList, loading: false, error: null }; 
   } catch (error) {
     console.error('Error fetching data:', error);

@@ -30,7 +30,6 @@ const Header = ({
   const walletConnect = async () => {
     getWalletFunction(true);
   };
-  //   console.log(wallet?.slice(0, 5));
   return (
     <>
       {/* Header */}

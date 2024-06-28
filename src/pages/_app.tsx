@@ -88,7 +88,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 />
               </>
             )}
-            <div className={`${openMenu ? "lg:ml-28" : ""}`}>
+            <div className={`${openMenu ? "lg:ml-40" : ""}`}>
               <Component {...pageProps} />
               <ProgressBar
                 height="2px"

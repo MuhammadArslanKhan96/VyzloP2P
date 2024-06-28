@@ -6,7 +6,6 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          {/* Google Analytics Script */}
           <script
             async
             src="https://www.googletagmanager.com/gtag/js?id=G-G3YXX8FZND"
@@ -26,6 +25,19 @@ class MyDocument extends Document {
               `,
             }}
           />
+          <meta name="twitter:card" content="app"></meta>
+          <meta name="twitter:site" content="@vyzlo"></meta>
+          <meta
+            name="twitter:description"
+            content="decentralise crypto marketplace for buy sell trade and earn"
+          />
+          <meta name="twitter:app:name:iphone" content="vyzlo" />
+          <meta name="twitter:app:id:iphone" content=""></meta>
+          <meta name="twitter:app:name:ipad" content="vyzlo"></meta>
+          <meta name="twitter:app:id:ipad" content=""></meta>
+          <meta name="twitter:app:name:googleplay" content="vyzlo"></meta>
+          <meta name="twitter:app:id:googleplay" content=""></meta>
+          <meta name="twitter:app:country" content=""></meta>
         </Head>
         <body>
           <Main />

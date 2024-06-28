@@ -44,18 +44,16 @@ const Sidebar = ({
   return (
     <div
       ref={sidebarRef}
-      className={`transition-all duration-300 ease-in-out  bg-white ${
-        openMenu ? "md:w-[20vw] lg:w-[18vw]" : "lg:w-16"
-      }`}
+      className={`transition-all duration-300 ease-in-out  bg-white ${openMenu ? "md:w-[20vw] lg:w-[18vw]" : "lg:w-16"
+        }`}
     >
       {" "}
       {/* Sidebar */}
       <div
-        className={`bg-white fixed z-20 transition-all duration-300 ease-in-out ${
-          openMenu
-            ? "w-[80vw] sm:w-[20vw] top-0 xl:top-20 xl:w-[18vw] left-0 h-full min-h-screen !pb-16"
-            : "h-0 top-0 lg:top-20 -left-40 w-0"
-        } flex flex-col gap-10 overflow-y-scroll selectscroll`}
+        className={`bg-white fixed z-20 transition-all duration-300 ease-in-out ${openMenu
+          ? "w-[80vw] sm:w-[20vw] top-0 xl:top-20 xl:w-[18vw] left-0 h-full min-h-screen !pb-16"
+          : "h-0 top-0 lg:top-20 -left-40 w-0"
+          } flex flex-col gap-10 overflow-y-scroll selectscroll`}
       >
         <div className="px-4">
           <div className="xl:hidden flex items-center mt-1">
@@ -68,7 +66,7 @@ const Sidebar = ({
           <div className="py-4 px-2">
             {/* <button
               onClick={toggleP2PDropDown}
-              className="flex justify-between items-center w-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 p-4 rounded-md"
+              className="flex justify-between items-center w-fullw-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 p-4 rounded-md"
             >
               <h1 className="flex gap-2 ">
                 <Image
@@ -86,23 +84,34 @@ const Sidebar = ({
               <Link
                 href="/"
                 onClick={toggleMenu}
-                className="flex justify-between items-center hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
+                className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
               >
-                <h1 className="flex items-center p-4 gap-2">Market Place</h1>
+                <h1 className="flex items-center p-4 gap-2 w-full">
+                  <Image
+                    src={sidebarIcon1}
+                    alt="sidebarIcon1"
+                    width={25}
+                    height={20}
+                  />
+                  Market Place
+                </h1>
               </Link>
               <Link
                 href="/create-ads"
                 onClick={toggleMenu}
-                className="flex justify-between items-center hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
+                className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
               >
-                <h1 className="flex items-center p-4 gap-2">Create Ads</h1>
+                <h1 className="flex items-center p-4 gap-2 w-full">Create Ads</h1>
               </Link>
               <Link
                 href="/Wallet"
                 onClick={toggleMenu}
-                className="flex justify-between items-center hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
+                className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
               >
-                <h1 className="flex items-center p-4 gap-2">Current Holding</h1>
+                <h1 className="flex items-center p-4 gap-2 w-full">
+                  <FaWallet className="w-10 h-[22px]" />
+                  Current Holding
+                </h1>
               </Link>
             </>
             {/* ) : (
@@ -112,7 +121,7 @@ const Sidebar = ({
           {/* <div className="py-4 px-8">
             <button
               onClick={toggleCommunityDropDown}
-              className="flex justify-between items-center w-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 p-4 rounded-md"
+              className="flex justify-between items-center w-fullw-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 p-4 rounded-md"
             >
               <h1 className="flex gap-2">
                 <PeopleIcon /> Communities
@@ -121,11 +130,11 @@ const Sidebar = ({
             </button>
             {CommunityDropDown ? (
               <div>
-                <h1 className="flex items-center p-4 gap-2">
+                <h1 className="flex items-center p-4 gap-2 w-full">
                   <GoDotFill fontSize="small" />
                   Communities
                 </h1>
-                <h1 className="flex items-center p-4 gap-2">
+                <h1 className="flex items-center p-4 gap-2 w-full">
                   <GoDotFill fontSize="small" />
                   My Community
                 </h1>
@@ -135,8 +144,8 @@ const Sidebar = ({
             )}
           </div> */}
           {/* <div className="py-2 px-4">
-            <button className="flex justify-between items-center w-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
-              <h1 className="flex items-center p-4 gap-2">
+            <button className="flex justify-between items-center w-fullw-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
+              <h1 className="flex items-center p-4 gap-2 w-full">
                 <Image
                   src="https://app.paydece.io/assets/images/sidebar/subscriptionsIcon.svg"
                   alt="sidebarIcon3"
@@ -153,9 +162,9 @@ const Sidebar = ({
           <div className="py-2 px-4">
             <Link
               href="/Wallet"
-              className="flex justify-between items-center hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
+              className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
             >
-              <h1 className="flex items-center p-4 gap-2">
+              <h1 className="flex items-center p-4 gap-2 w-full">
                 <FaWallet fontSize="large" />
                 Current Holding
               </h1>
@@ -166,16 +175,16 @@ const Sidebar = ({
           <h1 className="p-2 font-semibold">More From VYZLO</h1>
           <div className="py-2 px-4">
             <a href="https://t.me/Vyzlo" target="blank">
-              <button className="flex justify-between items-center  hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
-                <h1 className="flex items-center p-4 gap-2">
+              <button className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
+                <h1 className="flex items-center p-4 gap-2 w-full">
                   <FaTelegram />
                   Telegram
                 </h1>
               </button>
             </a>
             <a href=" https://discord.gg/aVzxt4Ka " target="blank">
-              <button className="flex justify-between items-center  hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
-                <h1 className="flex items-center p-4 gap-2">
+              <button className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
+                <h1 className="flex items-center p-4 gap-2 w-full">
                   <FaDiscord />
                   Discord
                 </h1>
@@ -185,8 +194,8 @@ const Sidebar = ({
               href="https://www.facebook.com/profile.php?id=61558965401403"
               target="blank"
             >
-              <button className="flex justify-between items-center  hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
-                <h1 className="flex items-center p-4 gap-2">
+              <button className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
+                <h1 className="flex items-center p-4 gap-2 w-full">
                   <FaFacebook />
                   Facebook
                 </h1>
@@ -196,9 +205,9 @@ const Sidebar = ({
           {/* <div className="p-2 px-4">
             <button
               onClick={toggleTutorialDropDown}
-              className="flex justify-between items-center w-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-2 rounded-md"
+              className="flex justify-between items-center w-fullw-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-2 rounded-md"
             >
-              <h1 className="flex items-center p-4 gap-2">
+              <h1 className="flex items-center p-4 gap-2 w-full">
                 <YouTubeIcon />
                 Tutorials
               </h1>
@@ -232,8 +241,8 @@ const Sidebar = ({
             )}
           </div> */}
           {/* <div className="p-2 px-4">
-            <button className="flex justify-between items-center w-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
-              <h1 className="flex items-center p-4 gap-2">
+            <button className="flex justify-between items-center w-fullw-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
+              <h1 className="flex items-center p-4 gap-2 w-full">
                 <HelpOutlineIcon />
                 Faq
               </h1>
@@ -242,9 +251,8 @@ const Sidebar = ({
         </div>
       </div>
       <div
-        className={`hidden transition-all bg-white h-full duration-300 ease-in-out fixed top-[40px] z-20 lg:flex flex-col gap-10 mt-10 items-center w-20 ${
-          openMenu ? "-left-40" : "left-0"
-        }`}
+        className={`hidden transition-all bg-white h-full duration-300 ease-in-out fixed top-[40px] z-20 lg:flex flex-col gap-10 mt-10 items-center w-20 ${openMenu ? "-left-40" : "left-0"
+          }`}
       >
         <Link href="/">
           <Tooltip
@@ -266,7 +274,7 @@ const Sidebar = ({
               </div>
             }
           >
-            <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+            <button className="hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
               <Image
                 src={sidebarIcon1}
                 alt="sidebarIcon1"
@@ -296,7 +304,7 @@ const Sidebar = ({
             </div>
           }
         >
-          <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+          <button className="hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
             <PeopleIcon />
           </button>
         </Tooltip> */}
@@ -321,7 +329,7 @@ const Sidebar = ({
               </div>
             }
           >
-            <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+            <button className="hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
               <FaWallet className="w-10 h-[22px]" />
             </button>
           </Tooltip>
@@ -372,7 +380,7 @@ const Sidebar = ({
               </div>
             }
           >
-            <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+            <button className="hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
               <FaTelegram className="w-10 h-[22px]" />
             </button>
           </Tooltip>
@@ -399,7 +407,7 @@ const Sidebar = ({
               </div>
             }
           >
-            <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+            <button className="hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
               <FaDiscord className="w-10 h-[22px]" />
             </button>
           </Tooltip>
@@ -429,7 +437,7 @@ const Sidebar = ({
               </div>
             }
           >
-            <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+            <button className="hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
               <FaFacebook className="w-10 h-[22px]" />
             </button>
           </Tooltip>
@@ -466,7 +474,7 @@ const Sidebar = ({
             </div>
           }
         >
-          <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+          <button className="hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
             <YouTubeIcon />
           </button>
         </Tooltip>
@@ -479,7 +487,7 @@ const Sidebar = ({
             <div className="bg-gray-800 text-white p-2 rounded-lg">FAQs</div>
           }
         >
-          <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+          <button className="hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
             <HelpOutlineIcon />
           </button>
         </Tooltip> */}

@@ -54,7 +54,6 @@ export const SetMarkAsPaid = async (orderId: number, contractAddress: string): P
 }
   try {
     const myContract = new ethers.Contract(contractAddress, ABI, signer);
-    console.log(signer);
     await myContract.setMarkAsPaid(orderId);
     return true;
   } catch (error) {
