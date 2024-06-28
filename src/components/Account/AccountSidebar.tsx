@@ -128,7 +128,6 @@
 
 // export default AccountSidebar;
 
-
 import React from "react";
 import { FaPowerOff } from "react-icons/fa";
 import { useAppContext } from "@/context/AppContext";
@@ -152,7 +151,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({
       case "tBNB":
         return `https://testnet.bscscan.com/address/${wallet}`;
       case "ZETA":
-        return `https://zetachain-athens-3.blockscout.com/address/${wallet}`
+        return `https://zetachain-athens-3.blockscout.com/address/${wallet}`;
       default:
         return `https://amoy.polygonscan.com/address/${wallet}`;
     }
@@ -161,17 +160,21 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({
   return (
     <div className={`transition-all duration-300 ease-in-out rounded-xl`}>
       <div
-        className={`bg-white fixed z-20 transition-all duration-300 ease-in-out ${openAccMenu
-          ? "w-[80vw] !pb-28 sm:w-[30vw] top-0 xl:top-[80px] xl:w-[22vw] right-0 h-full min-h-screen shadow-lg"
-          : "h-0 top-0 lg:top-20 -right-40 w-0"
-          } flex flex-col py-4 overflow-y-scroll selectscroll`}
+        className={`bg-white fixed z-20 transition-all duration-300 ease-in-out ${
+          openAccMenu
+            ? "w-[80vw] !pb-28 sm:w-[30vw] top-0 xl:top-[80px] xl:w-[22vw] right-0 h-full min-h-screen shadow-lg"
+            : "h-0 top-0 lg:top-20 -right-40 w-0"
+        } flex flex-col py-4 overflow-y-scroll selectscroll`}
       >
         {wallet && (
           <div className="p-5">
             <div className="bg-white shadow-md relative rounded-xl p-6">
               <div className="absolute right-4 mb-4">
                 <div
-                  onClick={disconnectWallet}
+                  onClick={() => {
+                    disconnectWallet();
+                    toggleAccMenu();
+                  }}
                   className="cursor-pointer text-gray-600 hover:text-red-600 transition-colors duration-300"
                 >
                   <FaPowerOff size={20} />
