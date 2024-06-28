@@ -90,7 +90,7 @@ const Sidebar = ({
                 <h1 className="flex items-center p-4 gap-2">Market Place</h1>
               </Link>
               <Link
-                href="/Createads"
+                href="/create-ads"
                 onClick={toggleMenu}
                 className="flex justify-between items-center hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
               >

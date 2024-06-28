@@ -681,7 +681,7 @@ const MyAds = () => {
                 Hi! To begin with
               </Typography>
               <Typography sx={{ color: "black" }}>
-                what kind of ad do you want to create ?
+                What kind of ad are you looking to create?
               </Typography>
               <Box className="w-full flex justify-start gap-x-3 mt-10">
                 <Button
