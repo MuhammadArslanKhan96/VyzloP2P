@@ -31,6 +31,8 @@ import Link from "next/link";
 import PaymentMethodTags from "../Field/PaymentMethodTags";
 import Location from "../Location/Location";
 import CountrySelector from "../Location/Location";
+import { networkIds } from "@/constants/rpcs";
+import { SupportedBlockchains } from "@/types";
 const MyAds = () => {
   const [age, setAge] = React.useState("");
 
@@ -45,12 +47,12 @@ const MyAds = () => {
   const [open, setOpen] = React.useState(false);
   const [terms, setTerms] = React.useState(false);
 
-  const { wallet } = useAppContext();
+  const { wallet, getEthersInstance } = useAppContext();
   const [networkData, setNetworkData] = useState<any[]>([]);
   const [createOrder, setCreateOrder] = useState({
     blockChain: "",
     cryptoSymbol: "",
-    fiatCurrency: "usd",
+    fiatCurrency: "",
     method: "",
     selectedUserId: 0,
     takerAddress: wallet,
@@ -95,6 +97,10 @@ const MyAds = () => {
       ...prevOrder,
       blockChain: event.target.value,
     }));
+    getEthersInstance(
+      networkIds[event.target.value as SupportedBlockchains],
+      event.target.value as SupportedBlockchains
+    );
   };
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value);
@@ -186,6 +192,12 @@ const MyAds = () => {
 
   const handleCloseTerms = () => {
     setTerms(false);
+  };
+  const faitChange = (event: any) => {
+    setCreateOrder((prevOrder: any) => ({
+      ...prevOrder,
+      fiatCurrency: event.target.value,
+    }));
   };
 
   const submitAds = async () => {
@@ -334,7 +346,10 @@ const MyAds = () => {
                         <Typography sx={{ color: "gray" }}>
                           Which fiat currency do you want to buy?
                         </Typography>
-                        <TextField sx={{ m: 1, minWidth: 400 }}></TextField>
+                        <TextField
+                          onChange={faitChange}
+                          sx={{ m: 1, minWidth: 400 }}
+                        ></TextField>
                       </Box>
                       <Box className="flex flex-col justify-start  items-start ">
                         <Typography sx={{ color: "gray" }}>
