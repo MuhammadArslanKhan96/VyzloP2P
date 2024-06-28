@@ -5,20 +5,26 @@ import { MdLanguage } from "react-icons/md";
 import Image from "next/image";
 import { CiSettings } from "react-icons/ci";
 import { IoMdContact } from "react-icons/io";
+import { BiDotsVerticalRounded } from "react-icons/bi";
 import { useAppContext } from "@/context/AppContext";
+
 
 type HeaderProps = {
   toggleMenu: () => void;
   toggleAccMenu: () => void;
   openAccMenu?: boolean;
   openMenu?: boolean;
+  toggleList: () => void;
+  openList?: boolean;
 };
 
 const Header = ({
+  toggleList,
   toggleMenu,
   toggleAccMenu,
   openAccMenu,
   openMenu,
+  openList,
 }: HeaderProps) => {
   const { getWalletFunction, wallet } = useAppContext();
   const walletConnect = async () => {
@@ -29,9 +35,8 @@ const Header = ({
     <>
       {/* Header */}
       <div
-        className={`bg-[#fff] py-4 px-4 flex items-center justify-between z-10 w-full ${
-          openMenu ? "absolute lg:fixed top-0" : "fixed"
-        } ${openAccMenu ? "absolute lg:fixed top-0" : "fixed"}`}
+        className={`bg-[#fff] py-4 px-4 flex items-center justify-between z-10 w-full ${openMenu ? "absolute lg:fixed top-0" : "fixed"
+          } ${openAccMenu ? "absolute lg:fixed top-0" : "fixed"}`}
       >
         <div className="flex items-center gap-12">
           <div className="hidden lg:flex items-center">
@@ -45,7 +50,34 @@ const Header = ({
             className="h-10 text-[40px] cursor-pointer rounded-lg bg-[#d4ebfc] text-[#2196f3] hover:bg-[#2196f3] hover:text-white p-2 transition-all duration-500"
           />
         </div>
-        <div className="flex items-center gap-2 lg:gap-6">
+        <div className="md:hidden flex items-center">
+          <button onClick={toggleList}>
+            <BiDotsVerticalRounded fontSize="32px" className="text-blue-500" />
+          </button>
+          {
+            openList ?
+              <div className="bg-blue-400 rounded p-4 text-sm justify-center items-center absolute top-14 left-[50vw] flex flex-col gap-2">
+                <button
+                  className="bg-[#d4ebfc] font-semibold px-4 py-2 rounded-lg"
+                  onClick={() => {
+                    !wallet && walletConnect();
+                  }}
+                >
+                  {wallet
+                    ? wallet?.slice(0, 5) + "..." + wallet?.slice(-6)
+                    : "Connect Wallet"}
+                </button>
+                <button
+                  className="flex gap-2 mx-auto bg-[#d4ebfc] justify-center text-[#2196f3] p-3 rounded-full hover:text-white hover:bg-blue-500"
+                  onClick={toggleAccMenu}
+                >
+                  <IoMdContact size={22} />
+                  <CiSettings size={22} />
+                </button>
+              </div> : ""
+          }
+        </div>
+        <div className="hidden md:flex items-center gap-2 lg:gap-6">
           {/* <button className="bg-[#d4ebfc] text-[#2196f3] px-4 py-1 rounded-lg flex items-center gap-2">
             <MdLanguage className="text-[20px]" /> IS
           </button> */}

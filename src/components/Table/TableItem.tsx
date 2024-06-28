@@ -44,16 +44,16 @@ const App: React.FC<AppProps> = ({
 
   const filteredData = tableData
     ? tableData.filter((item) => {
-        return (
-          item.symbol.toLowerCase().includes(selectedCrypto.toLowerCase()) &&
-          item.fiat.toLowerCase().includes(selectedFiat.toLowerCase()) &&
-          item.symbol.toLowerCase().includes(selectedCrypto.toLowerCase()) &&
-          item.blockChain
-            .toLowerCase()
-            .includes(selectedBlockchain.toLowerCase()) &&
-          (filterType === null || item.type === (filterType === "buy" ? 0 : 1))
-        );
-      })
+      return (
+        item.symbol.toLowerCase().includes(selectedCrypto.toLowerCase()) &&
+        item.fiat.toLowerCase().includes(selectedFiat.toLowerCase()) &&
+        item.symbol.toLowerCase().includes(selectedCrypto.toLowerCase()) &&
+        item.blockChain
+          .toLowerCase()
+          .includes(selectedBlockchain.toLowerCase()) &&
+        (filterType === null || item.type === (filterType === "buy" ? 0 : 1))
+      );
+    })
     : tableData;
   const checkWallet = () => {
     if (wallet) {
@@ -65,7 +65,7 @@ const App: React.FC<AppProps> = ({
   const handleClose = () => setOpenModel(false);
   return (
     <>
-      <div className="flex justify-center space-x-4 my-4 ">
+      <div className="flex justify-center space-x-4 my-4">
         {/* <button
           onClick={() => handleFilter(null)}
           className="text-sm px-4 py-2 rounded-md transition-all duration-300 text-white bg-blue-500 hover:bg-blue-300"
@@ -73,20 +73,18 @@ const App: React.FC<AppProps> = ({
           All
         </button>*/}
       </div>
-      <div className="flex gap-2 p-1 bg-blue-100 rounded-lg w-fit absolute top-12 left-[150px]">
+      <div className="flex gap-2 p-1 bg-blue-100 rounded-lg w-fit absolute top-12 left-[150px] md:top-[12px] md:left-[48px]">
         <button
           onClick={() => handleFilter("buy")}
-          className={`text-gray-400 py-1 px-4 rounded-lg transition-all duration-400 ${
-            filterType === "buy" ? "text-white bg-blue-500" : "bg-blue-100"
-          }`}
+          className={`text-gray-400 mx-auto w-full py-1 px-4 rounded-lg transition-all duration-400 ${filterType === "buy" ? "text-white bg-blue-500" : "bg-blue-100"
+            }`}
         >
           Buy
         </button>
         <button
           onClick={() => handleFilter("sell")}
-          className={`text-gray-400 px-4 py-1 rounded-lg transition-all duration-400 ${
-            filterType === "sell" ? "text-white bg-blue-500" : "bg-blue-100"
-          }`}
+          className={`text-gray-400 px-4 py-1 rounded-lg transition-all duration-400 ${filterType === "sell" ? "text-white bg-blue-500" : "bg-blue-100"
+            }`}
         >
           Sell
         </button>
@@ -162,11 +160,10 @@ const App: React.FC<AppProps> = ({
                       onClick={checkWallet}
                     >
                       <button
-                        className={`text-sm px-4 py-2 rounded-md w-24 transition-all duration-300 text-white ${
-                          item.type === 0
+                        className={`text-sm px-4 py-2 rounded-md w-24 transition-all duration-300 text-white ${item.type === 0
                             ? "bg-green-500 hover:bg-green-300"
                             : "bg-red-500 hover:bg-red-300"
-                        }`}
+                          }`}
                       >
                         {item.type === 0 ? "Buy" : "Sell"} {item.symbol}
                       </button>

@@ -44,8 +44,8 @@ const PaymentMethodTags = ({
   // };
 
   return (
-    <div className="flex justify-center items-center">
-      <FormControl sx={{ m: 1, minWidth: 400 }}>
+    <div className="flex justify-center items-center max-lg:flex-col">
+      <FormControl sx={{ m: 1, minWidth: 300 }} className="sm:w-96">
         <InputLabel id="payment-method-label">Payment Method</InputLabel>
         <Select
           labelId="payment-method-label"
@@ -68,6 +68,7 @@ const PaymentMethodTags = ({
         value={customMethod}
         onChange={handleCustomMethodChange}
         sx={{ m: 1, minWidth: 300 }}
+        className="max-lg:w-[50vw]"
       />
 
       <Button onClick={handleAddCustomMethod}>Add</Button>

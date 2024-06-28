@@ -20,7 +20,7 @@ const Market: React.FC<MarketplaceProps> = ({
   const { user, webApp } = useTelegram();
 
   return (
-    <Box className="bg-[#d4ebfc] max-lg:pt-16 pt-32  sm:w-screen  h-full min-h-screen pb-5">
+    <Box className="bg-[#d4ebfc] max-lg:pt-16 pt-32 sm:w-screen h-full min-h-screen pb-5">
       {/* <div className="p-6 w-[90%] mx-auto">
         <div className="bg-white px-4 lg:px-10 py-4 rounded-md border border-gray-300 flex justify-between max-sm:gap-2 whitespace-nowrap">
           <h1 className="text-[12px] lg:text-xl font-semibold">Marketplace</h1>
@@ -34,7 +34,7 @@ const Market: React.FC<MarketplaceProps> = ({
         </div>
       </div> */}
 
-      <div className="flex justify-end mx-4 md:mx-auto mt-4 mb-4 md:w-full max-w-[100vw] sm:max-w-[80vw]">
+      <div className="flex justify-end mx-4 mt-8 md:mx-auto mb-4 md:w-full max-w-[100vw] sm:max-w-[80vw]">
         <Link
           href="/create-ads"
           className="text-[12px] lg:text-xl bg-blue-500 border border-blue-500 transition-all ease-in-out duration-300 rounded-lg px-4 py-2 text-white hover:bg-transparent hover:text-blue-500"

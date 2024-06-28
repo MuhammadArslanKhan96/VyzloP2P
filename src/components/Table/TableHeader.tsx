@@ -27,8 +27,8 @@ const TableHeader: React.FC<TableHeaderProps> = ({
 
   return (
     <>
-      <div className="hidden md:flex px-8 py-4  justify-center items-center gap-x-6 mx-auto w-full  rounded-lg bg-white mt-4">
-        <div className="flex  max-auto gap-4 items-end">
+      <div className="hidden md:flex px-8 py-4 justify-center items-center gap-x-6 mx-auto w-full  rounded-lg bg-white mt-8">
+        <div className="flex gap-4 w-full items-end">
           {/* <div className="flex gap-2 p-1 bg-blue-100 rounded-lg">
             <button
               className={`text-gray-400 py-1 px-4 rounded-lg transition-all duration-400 ${

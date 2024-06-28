@@ -219,9 +219,9 @@ const MyAds = () => {
   };
 
   return (
-    <Box className="bg-[#d4ebfc] max-lg:pt-16 pt-32 sm:w-screen  h-full min-h-screen pb-5">
+    <Box className="bg-[#d4ebfc] max-lg:pt-16 pt-32 sm:w-screen w-screen h-full min-h-screen pb-5">
       {newAds && (
-        <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[80%] rounded-lg bg-white mt-4">
+        <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[80%] rounded-lg bg-white max-lg:mt-16">
           <Box className="flex flex-col justify-center items-center">
             <Image src={noADs} alt="no ads" />
             <Typography
@@ -255,20 +255,20 @@ const MyAds = () => {
                   <Typography color="initial">Step 2 of 5</Typography>
                 </Box>
               </Box>
-              <Box className="flex flex-col  justify-center items-center  w-full">
+              <Box className="flex flex-col justify-center items-center w-full">
                 <Typography sx={{ color: "black", fontWeight: "bold" }}>
                   Great!
                 </Typography>
                 <Typography sx={{ color: "black" }}>
-                  Now we will ask you to give us some details of the
+                  Now we will ask you to provide us some details of the
                   transaction.
                 </Typography>
                 <Box className="w-full flex justify-center gap-4 flex-wrap items-center mt-10 ">
-                  <Box sx={{ m: 1, minWidth: 300 }}>
+                  <Box sx={{ m: 1, minWidth: 300 }} className="max-lg:w-96 max-sm:mr-0 max-lg:mr-8">
                     <Typography sx={{ color: "gray" }}>
                       Which network are you going to use to make the exchange?
                     </Typography>
-                    <FormControl sx={{ m: 1, minWidth: 300 }}>
+                    <FormControl sx={{ m: 1, minWidth: 300 }} className="max-lg:w-[50vw]">
                       <InputLabel id="demo-simple-select-autowidth-label">
                         Network
                       </InputLabel>
@@ -285,11 +285,11 @@ const MyAds = () => {
                       </Select>
                     </FormControl>
                   </Box>
-                  <Box sx={{ m: 1, minWidth: 300 }}>
+                  <Box sx={{ m: 1, minWidth: 300 }} className="max-lg:w-96 max-sm:mr-0 max-lg:mr-8 max-lg:ml-6">
                     <Typography sx={{ color: "gray" }}>
                       Which currency do you want to buy?
                     </Typography>
-                    <FormControl sx={{ m: 1, minWidth: 300 }}>
+                    <FormControl sx={{ m: 1, minWidth: 300 }} className="max-lg:w-[50vw]">
                       <InputLabel id="demo-simple-select-autowidth-label">
                         coin
                       </InputLabel>
@@ -314,12 +314,14 @@ const MyAds = () => {
                       </Select>
                     </FormControl>
                   </Box>
-                  <Box sx={{ m: 1, minWidth: 800 }}>
-                    <Typography sx={{ color: "gray" }}>
-                      Which one or more payment methods
-                    </Typography>
-                    <PaymentMethodTags mutlipleMethod={paymentMethod} />
-                  </Box>
+                  <div className="max-lg:flex max-lg:flex-col">
+                    <Box>
+                      <Typography sx={{ color: "gray" }} className="max-sm:ml-3 max-lg:ml-0">
+                        Which one or more payment methods
+                      </Typography>
+                      <PaymentMethodTags mutlipleMethod={paymentMethod} />
+                    </Box>
+                  </div>
                 </Box>
               </Box>
             </div>
@@ -566,7 +568,7 @@ const MyAds = () => {
               className="text-blue-500 bg-white border border-blue-500 mr-2"
               onClick={preModel}
             >
-              Prvious
+              Previous
             </Button>
             {activeModel === 3 ? (
               <Button
@@ -587,9 +589,9 @@ const MyAds = () => {
         </div>
       ) : (
         newAds === false && (
-          <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[80%] rounded-lg bg-white mt-4">
-            <Box className="w-full flex mb-10">
-              <ArrowBackIcon onClick={preModel} />
+          <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full lg:w-[70%] xl:w-[80%] rounded-lg bg-white max-lg:mt-16">
+            <Box className="w-full flex mb-10 items-start">
+              <ArrowBackIcon onClick={preModel} fontSize="small" className="mt-[2px] mr-2" />
               <Box className="flex flex-col">
                 <Typography color="initial">Create new Ad</Typography>
                 <Typography color="initial">Step 1 of 5</Typography>
@@ -619,7 +621,8 @@ const MyAds = () => {
             </Box>
           </div>
         )
-      )}
+      )
+      }
       <Snackbar
         open={notification.open}
         autoHideDuration={6000}
@@ -658,7 +661,7 @@ const MyAds = () => {
         </DialogContent>
         <DialogActions></DialogActions>
       </Dialog>
-    </Box>
+    </Box >
   );
 };
 
