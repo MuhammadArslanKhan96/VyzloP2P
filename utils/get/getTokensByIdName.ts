@@ -1,5 +1,5 @@
 import { collection, getDocs, query, where } from 'firebase/firestore'
-import { db } from '../../utils/firebaseConfig';
+import { db } from '../firebaseConfig';
 export const GetToken = async (docId: string) => {
   try {
     const userCol = collection(db, 'tokenDetails');

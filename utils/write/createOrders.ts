@@ -1,5 +1,5 @@
 import { addDoc, collection } from "firebase/firestore";
-import { db } from "../../utils/firebaseConfig";
+import { db } from "../firebaseConfig";
 
 interface UserData {
   blockChain?: string;

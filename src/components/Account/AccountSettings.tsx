@@ -13,21 +13,6 @@ const AccountSettings = () => {
     setOpenMenu(!openMenu);
   };
 
-  const [P2PDropDown, openP2PDropDown] = useState(false);
-  const toggleP2PDropDown = () => {
-    openP2PDropDown(!P2PDropDown);
-  };
-
-  const [CommunityDropDown, openCommunityDropDown] = useState(false);
-  const toggleCommunityDropDown = () => {
-    openCommunityDropDown(!CommunityDropDown);
-  };
-
-  const [TutorialDropDown, openTutorialDropDown] = useState(false);
-  const toggleTutorialDropDown = () => {
-    openTutorialDropDown(!TutorialDropDown);
-  };
-
   const [openAccMenu, setOpenAccMenu] = useState(false);
   const toggleAccMenu = () => {
     setOpenAccMenu(!openAccMenu);
@@ -49,16 +34,7 @@ const AccountSettings = () => {
             className="bg-black/70 xl:hidden w-screen h-full min-h-screen fixed top-0 left-0 z-10"
           ></div>
         )}
-        <Sidebar
-          openMenu={openMenu}
-          toggleMenu={toggleMenu}
-          TutorialDropDown={TutorialDropDown}
-          toggleTutorialDropDown={toggleTutorialDropDown}
-          P2PDropDown={P2PDropDown}
-          toggleP2PDropDown={toggleP2PDropDown}
-          CommunityDropDown={CommunityDropDown}
-          toggleCommunityDropDown={toggleCommunityDropDown}
-        />
+        <Sidebar openMenu={openMenu} toggleMenu={toggleMenu} />
         {openAccMenu && (
           <div
             onClick={toggleAccMenu}

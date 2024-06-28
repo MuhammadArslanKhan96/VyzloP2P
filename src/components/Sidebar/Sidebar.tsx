@@ -17,30 +17,11 @@ import { SiGoogleads } from "react-icons/si";
 type SidebarProps = {
   openMenu: boolean;
   toggleMenu: () => void;
-  CommunityDropDown: boolean;
-  P2PDropDown: boolean;
-  TutorialDropDown: boolean;
-  toggleTutorialDropDown: () => void;
-  toggleCommunityDropDown: () => void;
-  toggleP2PDropDown: () => void;
 };
 
-const Sidebar = ({
-  openMenu,
-  toggleMenu,
-  TutorialDropDown,
-  toggleTutorialDropDown,
-  toggleP2PDropDown,
-  P2PDropDown,
-  CommunityDropDown,
-  toggleCommunityDropDown,
-}: SidebarProps) => {
-  const [value, setValue] = useState(0);
+const Sidebar = ({ openMenu, toggleMenu }: SidebarProps) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
 
-  const handleChange = (event: any, newValue: any) => {
-    setValue(newValue);
-  };
   return (
     <div
       ref={sidebarRef}
@@ -49,7 +30,6 @@ const Sidebar = ({
       }`}
     >
       {" "}
-      {/* Sidebar */}
       <div
         className={`bg-white fixed z-20 transition-all duration-300 ease-in-out ${
           openMenu
@@ -66,22 +46,6 @@ const Sidebar = ({
           </div>
           <h1 className="p-2 font-semibold">Products</h1>
           <div className="py-4">
-            {/* <button
-              onClick={toggleP2PDropDown}
-              className="flex justify-between items-center w-fullw-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 p-4 rounded-md"
-            >
-              <h1 className="flex gap-2 ">
-                <Image
-                  src={sidebarIcon1}
-                  alt="sideBarIcon1"
-                  width={20}
-                  height={20}
-                />{" "}
-                P2P Commerce
-              </h1>
-              {!P2PDropDown ? <IoIosArrowDown /> : <IoIosArrowUp />}
-            </button>
-            {P2PDropDown ? ( */}
             <>
               <Link
                 href="/"
@@ -120,63 +84,8 @@ const Sidebar = ({
                 </h1>
               </Link>
             </>
-            {/* ) : (
-              ""
-            )} */}
           </div>
-          {/* <div className="py-4 px-8">
-            <button
-              onClick={toggleCommunityDropDown}
-              className="flex justify-between items-center w-fullw-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 p-4 rounded-md"
-            >
-              <h1 className="flex gap-2">
-                <PeopleIcon /> Communities
-              </h1>
-              {!CommunityDropDown ? <IoIosArrowDown /> : <IoIosArrowUp />}
-            </button>
-            {CommunityDropDown ? (
-              <div>
-                <h1 className="flex items-center p-4 gap-2 w-full">
-                  <GoDotFill fontSize="small" />
-                  Communities
-                </h1>
-                <h1 className="flex items-center p-4 gap-2 w-full">
-                  <GoDotFill fontSize="small" />
-                  My Community
-                </h1>
-              </div>
-            ) : (
-              ""
-            )}
-          </div> */}
-          {/* <div className="py-2 px-4">
-            <button className="flex justify-between items-center w-fullw-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
-              <h1 className="flex items-center p-4 gap-2 w-full">
-                <Image
-                  src="https://app.paydece.io/assets/images/sidebar/subscriptionsIcon.svg"
-                  alt="sidebarIcon3"
-                  width={30}
-                  height={30}
-                />
-                Subscription
-              </h1>
-            </button>
-          </div> */}
         </div>
-        {/* <div className="px-4">
-          <h1 className="p-2 font-semibold">Wallet</h1>
-          <div className="py-2 px-4">
-            <Link
-              href="/Wallet"
-              className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
-            >
-              <h1 className="flex items-center p-4 gap-2 w-full">
-                <FaWallet fontSize="large" />
-                Current Holding
-              </h1>
-            </Link>
-          </div>
-        </div> */}
         <div className="px-4">
           <h1 className="p-2 font-semibold">More From VYZLO</h1>
           <div className="py-2">
@@ -208,52 +117,6 @@ const Sidebar = ({
               </button>
             </a>
           </div>
-          {/* <div className="p-2 px-4">
-            <button
-              onClick={toggleTutorialDropDown}
-              className="flex justify-between items-center w-fullw-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-2 rounded-md"
-            >
-              <h1 className="flex items-center p-4 gap-2 w-full">
-                <YouTubeIcon />
-                Tutorials
-              </h1>
-              {!TutorialDropDown ? <IoIosArrowDown /> : <IoIosArrowUp />}
-            </button>
-            {TutorialDropDown ? (
-              <div className="flex flex-col gap-y-4">
-                <h1 className="flex items-center gap-2 hover:text-[#2196f3] transtiotion-all duration-500 ml-12 p-1 rounded-md text-gray-500 cursor-pointer">
-                  <GoDotFill fontSize="small" />
-                  Introduction
-                </h1>
-                <h1 className="flex items-center gap-2 hover:text-[#2196f3] transtiotion-all duration-500 ml-12 p-1 rounded-md text-gray-500 cursor-pointer">
-                  <GoDotFill fontSize="small" />
-                  Connect Wallet
-                </h1>
-                <h1 className="flex items-center gap-2 hover:text-[#2196f3] transtiotion-all duration-500 ml-12 p-1 rounded-md text-gray-500 cursor-pointer">
-                  <GoDotFill fontSize="small" />
-                  Buy Crypto
-                </h1>
-                <h1 className="flex items-center gap-2 hover:text-[#2196f3] transtiotion-all duration-500 ml-12 p-1 rounded-md text-gray-500 cursor-pointer">
-                  <GoDotFill fontSize="small" />
-                  Sell Crypto
-                </h1>
-                <h1 className="flex items-center gap-2 hover:text-[#2196f3] transtiotion-all duration-500 ml-12 p-1 rounded-md text-gray-500 cursor-pointer">
-                  <GoDotFill fontSize="small" />
-                  Post An Ad
-                </h1>
-              </div>
-            ) : (
-              ""
-            )}
-          </div> */}
-          {/* <div className="p-2 px-4">
-            <button className="flex justify-between items-center w-fullw-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
-              <h1 className="flex items-center p-4 gap-2 w-full">
-                <HelpOutlineIcon />
-                Faq
-              </h1>
-            </button>
-          </div> */}
         </div>
       </div>
       <div
@@ -292,30 +155,6 @@ const Sidebar = ({
             </button>
           </Tooltip>
         </Link>
-        {/* <Tooltip
-          delay={100}
-          closeDelay={100}
-          offset={25}
-          placement="right"
-          content={
-            <div className="rounded-lg bg-white text-gray-700">
-              <div className="p-4">
-                <h1 className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer">
-                  <GoDotFill fontSize="small" />
-                  Communities
-                </h1>
-                <h1 className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer">
-                  <GoDotFill fontSize="small" />
-                  My Community
-                </h1>
-              </div>
-            </div>
-          }
-        >
-          <button className="py-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
-            <PeopleIcon />
-          </button>
-        </Tooltip> */}
 
         <Link href="/create-ads">
           <Tooltip
@@ -450,55 +289,6 @@ const Sidebar = ({
             </button>
           </Tooltip>
         </Link>
-        {/* <Tooltip
-          delay={100}
-          closeDelay={100}
-          offset={25}
-          placement="right"
-          content={
-            <div className="rounded-lg bg-white text-gray-700">
-              <div className="p-4">
-                <h1 className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer">
-                  <GoDotFill fontSize="small" />
-                  Introduction
-                </h1>
-                <h1 className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer">
-                  <GoDotFill fontSize="small" />
-                  Connect Wallet
-                </h1>
-                <h1 className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer">
-                  <GoDotFill fontSize="small" />
-                  Buy Crypto
-                </h1>
-                <h1 className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer">
-                  <GoDotFill fontSize="small" />
-                  Sell Crypto
-                </h1>
-                <h1 className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer">
-                  <GoDotFill fontSize="small" />
-                  Post An Ad
-                </h1>
-              </div>
-            </div>
-          }
-        >
-          <button className="py-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
-            <YouTubeIcon />
-          </button>
-        </Tooltip>
-        <Tooltip
-          delay={100}
-          closeDelay={100}
-          placement="right"
-          offset={25}
-          content={
-            <div className="bg-gray-800 text-white p-2 rounded-lg">FAQs</div>
-          }
-        >
-          <button className="py-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
-            <HelpOutlineIcon />
-          </button>
-        </Tooltip> */}
       </div>
     </div>
   );

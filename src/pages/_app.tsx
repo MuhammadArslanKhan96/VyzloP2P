@@ -72,16 +72,7 @@ export default function App({ Component, pageProps }: AppProps) {
             ) : null}
             {!hideSidebarAndHeader && (
               <>
-                <Sidebar
-                  openMenu={openMenu}
-                  toggleMenu={toggleMenu}
-                  TutorialDropDown={TutorialDropDown}
-                  toggleTutorialDropDown={toggleTutorialDropDown}
-                  P2PDropDown={P2PDropDown}
-                  toggleP2PDropDown={toggleP2PDropDown}
-                  CommunityDropDown={CommunityDropDown}
-                  toggleCommunityDropDown={toggleCommunityDropDown}
-                />
+                <Sidebar openMenu={openMenu} toggleMenu={toggleMenu} />
                 <AccountSidebar
                   openAccMenu={openAccMenu}
                   toggleAccMenu={toggleAccMenu}
