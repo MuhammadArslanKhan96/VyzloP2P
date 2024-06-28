@@ -313,15 +313,14 @@ const MyAds = () => {
               No ads created yet{" "}
             </Typography>
             <Typography marginBlock={2} sx={{ color: "black" }}>
-              you can define the terms transaction when creating an ad
+              You can define the terms of the transaction when creating an ad.{" "}
             </Typography>
-            <Button
-              sx={{ paddingInline: 2, color: "white" }}
-              className="bg-blue-500 rounded-lg hover:bg-blue-400"
+            <button
+              className="bg-blue-500 px-2  py-1 text-white rounded-lg hover:bg-blue-400"
               onClick={newAdsBtn}
             >
               Publish New Ad
-            </Button>
+            </button>
           </Box>
         </div>
       )}
@@ -684,20 +683,18 @@ const MyAds = () => {
                 What kind of ad are you looking to create?
               </Typography>
               <Box className="w-full flex justify-start gap-x-3 mt-10">
-                <Button
-                  sx={{ paddingInline: 2, color: "white" }}
-                  className="bg-blue-500 rounded-lg hover:bg-blue-400"
+                <button
+                  className="bg-blue-500 px-2  py-1 text-white rounded-lg hover:bg-blue-400"
                   onClick={buyMethod}
                 >
                   Purchase Ad
-                </Button>
-                <Button
-                  sx={{ paddingInline: 2, color: "white" }}
-                  className="bg-blue-500 rounded-lg hover:bg-blue-400"
+                </button>
+                <button
+                  className="bg-blue-500 px-2  py-1 text-white rounded-lg hover:bg-blue-400"
                   onClick={salesMethod}
                 >
                   Sales Ad
-                </Button>
+                </button>
               </Box>
             </Box>
           </div>

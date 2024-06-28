@@ -12,6 +12,7 @@ import Logo from "../../../public/images/logoVyzlo.png";
 import Image from "next/image";
 import { Tooltip } from "@nextui-org/tooltip";
 import Link from "next/link";
+import { SiGoogleads } from "react-icons/si";
 
 type SidebarProps = {
   openMenu: boolean;
@@ -299,6 +300,7 @@ const Sidebar = ({
             <PeopleIcon />
           </button>
         </Tooltip> */}
+
         <Link href="/Wallet">
           <Tooltip
             delay={100}
@@ -321,6 +323,31 @@ const Sidebar = ({
           >
             <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
               <FaWallet className="w-10 h-[22px]" />
+            </button>
+          </Tooltip>
+        </Link>
+        <Link href="/create-ads">
+          <Tooltip
+            delay={100}
+            closeDelay={100}
+            offset={25}
+            placement="right"
+            content={
+              <div className="rounded-lg mt-10 bg-white text-gray-700">
+                <div className="p-2">
+                  <Link
+                    href="/create-ads"
+                    className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer"
+                  >
+                    <SiGoogleads fontSize="small" />
+                    Create Ads
+                  </Link>
+                </div>
+              </div>
+            }
+          >
+            <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+              <SiGoogleads className="w-10 h-[22px]" />
             </button>
           </Tooltip>
         </Link>
