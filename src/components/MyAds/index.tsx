@@ -1,6 +1,8 @@
 import { networkIds } from "@/constants/rpcs";
 import { useAppContext } from "@/context/AppContext";
 import { SupportedBlockchains } from "@/types";
+import { useRouter } from "next/router";
+
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Alert, Box, Snackbar, Typography } from "@mui/material";
 import { FormEvent, useCallback, useEffect, useState } from "react";
@@ -13,6 +15,8 @@ import { CreateOrder } from "../../../utils/write/createOrders";
 import { GetToken } from "../../../utils/get/getTokensByIdName";
 
 const MyAdsPage = () => {
+  const router = useRouter();
+
   const [activeModel, setActiveModel] = useState(0);
   const [nextStep, setNextStep] = useState(false);
   const [newAds, setNewAds] = useState(false);
@@ -124,12 +128,13 @@ const MyAdsPage = () => {
     e.preventDefault();
 
     try {
-      await CreateOrder(createOrder);
+      const res = await CreateOrder(createOrder);
       setNotification({
         open: true,
         message: "Order created successfully",
         severity: "success",
       });
+      router.push("/");
     } catch (error) {
       console.error("Error creating order:", error);
       setNotification({

@@ -63,8 +63,11 @@ const TableHeader: React.FC<TableHeaderProps> = ({
                 className="cursor-pointer bg-[#d4ebfc] rounded p-1"
                 name="Blockchain"
                 onChange={(e) => {
-                  setSelectedBlockchain(e.target.value)
-                  getEthersInstance(networkIds[e.target.value as SupportedBlockchains], e.target.value as SupportedBlockchains);
+                  setSelectedBlockchain(e.target.value);
+                  getEthersInstance(
+                    networkIds[e.target.value as SupportedBlockchains],
+                    e.target.value as SupportedBlockchains
+                  );
                 }}
               >
                 <option value="" className="text-sm">

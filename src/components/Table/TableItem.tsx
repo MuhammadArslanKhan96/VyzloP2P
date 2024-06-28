@@ -4,6 +4,7 @@ import { useAppContext } from "@/context/AppContext";
 import { Box, Modal, Typography } from "@mui/material";
 import useFirestoreListener from "@/hooks/useFirestoreListener";
 import { Order } from "@/types/order";
+import Ellipsis from "../Ellipsis/Ellipsis";
 
 interface AppProps {
   selectedBlockchain: string;
@@ -32,7 +33,7 @@ const App: React.FC<AppProps> = ({
       )
     );
 
-  const listener = useFirestoreListener("P2POrder", getData);
+  const listener = useFirestoreListener("createOrder", getData);
 
   useEffect(() => {
     listener();
@@ -44,16 +45,19 @@ const App: React.FC<AppProps> = ({
 
   const filteredData = tableData
     ? tableData.filter((item) => {
-      return (
-        item.symbol.toLowerCase().includes(selectedCrypto.toLowerCase()) &&
-        item.fiat.toLowerCase().includes(selectedFiat.toLowerCase()) &&
-        item.symbol.toLowerCase().includes(selectedCrypto.toLowerCase()) &&
-        item.blockChain
-          .toLowerCase()
-          .includes(selectedBlockchain.toLowerCase()) &&
-        (filterType === null || item.type === (filterType === "buy" ? 0 : 1))
-      );
-    })
+        return (
+          item?.cryptoSymbol
+            ?.toLowerCase()
+            .includes(selectedCrypto.toLowerCase()) &&
+          item?.fiatCurrency
+            ?.toLowerCase()
+            .includes(selectedFiat.toLowerCase()) &&
+          item?.blockChain
+            ?.toLowerCase()
+            .includes(selectedBlockchain.toLowerCase()) &&
+          item.method === filterType
+        );
+      })
     : tableData;
   const checkWallet = () => {
     if (wallet) {
@@ -63,6 +67,23 @@ const App: React.FC<AppProps> = ({
     }
   };
   const handleClose = () => setOpenModel(false);
+  const headTableName = [
+    "blockChain",
+    "address",
+    "payment Method",
+    "value",
+    // "time",
+    "country",
+    "Maximum",
+    "Minimum",
+    "price",
+    "Action",
+  ];
+  // const formatTime = (time: { seconds: number; nanoseconds: number }) => {
+  //   const date = new Date(time.seconds * 1000 + time.nanoseconds / 1000000);
+  //   return date.toLocaleString(); // Customize the format as needed
+  // };
+
   return (
     <>
       <div className="flex justify-center space-x-4 my-4">
@@ -76,15 +97,17 @@ const App: React.FC<AppProps> = ({
       <div className="flex gap-2 p-1 bg-blue-100 rounded-lg w-fit absolute top-12 left-[150px] md:top-[12px] md:left-[48px]">
         <button
           onClick={() => handleFilter("buy")}
-          className={`text-gray-400 mx-auto w-full py-1 px-4 rounded-lg transition-all duration-400 ${filterType === "buy" ? "text-white bg-green-500" : "bg-blue-100"
-            }`}
+          className={`text-gray-400 mx-auto w-full py-1 px-4 rounded-lg transition-all duration-400 ${
+            filterType === "buy" ? "text-white bg-green-500" : "bg-blue-100"
+          }`}
         >
           Buy
         </button>
         <button
           onClick={() => handleFilter("sell")}
-          className={`text-gray-400 px-4 py-1 rounded-lg transition-all duration-400 ${filterType === "sell" ? "text-white bg-red-500" : "bg-blue-100"
-            }`}
+          className={`text-gray-400 px-4 py-1 rounded-lg transition-all duration-400 ${
+            filterType === "sell" ? "text-white bg-red-500" : "bg-blue-100"
+          }`}
         >
           Sell
         </button>
@@ -94,42 +117,15 @@ const App: React.FC<AppProps> = ({
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Advertiser
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Price
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Pay
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Limit
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Available
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Action
-              </th>
+              {headTableName.map((item, index) => (
+                <th
+                  key={index}
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  {item}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -137,22 +133,33 @@ const App: React.FC<AppProps> = ({
               filteredData.map((item) => (
                 <tr key={item.key} className="bg-white">
                   <td className="px-6 py-4 text-sm text-gray-500">
-                    {item.advertiser}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    {item.value} {item.fiat}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    {item.payMethod}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    {item.fiat} {item.boundries}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500 flex flex-col">
-                    <span className="font-semibold">
-                      {item.available} {item.symbol}
-                    </span>{" "}
                     {item.blockChain}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {<Ellipsis num={item.wallet} />}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {item.paymentMethod && item.paymentMethod.join(", ")}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {item.value}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {item.country}
+                  </td>
+
+                  {/* <td className="px-6 py-4 text-sm text-gray-500">
+                    {item.time && formatTime(item.time)}
+                  </td> */}
+
+                  <td className="px-6 py-4 text-sm text-gray-500 ">
+                    {item.max}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500 ">
+                    {item.min}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500 ">
+                    {item.price}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
                     <Link
@@ -160,12 +167,13 @@ const App: React.FC<AppProps> = ({
                       onClick={checkWallet}
                     >
                       <button
-                        className={`text-sm px-4 py-2 rounded-md w-24 transition-all duration-300 text-white ${item.type === 0
+                        className={`text-sm px-2 py-2 rounded-md w-24 transition-all duration-300 text-white ${
+                          item.method === "buy"
                             ? "bg-green-500 hover:bg-green-300"
                             : "bg-red-500 hover:bg-red-300"
-                          }`}
+                        }`}
                       >
-                        {item.type === 0 ? "Buy" : "Sell"} {item.symbol}
+                        {item.method === "buy" ? "Buy" : "Sell"} {item.symbol}
                       </button>
                     </Link>
                   </td>

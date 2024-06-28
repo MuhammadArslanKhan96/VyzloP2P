@@ -95,7 +95,7 @@ const Order: React.FC = () => {
                 </td>
 
                 <td className="px-6 py-4 text-sm text-gray-500">
-                  {item?.method === "sale" && item?.method}
+                  {item?.method === "sell" && item?.method}
                   {item?.method === "buy" && item?.method}
                 </td>
               </tr>
