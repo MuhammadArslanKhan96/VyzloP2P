@@ -45,11 +45,12 @@ const MyAds = () => {
 
   const { wallet } = useAppContext();
   const [networkData, setNetworkData] = useState<any[]>([]);
+  const [change, setChange] = useState("buy");
   const [createOrder, setCreateOrder] = useState({
     blockChain: "",
     cryptoSymbol: "",
-    fiatCurrency: "usd",
-    method: "",
+    fiatCurrency: "",
+    method: "buy",
     selectedUserId: 0,
     takerAddress: wallet,
     txType: "P2P",
@@ -79,14 +80,17 @@ const MyAds = () => {
       ...prevOrder,
       method: "buy",
     }));
-    setNextStep(true);
+    setChange("buy");
+    // setNextStep(true);
   };
   const salesMethod = () => {
     setCreateOrder((prevOrder: any) => ({
       ...prevOrder,
       method: "sales",
     }));
-    setNextStep(true);
+    setChange("sell");
+
+    // setNextStep(true);
   };
   const handleNetworkChange = (event: any) => {
     setCreateOrder((prevOrder: any) => ({
@@ -131,6 +135,13 @@ const MyAds = () => {
       ...prevOrder,
       paymentMethod: paymentMethods,
     }));
+  };
+  const faitCurrency = (event: any) => {
+    setCreateOrder((prevOrder: any) => ({
+      ...prevOrder,
+      fiatCurrency: event.target.value,
+    }));
+    console.log(event.target.value);
   };
   const nextModel = () => {
     setActiveModel((prevModel) => (prevModel < 3 ? prevModel + 1 : prevModel));
@@ -222,6 +233,99 @@ const MyAds = () => {
     <Box className="bg-[#d4ebfc] max-lg:pt-16 pt-32 sm:w-screen  h-full min-h-screen pb-5">
       {newAds && (
         <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full xl:w-[80%] rounded-lg bg-white mt-4">
+          <div className="flex w-full gap-4 items-end ">
+            <div className="flex gap-x- px-1  py-1 bg-blue-200 rounded-lg">
+              <button
+                onClick={buyMethod}
+                className={`text-bold py-1 ${
+                  change === "buy" ? "bg-blue-500" : "bg-transparent"
+                }  text-white px-4 rounded-lg transition-all duration-400`}
+              >
+                Buy
+              </button>
+              <button
+                onClick={salesMethod}
+                className={` text-bold  ${
+                  change === "sell" ? "bg-blue-500" : "bg-transparent"
+                } px-4 py-1 rounded-lg text-white transition-all duration-400`}
+              >
+                Sell
+              </button>
+            </div>
+            <div className="flex gap-x-10">
+              <div className="flex flex-col">
+                <label
+                  htmlFor="Blockchain"
+                  className="text-sm text-gray-300 font-medium"
+                >
+                  Blockchain
+                </label>
+                <select
+                  className="cursor-pointer bg-[#d4ebfc] rounded-lg py-1 px-2 "
+                  name="Blockchain"
+                >
+                  <option value="" className="text-sm">
+                    All
+                  </option>
+                  <option value="ZETA" className="text-sm">
+                    ZETA
+                  </option>
+                  <option value="BSC" className="text-sm">
+                    BSC
+                  </option>
+                  <option value="Polygon" className="text-sm">
+                    Polygon
+                  </option>
+                </select>
+              </div>
+              <div className="flex flex-col">
+                <label
+                  htmlFor="Crypto"
+                  className="text-sm text-gray-300 font-medium"
+                >
+                  Crypto
+                </label>
+                <select
+                  className="cursor-pointer bg-[#d4ebfc] rounded-lg py-1 px-2"
+                  name="Crypto"
+                >
+                  <option value="" className="text-sm">
+                    All
+                  </option>
+                  <option value="USDT" className="text-sm">
+                    USDT
+                  </option>
+                  <option value="USDC" className="text-sm">
+                    USDC
+                  </option>
+                  <option value="DAI" className="text-sm">
+                    DAI
+                  </option>
+                </select>
+              </div>
+              <div className="flex flex-col">
+                <label
+                  htmlFor="Fiat"
+                  className="text-sm text-gray-300 font-medium"
+                >
+                  Fiat
+                </label>
+                <select
+                  onChange={faitCurrency}
+                  className="cursor-pointer bg-[#d4ebfc] rounded-lg py-1 px-2"
+                  name="Fiat"
+                >
+                  <option value="" className="text-sm">
+                    All
+                  </option>
+                  <option value="EUR">EUR</option>
+                  <option value="ARS">ARS</option>
+                  <option value="COP">COP</option>
+                  <option value="USD">USD</option>
+                </select>
+              </div>
+            </div>
+          </div>
           <Box className="flex flex-col justify-center items-center">
             <Image src={noADs} alt="no ads" />
             <Typography
@@ -300,21 +404,18 @@ const MyAds = () => {
                         onChange={coinChange}
                         label="coin"
                       >
-                        {networkData.length > 0 ? (
+                        {networkData.length > 0 &&
                           networkData.map((item: any, index: any) =>
                             Object.keys(item).map((key) => (
                               <MenuItem key={key} value={key}>
                                 {key}
                               </MenuItem>
                             ))
-                          )
-                        ) : (
-                          <MenuItem disabled>No coins available</MenuItem>
-                        )}
+                          )}
                       </Select>
                     </FormControl>
                   </Box>
-                  <Box sx={{ m: 1, minWidth: 800 }}>
+                  <Box sx={{ m: 1, minWidth: 600 }}>
                     <Typography sx={{ color: "gray" }}>
                       Which one or more payment methods
                     </Typography>
@@ -379,8 +480,9 @@ const MyAds = () => {
                         sx={{ fontSize: 14, color: "gray" }}
                         className="w-[66%]"
                       >
-                        vyzlo charges a 1% fee over the transaction total amount
-                        to both parties Premium users are exempt from this 1%
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Accusamus alias voluptas corporis error cum sit iusto
+                        tempora Voluptatem, dolore ullam.
                       </Typography>
                     </Box>
                   </Box>
@@ -603,16 +705,10 @@ const MyAds = () => {
                 What kind of ad are you looking to create?
               </Typography>
               <Box className="w-full flex justify-center gap-x-3 mt-10  ">
-                <button
-                  className="bg-blue-500 px-2  py-1 text-white rounded-lg hover:bg-blue-400"
-                  onClick={buyMethod}
-                >
+                <button className="bg-blue-500 px-2  py-1 text-white rounded-lg hover:bg-blue-400">
                   Purchase Ad
                 </button>
-                <button
-                  className="bg-blue-500 px-2  py-1 text-white rounded-lg hover:bg-blue-400"
-                  onClick={salesMethod}
-                >
+                <button className="bg-blue-500 px-2  py-1 text-white rounded-lg hover:bg-blue-400">
                   Sales Ad
                 </button>
               </Box>

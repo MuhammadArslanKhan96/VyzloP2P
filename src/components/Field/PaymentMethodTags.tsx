@@ -45,7 +45,7 @@ const PaymentMethodTags = ({
 
   return (
     <div className="flex justify-center items-center">
-      <FormControl sx={{ m: 1, minWidth: 350 }}>
+      <FormControl sx={{ m: 1, minWidth: 400 }}>
         <InputLabel id="payment-method-label">Payment Method</InputLabel>
         <Select
           labelId="payment-method-label"
@@ -62,6 +62,7 @@ const PaymentMethodTags = ({
       </FormControl>
 
       <TextField
+        type="text"
         id="custom-method"
         label="Type Custom Payment Method"
         value={customMethod}
