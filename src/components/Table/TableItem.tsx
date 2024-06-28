@@ -135,8 +135,8 @@ const App: React.FC<AppProps> = ({
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {filteredData.map((item) => {
-              return (
+            {filteredData.length > 0 ? (
+              filteredData.map((item) => (
                 <tr key={item.key} className="bg-white">
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {item.advertiser}
@@ -158,10 +158,7 @@ const App: React.FC<AppProps> = ({
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
                     <Link
-                      href={
-                        // wallet && item.type === 0 ?
-                        wallet ? `/purchase/${item.key}` : "/"
-                      }
+                      href={wallet ? `/purchase/${item.key}` : "/"}
                       onClick={checkWallet}
                     >
                       <button
@@ -176,8 +173,17 @@ const App: React.FC<AppProps> = ({
                     </Link>
                   </td>
                 </tr>
-              );
-            })}
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan={6}
+                  className="px-6 py-4 text-sm text-gray-500 text-center w-full  mx-auto"
+                >
+                  Data is currently unavailable. Please try again shortly{" "}
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
         {openModel && (
