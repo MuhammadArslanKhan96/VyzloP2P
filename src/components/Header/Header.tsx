@@ -14,7 +14,7 @@ type HeaderProps = {
   toggleAccMenu: () => void;
   openAccMenu?: boolean;
   openMenu?: boolean;
-  toggleList: () => void;
+  toggleList?: () => void;
   openList?: boolean;
 };
 
