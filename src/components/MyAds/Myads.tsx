@@ -240,7 +240,11 @@ const MyAds = () => {
       if (value === "" || value === undefined) {
         setNotification({
           open: true,
-          message: `Field ${key} is empty`,
+          message: `${
+            key === "wallet"
+              ? "Please connect your wallet "
+              : `${key} Field cannot be left blank`
+          } `,
           severity: "error",
         });
         return;
@@ -390,7 +394,7 @@ const MyAds = () => {
                           sx={{ m: 1, minWidth: 400 }}
                         ></TextField>
                       </Box>
-                      <Box className="flex flex-col justify-start  items-start ">
+                      <Box className="flex flex-col justify-start  my-3  items-start ">
                         <Typography sx={{ color: "gray" }}>
                           Do You want to set limit to your offer?{" "}
                         </Typography>
@@ -611,11 +615,7 @@ const MyAds = () => {
               </Box>
               <Box className="flex flex-col  justify-center items-center  w-full ">
                 <Typography sx={{ color: "black" }}>
-                  Great! to finish, here is a review for you to review the
-                  details!
-                </Typography>
-                <Typography sx={{ color: "black" }}>
-                  If it's all good. it time to publish your ad!
+                  If everything looks good, it's time to publish your ad!
                 </Typography>
                 <Box className="w-full flex justify-center  gap-8 items-center mt-10  ">
                   <Box className="w-[40%]">
@@ -679,26 +679,26 @@ const MyAds = () => {
             </div>
           )}
           <div className="w-full flex justify-end items-center">
-            <Button
-              className="text-blue-500 bg-white border border-blue-500 mr-2"
+            <button
+              className="text-blue-500 bg-white px-3 py-1 rounded border border-blue-500 mr-2"
               onClick={preModel}
             >
               Previous
-            </Button>
+            </button>
             {activeModel === 2 ? (
-              <Button
-                className="bg-blue-500 px-2 py-1 rounded text-white hover:bg-blue-400 "
+              <button
+                className="bg-[#05379A] px-3 py-1 rounded text-white hover:bg-opacity-75"
                 onClick={submitAds}
               >
                 Publish Ad
-              </Button>
+              </button>
             ) : (
-              <Button
-                className="bg-[#05379A] px-2 py-1 border text-white hover:bg-opacity-75"
+              <button
+                className="bg-[#05379A] px-3 py-1 border rounded text-white hover:bg-opacity-75"
                 onClick={nextModel}
               >
                 Next
-              </Button>
+              </button>
             )}
           </div>
         </div>

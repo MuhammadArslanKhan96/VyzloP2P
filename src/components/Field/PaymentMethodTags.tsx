@@ -56,7 +56,9 @@ const PaymentMethodTags = ({
           sx={{ m: 1, minWidth: 300 }}
           required
         />
-        <Button onClick={handleAddCustomMethod}>Add</Button>
+        <button className="  text-[#05379A] " onClick={handleAddCustomMethod}>
+          Add
+        </button>
       </Box>
 
       <FormControl sx={{ m: 1, minWidth: 400 }}>

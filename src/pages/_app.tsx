@@ -15,8 +15,8 @@ export default function App({ Component, pageProps }: AppProps) {
   const [openList, setOpenList] = useState(false);
 
   const toggleList = () => {
-    setOpenList(!openList)
-  }
+    setOpenList(!openList);
+  };
 
   const toggleMenu = () => {
     setOpenMenu(!openMenu);
@@ -92,7 +92,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <Component {...pageProps} />
               <ProgressBar
                 height="2px"
-                color="#2196f3"
+                color="#05379A"
                 options={{ showSpinner: false }}
                 shallowRouting
               />
