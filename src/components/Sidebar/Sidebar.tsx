@@ -12,7 +12,6 @@ import Logo from "../../../public/images/logoVyzlo.png";
 import Image from "next/image";
 import { Tooltip } from "@nextui-org/tooltip";
 import Link from "next/link";
-import VerticalTabs from "../Tabs/VerticalTabs";
 
 type SidebarProps = {
   openMenu: boolean;
@@ -65,7 +64,7 @@ const Sidebar = ({
             </h1>
           </div>
           <h1 className="p-2 font-semibold">Products</h1>
-          <div className="py-4 px-8">
+          <div className="py-4 px-2">
             {/* <button
               onClick={toggleP2PDropDown}
               className="flex justify-between items-center w-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 p-4 rounded-md"
@@ -83,27 +82,27 @@ const Sidebar = ({
             </button>
             {P2PDropDown ? ( */}
             <>
-              <Link href="/">
-                <VerticalTabs value={value} handleChange={handleChange} />
+              <Link
+                href="/"
+                onClick={toggleMenu}
+                className="flex justify-between items-center hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
+              >
+                <h1 className="flex items-center p-4 gap-2">Market Place</h1>
+              </Link>
+              <Link
+                href="/Createads"
+                onClick={toggleMenu}
+                className="flex justify-between items-center hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
+              >
+                <h1 className="flex items-center p-4 gap-2">Create Ads</h1>
               </Link>
               <Link
                 href="/Wallet"
+                onClick={toggleMenu}
                 className="flex justify-between items-center hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
               >
-                <h1 className="flex items-center p-4 gap-2">
-                  <FaWallet fontSize="large" />
-                  Current Holding
-                </h1>
+                <h1 className="flex items-center p-4 gap-2">Current Holding</h1>
               </Link>
-              {/*
-                 <Link href="/" className="flex items-center p-4 gap-2">
-                  <GoDotFill fontSize="small" />
-                  Marketplace
-                </Link>
-                <Link href="/" className="flex items-center p-4 gap-2">
-                  <GoDotFill fontSize="small" />
-                  My Ads
-                </Link> */}
             </>
             {/* ) : (
               ""
@@ -242,38 +241,40 @@ const Sidebar = ({
         </div>
       </div>
       <div
-        className={`hidden transition-all bg-white h-full duration-300 ease-in-out fixed top-[42px] z-20 lg:flex flex-col gap-10 mt-10 items-center w-20 ${
+        className={`hidden transition-all bg-white h-full duration-300 ease-in-out fixed top-[40px] z-20 lg:flex flex-col gap-10 mt-10 items-center w-20 ${
           openMenu ? "-left-40" : "left-0"
         }`}
       >
-        <Tooltip
-          delay={100}
-          closeDelay={100}
-          offset={25}
-          placement="right"
-          content={
-            <div className="rounded-lg mt-10 bg-white text-gray-700">
-              <div className="p-2">
-                <Link
-                  href="/"
-                  className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer"
-                >
-                  <GoDotFill fontSize="small" />
-                  Marketplace
-                </Link>
+        <Link href="/">
+          <Tooltip
+            delay={100}
+            closeDelay={100}
+            offset={25}
+            placement="right"
+            content={
+              <div className="rounded-lg mt-10 bg-white text-gray-700">
+                <div className="p-2">
+                  <Link
+                    href="/"
+                    className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer"
+                  >
+                    <GoDotFill fontSize="small" />
+                    Marketplace
+                  </Link>
+                </div>
               </div>
-            </div>
-          }
-        >
-          <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
-            <Image
-              src={sidebarIcon1}
-              alt="sidebarIcon1"
-              width={25}
-              height={20}
-            />
-          </button>
-        </Tooltip>
+            }
+          >
+            <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+              <Image
+                src={sidebarIcon1}
+                alt="sidebarIcon1"
+                width={25}
+                height={20}
+              />
+            </button>
+          </Tooltip>
+        </Link>
         {/* <Tooltip
           delay={100}
           closeDelay={100}
@@ -298,106 +299,114 @@ const Sidebar = ({
             <PeopleIcon />
           </button>
         </Tooltip> */}
-        <Tooltip
-          delay={100}
-          closeDelay={100}
-          offset={25}
-          placement="right"
-          content={
-            <div className="rounded-lg mt-10 bg-white text-gray-700">
-              <div className="p-2">
-                <Link
-                  href="/Wallet"
-                  className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer"
-                >
-                  <GoDotFill fontSize="small" />
-                  Current Holding
-                </Link>
+        <Link href="/Wallet">
+          <Tooltip
+            delay={100}
+            closeDelay={100}
+            offset={25}
+            placement="right"
+            content={
+              <div className="rounded-lg mt-10 bg-white text-gray-700">
+                <div className="p-2">
+                  <Link
+                    href="/Wallet"
+                    className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer"
+                  >
+                    <GoDotFill fontSize="small" />
+                    Current Holding
+                  </Link>
+                </div>
               </div>
-            </div>
-          }
-        >
-          <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
-            <FaWallet className="w-10 h-[22px]" />
-          </button>
-        </Tooltip>
-        <Tooltip
-          delay={100}
-          closeDelay={100}
-          offset={25}
-          placement="right"
-          content={
-            <div className="rounded-lg mt-10 bg-white text-gray-700">
-              <div className="p-2">
-                <Link
-                  href="/https://t.me/Vyzlo"
-                  target="blank"
-                  className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer"
-                >
-                  <GoDotFill fontSize="small" />
-                  Telegram
-                </Link>
+            }
+          >
+            <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+              <FaWallet className="w-10 h-[22px]" />
+            </button>
+          </Tooltip>
+        </Link>
+        <Link target="_blank" href="https://t.me/Vyzlo">
+          <Tooltip
+            delay={100}
+            closeDelay={100}
+            offset={25}
+            placement="right"
+            content={
+              <div className="rounded-lg mt-10 bg-white text-gray-700">
+                <div className="p-2">
+                  <Link
+                    href="https://t.me/Vyzlo"
+                    target="_blank"
+                    className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer"
+                  >
+                    <GoDotFill fontSize="small" />
+                    Telegram
+                  </Link>
+                </div>
               </div>
-            </div>
-          }
-        >
-          <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
-            <Link href="/https://t.me/Vyzlo" target="blank">
+            }
+          >
+            <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
               <FaTelegram className="w-10 h-[22px]" />
-            </Link>
-          </button>
-        </Tooltip>
+            </button>
+          </Tooltip>
+        </Link>
 
-        <Tooltip
-          delay={100}
-          closeDelay={100}
-          offset={25}
-          placement="right"
-          content={
-            <div className="rounded-lg mt-10 bg-white text-gray-700">
-              <div className="p-2">
-                <Link
-                  href="/https://discord.com/invite/aVzxt4Ka"
-                  target="blank"
-                  className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer"
-                >
-                  <GoDotFill fontSize="small" />
-                  Discord
-                </Link>
+        <Link target="_blank" href="https://discord.com/invite/aVzxt4Ka">
+          <Tooltip
+            delay={100}
+            closeDelay={100}
+            offset={25}
+            placement="right"
+            content={
+              <div className="rounded-lg mt-10 bg-white text-gray-700">
+                <div className="p-2">
+                  <Link
+                    href="/https://discord.com/invite/aVzxt4Ka"
+                    target="_blank"
+                    className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer"
+                  >
+                    <GoDotFill fontSize="small" />
+                    Discord
+                  </Link>
+                </div>
               </div>
-            </div>
-          }
-        >
-          <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
-            <Link href="/https://discord.com/invite/aVzxt4Ka" target="blank">
+            }
+          >
+            <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
               <FaDiscord className="w-10 h-[22px]" />
-            </Link>
-          </button>
-        </Tooltip>
-        <Tooltip
-          delay={100}
-          closeDelay={100}
-          offset={25}
-          placement="right"
-          content={
-            <div className="rounded-lg mt-10 bg-white text-gray-700">
-              <div className="p-2">
-                <Link
-                  href="/https://www.facebook.com/profile.php?id=61558965401403"
-                  target="blank"
-                  className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer"
-                >
-                  <GoDotFill fontSize="small" />
-                  Facebook
-                </Link>
-              </div>
-            </div>
-          }
+            </button>
+          </Tooltip>
+        </Link>
+
+        <Link
+          target="_blank"
+          href="https://www.facebook.com/profile.php?id=61558965401403"
         >
-          <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
-            <FaFacebook className="w-10 h-[22px]" />
-          </button>
-        </Tooltip>
+          <Tooltip
+            delay={100}
+            closeDelay={100}
+            offset={25}
+            placement="right"
+            content={
+              <div className="rounded-lg mt-10 bg-white text-gray-700">
+                <div className="p-2">
+                  <Link
+                    href="https://www.facebook.com/profile.php?id=61558965401403"
+                    target="_blank"
+                    className="flex items-center gap-2 hover:text-[#2196f3] hover:bg-[#d4ebfc] transtiotion-all duration-500 p-4 rounded-md text-gray-500 cursor-pointer"
+                  >
+                    <GoDotFill fontSize="small" />
+                    Facebook
+                  </Link>
+                </div>
+              </div>
+            }
+          >
+            <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+              <FaFacebook className="w-10 h-[22px]" />
+            </button>
+          </Tooltip>
+        </Link>
         {/* <Tooltip
           delay={100}
           closeDelay={100}

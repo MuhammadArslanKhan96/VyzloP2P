@@ -19,7 +19,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({
       <div
         className={`bg-white fixed z-20 transition-all duration-300 ease-in-out ${
           openAccMenu
-            ? "w-[80vw] !pb-28 sm:w-[30vw] top-0 xl:top-[83px] xl:w-[22vw] right-0 h-full min-h-screen"
+            ? "w-[80vw] !pb-28 sm:w-[30vw] top-0 xl:top-[80px] xl:w-[22vw] right-0 h-full min-h-screen"
             : "h-0 top-0 lg:top-20 -right-40 w-0"
         } flex flex-col py-2 overflow-y-scroll selectscroll`}
       >
@@ -101,7 +101,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({
               </h1>
             </Link>
           </div> */}
-          <div className="px-5">
+          {/* <div className="px-5">
             <Link
               href="/Wallet"
               className="flex justify-between items-center hover:bg-[#d4ebfc] hover:text-[#2196f3] transition-all duration-500 ml-4 p-1 rounded-md"
@@ -111,7 +111,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({
                 Log Off
               </h1>
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
