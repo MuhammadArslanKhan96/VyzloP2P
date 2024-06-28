@@ -55,13 +55,18 @@ const MyAds = () => {
     fiatCurrency: "",
     method: "",
     selectedUserId: 0,
-    takerAddress: wallet,
+    wallet: wallet,
     txType: "P2P",
     uid: 0,
     value: "0.0001",
     message: "",
     paymentMethod: "",
     terms: "",
+    country: "",
+    min: "",
+    max: "",
+    price: "",
+    condition: "",
   });
   const [notification, setNotification] = useState({
     open: false,
@@ -132,10 +137,23 @@ const MyAds = () => {
       terms: event.target.value,
     }));
   };
+  const conditionChange = (event: any) => {
+    setCreateOrder((prevOrder: any) => ({
+      ...prevOrder,
+      condition: event.target.value,
+    }));
+  };
+
   const paymentMethod = (paymentMethods: any) => {
     setCreateOrder((prevOrder: any) => ({
       ...prevOrder,
       paymentMethod: paymentMethods,
+    }));
+  };
+  const countryMethod = (selectCountry: any) => {
+    setCreateOrder((prevOrder: any) => ({
+      ...prevOrder,
+      country: selectCountry.label,
     }));
   };
   const nextModel = () => {
@@ -155,23 +173,23 @@ const MyAds = () => {
     setNewAds(false);
   };
   const list1 = [
-    { price: "NaN" },
-    { availableCryptos: "NaN" },
+    { price: createOrder.price },
+    { "available Cryptos": "NaN" },
     { "limit of the offers:": "NaN" },
-    { minimum: "NaN" },
-    { maximum: "NaN" },
+    { minimum: createOrder.min },
+    { maximum: createOrder.max },
     { method: createOrder.method },
   ];
   const list2 = [
     { Network: createOrder.blockChain },
     { Crypto: createOrder.cryptoSymbol },
-    { Currency: "NaN" },
+    { Currency: createOrder.fiatCurrency },
     {
       "payment method": Array.isArray(createOrder.paymentMethod)
         ? createOrder.paymentMethod.join(" ")
         : createOrder.paymentMethod,
     },
-    { Locaition: "NaN" },
+    { Location: createOrder.country },
     { "automatic message": "Read More" },
     { "terms and conditions": "check" },
   ];
@@ -199,7 +217,24 @@ const MyAds = () => {
       fiatCurrency: event.target.value,
     }));
   };
-
+  const minChange = (event: any) => {
+    setCreateOrder((prevOrder: any) => ({
+      ...prevOrder,
+      min: event.target.value,
+    }));
+  };
+  const maxChange = (event: any) => {
+    setCreateOrder((prevOrder: any) => ({
+      ...prevOrder,
+      max: event.target.value,
+    }));
+  };
+  const priceChange = (event: any) => {
+    setCreateOrder((prevOrder: any) => ({
+      ...prevOrder,
+      price: event.target.value,
+    }));
+  };
   const submitAds = async () => {
     for (const [key, value] of Object.entries(createOrder)) {
       if (value === "" || value === undefined) {
@@ -258,7 +293,7 @@ const MyAds = () => {
               You can define the terms of the transaction when creating an ad.{" "}
             </Typography>
             <button
-              className="bg-blue-500 px-2  py-1 text-white rounded-lg hover:bg-blue-400"
+              className="bg-[#05379A] px-2  py-1 text-white rounded-lg hover:bg-opacity-75"
               onClick={newAdsBtn}
             >
               Publish New Ad
@@ -271,10 +306,10 @@ const MyAds = () => {
           {activeModel === 0 && (
             <div className="flex  flex-col  justify-center items-center gap-x-6 mx-auto w-full ">
               <Box className="w-full flex mb-10">
-                <ArrowBackIcon onClick={preModel} />
+                <ArrowBackIcon onClick={preModel} className="cursor-pointer" />
                 <Box className="flex flex-col">
                   <Typography color="initial">
-                    creation of a purchase annoucement.
+                    Creation of a purchase annoucement.
                   </Typography>
                   <Typography color="initial">Step 2 of 4</Typography>
                 </Box>
@@ -303,6 +338,7 @@ const MyAds = () => {
                           value={createOrder.blockChain}
                           onChange={handleNetworkChange}
                           label="Network"
+                          required
                         >
                           <MenuItem value="BSC">BSC</MenuItem>
                           <MenuItem value="POLYGON">POLYGON</MenuItem>
@@ -316,14 +352,15 @@ const MyAds = () => {
                       </Typography>
                       <FormControl sx={{ m: 1, minWidth: 300 }}>
                         <InputLabel id="demo-simple-select-autowidth-label">
-                          coin
+                          Coin
                         </InputLabel>
                         <Select
+                          required
                           labelId="demo-simple-select-autowidth-label"
                           id="demo-simple-select-autowidth"
                           value={createOrder.cryptoSymbol}
                           onChange={coinChange}
-                          label="coin"
+                          label="Coin"
                         >
                           {networkData.length > 0 ? (
                             networkData.map((item: any, index: any) =>
@@ -344,9 +381,11 @@ const MyAds = () => {
                     <Box sx={{ m: 1, minWidth: 400, maxWidth: 400 }}>
                       <Box>
                         <Typography sx={{ color: "gray" }}>
-                          Which fiat currency do you want to buy?
+                          Which fiat currency do you want to use?
                         </Typography>
                         <TextField
+                          required
+                          value={createOrder.fiatCurrency}
                           onChange={faitChange}
                           sx={{ m: 1, minWidth: 400 }}
                         ></TextField>
@@ -358,24 +397,44 @@ const MyAds = () => {
                         <Box className="flex justify-start items-center">
                           <Box sx={{ m: 1, width: 160 }}>
                             <Typography sx={{ color: "gray", fontSize: 12 }}>
-                              Miniumn offer
+                              Minimum offer
                             </Typography>
-                            <TextField sx={{ width: 160 }}></TextField>
+                            <TextField
+                              required
+                              type="number"
+                              value={createOrder.min}
+                              onChange={minChange}
+                              sx={{ width: 160 }}
+                            ></TextField>
                           </Box>
                           <Box sx={{ m: 1, width: 160 }}>
                             <Typography sx={{ color: "gray", fontSize: 12 }}>
-                              Maxium offer
+                              Maximum offer
                             </Typography>
-                            <TextField sx={{ width: 160 }}></TextField>
+                            <TextField
+                              required
+                              type="number"
+                              value={createOrder.max}
+                              onChange={maxChange}
+                              sx={{ width: 160 }}
+                            ></TextField>
                           </Box>
                         </Box>
                       </Box>
                     </Box>
                     <Box sx={{ m: 1, minWidth: 800 }}>
                       <Typography sx={{ color: "gray" }}>
-                        Which one or more payment methods
+                        Which one or more payment methods?
                       </Typography>
                       <PaymentMethodTags mutlipleMethod={paymentMethod} />
+                      <Typography sx={{ color: "gray" }}>Price:</Typography>
+                      <TextField
+                        required
+                        type="number"
+                        value={createOrder.price}
+                        onChange={priceChange}
+                        sx={{ m: 1, minWidth: 400 }}
+                      ></TextField>
                     </Box>
                   </Box>
                 </Box>
@@ -450,17 +509,17 @@ const MyAds = () => {
           {activeModel === 1 && (
             <div className="flex  flex-col  justify-center items-center gap-x-6 mx-auto w-full ">
               <Box className="w-full flex mb-10">
-                <ArrowBackIcon onClick={preModel} />
+                <ArrowBackIcon onClick={preModel} className="cursor-pointer" />
                 <Box className="flex flex-col">
                   <Typography color="initial">
-                    creation of a purchase annoucement.
+                    Creation of a purchase annoucement.
                   </Typography>
                   <Typography color="initial">Step 3 of 4</Typography>
                 </Box>
               </Box>
               <Box className="flex flex-col  justify-center items-center  w-full ">
                 <Typography sx={{ color: "black", fontWeight: "bold" }}>
-                  Almost finished On this step!
+                  Almost finished on this step!
                 </Typography>
                 <Typography sx={{ color: "black" }}>
                   You can add additional information according to your
@@ -495,11 +554,15 @@ const MyAds = () => {
                       </FormControl>
                     </Box> */}
                     {/* <Location /> */}
-                    <CountrySelector />
-                    <Typography sx={{ marginBlock: 2 }}>
+                    <Typography sx={{ color: "grey" }}>
+                      Select the country
+                    </Typography>
+                    <CountrySelector countryMethod={countryMethod} />
+                    <Typography sx={{ marginBlock: 2, color: "grey" }}>
                       You can add conditions here:
                     </Typography>
                     <TextareaAutosize
+                      onChange={conditionChange}
                       minRows={4}
                       maxRows={4}
                       placeholder="Enter your text here"
@@ -508,7 +571,7 @@ const MyAds = () => {
                     />{" "}
                   </Box>
                   <Box className="w-[40%]">
-                    <Typography color="initial">
+                    <Typography color="grey">
                       You can add an automatic message
                     </Typography>
                     <TextareaAutosize
@@ -519,8 +582,8 @@ const MyAds = () => {
                       style={{ width: "100%" }}
                       className="border rounded-lg p-2 overflow-y-auto resize-none"
                     />{" "}
-                    <Typography sx={{ marginTop: 2 }}>
-                      you can add up to three restrications:
+                    <Typography sx={{ marginTop: 2, color: "grey" }}>
+                      You can add up to three restrictions:
                     </Typography>
                     <TextareaAutosize
                       onChange={termsHandle}
@@ -538,10 +601,10 @@ const MyAds = () => {
           {activeModel === 2 && (
             <div className="flex  flex-col justify-center items-center gap-x-6 w-full   ">
               <Box className="w-full flex mb-10">
-                <ArrowBackIcon onClick={preModel} />
+                <ArrowBackIcon onClick={preModel} className="cursor-pointer" />
                 <Box className="flex flex-col">
                   <Typography color="initial">
-                    creation of a purchase announcement.
+                    Creation of a purchase announcement.
                   </Typography>
                   <Typography color="initial">Step 4 of 4</Typography>
                 </Box>
@@ -622,7 +685,7 @@ const MyAds = () => {
             >
               Previous
             </Button>
-            {activeModel === 3 ? (
+            {activeModel === 2 ? (
               <Button
                 className="bg-blue-500 px-2 py-1 rounded text-white hover:bg-blue-400 "
                 onClick={submitAds}
@@ -631,7 +694,7 @@ const MyAds = () => {
               </Button>
             ) : (
               <Button
-                className="bg-blue-500 px-2 py-1 border text-white hover:bg-blue-400"
+                className="bg-[#05379A] px-2 py-1 border text-white hover:bg-opacity-75"
                 onClick={nextModel}
               >
                 Next
@@ -643,7 +706,11 @@ const MyAds = () => {
         newAds === false && (
           <div className="flex  flex-col px-8 py-6 justify-center items-center gap-x-6 mx-auto w-full lg:w-[70%] xl:w-[80%] rounded-lg bg-white max-lg:mt-16">
             <Box className="w-full flex mb-10 items-start">
-              <ArrowBackIcon onClick={preModel} fontSize="small" className="mt-[2px] mr-2" />
+              <ArrowBackIcon
+                onClick={preModel}
+                fontSize="small"
+                className="mt-[2px] mr-2 cursor-pointer"
+              />
               <Box className="flex flex-col">
                 <Typography color="initial">Create new Ad</Typography>
                 <Typography color="initial">Step 1 of 4</Typography>
@@ -658,13 +725,13 @@ const MyAds = () => {
               </Typography>
               <Box className="w-full flex justify-center gap-x-3 mt-10  ">
                 <button
-                  className="bg-blue-500 px-2  py-1 text-white rounded-lg hover:bg-blue-400"
+                  className="bg-[#05379A] px-2  py-1 text-white rounded-lg hover:bg-opacity-75"
                   onClick={buyMethod}
                 >
                   Purchase Ad
                 </button>
                 <button
-                  className="bg-blue-500 px-2  py-1 text-white rounded-lg hover:bg-blue-400"
+                  className="bg-[#05379A] px-2  py-1 text-white rounded-lg hover:bg-opacity-75"
                   onClick={salesMethod}
                 >
                   Sales Ad
@@ -701,7 +768,7 @@ const MyAds = () => {
         </DialogContent>
         <DialogActions></DialogActions>
       </Dialog>
-    </Box >
+    </Box>
   );
 };
 

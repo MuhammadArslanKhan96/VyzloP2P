@@ -54,6 +54,7 @@ const PaymentMethodTags = ({
           value={customMethod}
           onChange={handleCustomMethodChange}
           sx={{ m: 1, minWidth: 300 }}
+          required
         />
         <Button onClick={handleAddCustomMethod}>Add</Button>
       </Box>

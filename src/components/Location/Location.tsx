@@ -5,7 +5,7 @@ interface CountryOption {
   label: string;
   value: string;
 }
-function CountrySelector() {
+function CountrySelector({ countryMethod }: any) {
   const [value, setValue] = useState<CountryOption | null>(null);
   const options = useMemo(() => {
     return countryList()
@@ -18,6 +18,7 @@ function CountrySelector() {
 
   const changeHandler = (selectedOption: CountryOption | null) => {
     setValue(selectedOption);
+    countryMethod(selectedOption);
   };
 
   return <Select options={options} value={value} onChange={changeHandler} />;
