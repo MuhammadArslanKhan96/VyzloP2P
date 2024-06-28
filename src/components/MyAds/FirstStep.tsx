@@ -53,8 +53,8 @@ export default function FirstStep({ updateFields, networkData }: { updateFields:
                             >
                                 {networkData.length > 0 ? (
                                     networkData.map((item: any) =>
-                                        Object.entries(item).map(([key, value]) => (
-                                            <MenuItem key={key} value={value as any}>
+                                        Object.entries(item).map(([key, value]: [string, any]) => (
+                                            <MenuItem key={key} value={value?.symbol as any}>
                                                 {key}
                                             </MenuItem>
                                         ))
