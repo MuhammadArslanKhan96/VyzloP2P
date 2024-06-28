@@ -63,7 +63,7 @@ const Sidebar = ({
             </h1>
           </div>
           <h1 className="p-2 font-semibold">Products</h1>
-          <div className="py-4 px-2">
+          <div className="py-4">
             {/* <button
               onClick={toggleP2PDropDown}
               className="flex justify-between items-center w-fullw-[14vw] hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 p-4 rounded-md"
@@ -84,12 +84,13 @@ const Sidebar = ({
               <Link
                 href="/"
                 onClick={toggleMenu}
-                className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
+                className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 p-1 rounded-md"
               >
                 <h1 className="flex items-center p-4 gap-2 w-full">
                   <Image
                     src={sidebarIcon1}
                     alt="sidebarIcon1"
+                    className="w-10 h-[22px]"
                     width={25}
                     height={20}
                   />
@@ -99,14 +100,17 @@ const Sidebar = ({
               <Link
                 href="/create-ads"
                 onClick={toggleMenu}
-                className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
+                className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 p-1 rounded-md"
               >
-                <h1 className="flex items-center p-4 gap-2 w-full">Create Ads</h1>
+                <h1 className="flex items-center p-4 gap-2 w-full">
+                  <SiGoogleads className="w-10 h-[22px]" />
+                  Create Ads
+                </h1>
               </Link>
               <Link
                 href="/Wallet"
                 onClick={toggleMenu}
-                className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md"
+                className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 p-1 rounded-md"
               >
                 <h1 className="flex items-center p-4 gap-2 w-full">
                   <FaWallet className="w-10 h-[22px]" />
@@ -173,9 +177,9 @@ const Sidebar = ({
         </div> */}
         <div className="px-4">
           <h1 className="p-2 font-semibold">More From VYZLO</h1>
-          <div className="py-2 px-4">
+          <div className="py-2">
             <a href="https://t.me/Vyzlo" target="blank">
-              <button className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
+              <button className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 p-1 rounded-md">
                 <h1 className="flex items-center p-4 gap-2 w-full">
                   <FaTelegram />
                   Telegram
@@ -183,7 +187,7 @@ const Sidebar = ({
               </button>
             </a>
             <a href=" https://discord.gg/aVzxt4Ka " target="blank">
-              <button className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
+              <button className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 p-1 rounded-md">
                 <h1 className="flex items-center p-4 gap-2 w-full">
                   <FaDiscord />
                   Discord
@@ -194,7 +198,7 @@ const Sidebar = ({
               href="https://www.facebook.com/profile.php?id=61558965401403"
               target="blank"
             >
-              <button className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 ml-4 p-1 rounded-md">
+              <button className="flex justify-between items-center w-full hover:bg-[#d4ebfc] hover:text-[#2196f3] transtiotion-all duration-500 p-1 rounded-md">
                 <h1 className="flex items-center p-4 gap-2 w-full">
                   <FaFacebook />
                   Facebook
@@ -251,7 +255,7 @@ const Sidebar = ({
         </div>
       </div>
       <div
-        className={`hidden transition-all bg-white h-full duration-300 ease-in-out fixed top-[40px] z-20 lg:flex flex-col gap-10 mt-10 items-center w-20 ${openMenu ? "-left-40" : "left-0"
+        className={`hidden transition-all bg-white h-full duration-300 ease-in-out fixed top-[80px] z-20 lg:flex flex-col gap-10 items-center w-20 ${openMenu ? "-left-40" : "left-0"
           }`}
       >
         <Link href="/">
@@ -261,7 +265,7 @@ const Sidebar = ({
             offset={25}
             placement="right"
             content={
-              <div className="rounded-lg mt-10 bg-white text-gray-700">
+              <div className="rounded-lg bg-white text-gray-700">
                 <div className="p-2">
                   <Link
                     href="/"
@@ -274,12 +278,13 @@ const Sidebar = ({
               </div>
             }
           >
-            <button className="hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+            <button className="py-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
               <Image
                 src={sidebarIcon1}
                 alt="sidebarIcon1"
                 width={25}
                 height={20}
+                className="w-10 h-[22px]"
               />
             </button>
           </Tooltip>
@@ -304,7 +309,7 @@ const Sidebar = ({
             </div>
           }
         >
-          <button className="hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+          <button className="py-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
             <PeopleIcon />
           </button>
         </Tooltip> */}
@@ -316,7 +321,7 @@ const Sidebar = ({
             offset={25}
             placement="right"
             content={
-              <div className="rounded-lg mt-10 bg-white text-gray-700">
+              <div className="rounded-lg bg-white text-gray-700">
                 <div className="p-2">
                   <Link
                     href="/Wallet"
@@ -329,7 +334,7 @@ const Sidebar = ({
               </div>
             }
           >
-            <button className="hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+            <button className="py-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
               <FaWallet className="w-10 h-[22px]" />
             </button>
           </Tooltip>
@@ -341,7 +346,7 @@ const Sidebar = ({
             offset={25}
             placement="right"
             content={
-              <div className="rounded-lg mt-10 bg-white text-gray-700">
+              <div className="rounded-lg bg-white text-gray-700">
                 <div className="p-2">
                   <Link
                     href="/create-ads"
@@ -354,7 +359,7 @@ const Sidebar = ({
               </div>
             }
           >
-            <button className="hover:p-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+            <button className="py-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
               <SiGoogleads className="w-10 h-[22px]" />
             </button>
           </Tooltip>
@@ -366,7 +371,7 @@ const Sidebar = ({
             offset={25}
             placement="right"
             content={
-              <div className="rounded-lg mt-10 bg-white text-gray-700">
+              <div className="rounded-lg bg-white text-gray-700">
                 <div className="p-2">
                   <Link
                     href="https://t.me/Vyzlo"
@@ -380,7 +385,7 @@ const Sidebar = ({
               </div>
             }
           >
-            <button className="hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+            <button className="py-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
               <FaTelegram className="w-10 h-[22px]" />
             </button>
           </Tooltip>
@@ -393,7 +398,7 @@ const Sidebar = ({
             offset={25}
             placement="right"
             content={
-              <div className="rounded-lg mt-10 bg-white text-gray-700">
+              <div className="rounded-lg bg-white text-gray-700">
                 <div className="p-2">
                   <Link
                     href="/https://discord.com/invite/aVzxt4Ka"
@@ -407,7 +412,7 @@ const Sidebar = ({
               </div>
             }
           >
-            <button className="hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+            <button className="py-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
               <FaDiscord className="w-10 h-[22px]" />
             </button>
           </Tooltip>
@@ -423,7 +428,7 @@ const Sidebar = ({
             offset={25}
             placement="right"
             content={
-              <div className="rounded-lg mt-10 bg-white text-gray-700">
+              <div className="rounded-lg bg-white text-gray-700">
                 <div className="p-2">
                   <Link
                     href="https://www.facebook.com/profile.php?id=61558965401403"
@@ -437,7 +442,7 @@ const Sidebar = ({
               </div>
             }
           >
-            <button className="hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+            <button className="py-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
               <FaFacebook className="w-10 h-[22px]" />
             </button>
           </Tooltip>
@@ -474,7 +479,7 @@ const Sidebar = ({
             </div>
           }
         >
-          <button className="hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+          <button className="py-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
             <YouTubeIcon />
           </button>
         </Tooltip>
@@ -487,7 +492,7 @@ const Sidebar = ({
             <div className="bg-gray-800 text-white p-2 rounded-lg">FAQs</div>
           }
         >
-          <button className="hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
+          <button className="py-2 hover:rounded transtition-all duration-300 hover:bg-[#d4ebfc]">
             <HelpOutlineIcon />
           </button>
         </Tooltip> */}
