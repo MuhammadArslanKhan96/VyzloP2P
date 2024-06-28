@@ -76,14 +76,14 @@ const App: React.FC<AppProps> = ({
       <div className="flex gap-2 p-1 bg-blue-100 rounded-lg w-fit absolute top-12 left-[150px] md:top-[12px] md:left-[48px]">
         <button
           onClick={() => handleFilter("buy")}
-          className={`text-gray-400 mx-auto w-full py-1 px-4 rounded-lg transition-all duration-400 ${filterType === "buy" ? "text-white bg-blue-500" : "bg-blue-100"
+          className={`text-gray-400 mx-auto w-full py-1 px-4 rounded-lg transition-all duration-400 ${filterType === "buy" ? "text-white bg-green-500" : "bg-blue-100"
             }`}
         >
           Buy
         </button>
         <button
           onClick={() => handleFilter("sell")}
-          className={`text-gray-400 px-4 py-1 rounded-lg transition-all duration-400 ${filterType === "sell" ? "text-white bg-blue-500" : "bg-blue-100"
+          className={`text-gray-400 px-4 py-1 rounded-lg transition-all duration-400 ${filterType === "sell" ? "text-white bg-red-500" : "bg-blue-100"
             }`}
         >
           Sell

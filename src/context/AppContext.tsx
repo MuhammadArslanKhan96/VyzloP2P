@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { setWalletAddress } from "@/hooks/cookies";
 import { chains, networkIds } from "@/constants/rpcs";
@@ -77,7 +77,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     return ethersProvider;
   };
 
-  const getBalance = async () => {
+  const getBalance = useCallback(async (Wallet?: string) => {
     const provider = new ethers.BrowserProvider(window.ethereum);
     const selectedChain = await provider.getNetwork();
     const chainId = Number(selectedChain.chainId);
@@ -85,10 +85,10 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     const chainsValues = Object.values(networkIds);
     const selectedCoin = chains[chainsKeys[chainsValues.indexOf(chainId)] as SupportedBlockchains];
     setChainCoin(selectedCoin.nativeCurrency.name);
-    const balanceEth = await provider.getBalance(wallet);
+    const balanceEth = await provider.getBalance(Wallet ? Wallet : wallet);
     const balance = ethers.formatEther(balanceEth);
     setBalance(parseFloat(balance))
-  }
+  }, [wallet]);
 
   const getWalletFunction = async (connect?: boolean) => {
     if (window.ethereum) {
@@ -116,7 +116,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
         setWalletAddress(Wallet);
         localStorage.setItem("walletConnected", "true");
 
-        await getBalance();
+        Wallet && await getBalance(Wallet);
 
 
         window.ethereum.on("connect", getBalance);
@@ -151,6 +151,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const disconnectWallet = async () => {
+    setWallet(null);
     setWalletAddress(null);
     localStorage.removeItem("walletConnected");
     setBalance(0);

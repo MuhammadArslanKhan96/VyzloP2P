@@ -168,15 +168,15 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({
       >
         {wallet && (
           <div className="p-5">
-            <div className="flex justify-end mb-4">
-              <div
-                onClick={disconnectWallet}
-                className="cursor-pointer text-gray-600 hover:text-red-600 transition-colors duration-300"
-              >
-                <FaPowerOff size={20} />
+            <div className="bg-white shadow-md relative rounded-xl p-6">
+              <div className="absolute right-4 mb-4">
+                <div
+                  onClick={disconnectWallet}
+                  className="cursor-pointer text-gray-600 hover:text-red-600 transition-colors duration-300"
+                >
+                  <FaPowerOff size={20} />
+                </div>
               </div>
-            </div>
-            <div className="bg-white shadow-md rounded-xl p-6">
               <h1 className="font-bold text-lg mb-2">Wallet</h1>
               <Link
                 target="_blank"
