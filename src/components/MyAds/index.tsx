@@ -23,7 +23,8 @@ const MyAdsPage = () => {
   const [networkData, setNetworkData] = useState<any[]>([]);
   const fields = [
     [
-      "wallet",
+      "userName",
+      "takerAddress",
       "blockChain",
       "cryptoSymbol",
       "fiatCurrency",
@@ -36,6 +37,7 @@ const MyAdsPage = () => {
   ];
   const fieldsNames = [
     [
+      "userName",
       "takerAddress",
       "Network",
       "Coin",
@@ -50,12 +52,12 @@ const MyAdsPage = () => {
 
   const { wallet, getEthersInstance } = useAppContext();
   const [createOrder, setCreateOrder] = useState<{ [key: string]: any }>({
+    userName: "",
     blockChain: "",
     cryptoSymbol: "",
     fiatCurrency: "",
     method: "",
     selectedUserId: 0,
-    takerAddress: wallet,
     txType: "P2P",
     uid: 0,
     value: "0.0001",
@@ -159,7 +161,7 @@ const MyAdsPage = () => {
         if (!fieldExists) {
           throw new Error(
             `${
-              fieldName === "wallet"
+              fieldName === "takerAddress"
                 ? "Please connect your wallet "
                 : `${
                     fieldsNames[currentStep][
@@ -182,7 +184,7 @@ const MyAdsPage = () => {
   };
 
   useEffect(() => {
-    updateFields("wallet", wallet);
+    updateFields("takerAddress", wallet);
   }, [wallet]);
 
   return (

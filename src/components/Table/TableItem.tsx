@@ -67,7 +67,14 @@ const App: React.FC<AppProps> = ({
     }
   };
   const handleClose = () => setOpenModel(false);
-  const headTableName = ["price", "payment", "Limits", "Available", ""];
+  const headTableName = [
+    "advertiser",
+    "price",
+    "payment",
+    "Limits",
+    "Available",
+    "",
+  ];
 
   return (
     <>
@@ -111,12 +118,14 @@ const App: React.FC<AppProps> = ({
               filteredData.map((item) => (
                 <tr key={item.key} className="bg-white">
                   <td className="px-6 py-4 text-sm text-gray-500">
+                    {item.userName ? item.userName : "no name"}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
                     {item.price} {item.fiatCurrency.toUpperCase()}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {item.paymentMethod && item.paymentMethod.join(", ")}
                   </td>
-
                   <td className="px-6 py-4 text-sm text-gray-500 ">
                     <div>
                       {item.fiatCurrency.toUpperCase()} {item.min}
@@ -125,7 +134,6 @@ const App: React.FC<AppProps> = ({
                       {item.fiatCurrency.toUpperCase()} {item.max}
                     </div>
                   </td>
-
                   <td className="px-6 py-4 text-sm text-gray-500 ">
                     <div>
                       {item.price} {item.cryptoSymbol}

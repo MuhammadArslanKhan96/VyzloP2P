@@ -1,4 +1,5 @@
 export interface Order {
+    userName: any;
     country: any;
     time(time: any): import("react").ReactNode;
     paymentMethod: any;

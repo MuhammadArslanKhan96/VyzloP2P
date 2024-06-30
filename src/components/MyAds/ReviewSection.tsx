@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 
 export default function ReviewSection({ createOrder }: { createOrder: any }) {
   const list1 = [
+    { username: createOrder.userName },
     { price: createOrder.price },
     { "limit of the offers": `${createOrder.min} / ${createOrder.max}` },
     { "Minimum Limit": createOrder.min },

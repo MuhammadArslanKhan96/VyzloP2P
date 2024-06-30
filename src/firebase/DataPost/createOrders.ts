@@ -2,6 +2,7 @@ import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../../utils/firebaseConfig";
 
 interface UserData {
+  userName?:any,
   blockChain?: string;
   cryptoSymbol?: any;
   fiatCurrency?: string;
