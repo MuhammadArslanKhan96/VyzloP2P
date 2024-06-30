@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchOrder } from "../../utils/get/getOrder";
+import { fetchOrder } from "../firebase/DataFetching/getOrder";
 import Ellipsis from "@/components/Ellipsis/Ellipsis";
 
 interface OrderItem {

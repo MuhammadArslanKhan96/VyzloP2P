@@ -51,7 +51,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <h1>Coming soon, stay with us</h1>
-{/*       <TelegramProvider>
+      {/*       <TelegramProvider>
         <AppContextProvider>
           {!hideSidebarAndHeader && (
             <Header

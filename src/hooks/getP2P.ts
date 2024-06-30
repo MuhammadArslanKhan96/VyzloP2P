@@ -1,53 +1,4 @@
-// import { collection, getDocs, query, where } from "firebase/firestore";
-// import {db} from "../../utils/firebaseConfig";
 
-// const getP2P = async (walletAddress:any) => {
-// try {
-//   const p2pCollection = collection(db, 'P2POrder');
-//   let p2pQuery = query(p2pCollection);
-
-//   if (walletAddress) {
-//     p2pQuery = query(p2pCollection, where("wallet", "==", walletAddress));
-//   }
-
-//   const p2pGetDoc = await getDocs(p2pQuery);
-//   const filteredData = p2pGetDoc.docs.map((doc) => doc.data());
-//   if (filteredData.length > 0) {
-//       const advertiser = filteredData[0].advertiser;
-//       return advertiser;
-//     } else {
-//       return null;
-//     }
-// } catch (error) {
-//   console.error('Error fetching data:', error);
-//   return { data: [], loading: false, error: 'Error fetching data' };
-// }
-// };
-
-// export default getP2P;
-
-// import { collection, getDocs } from "firebase/firestore";
-// import { db } from "../../utils/firebaseConfig";
-
-// const getP2P = async (walletAddress: any) => {
-//   try {
-//     const p2pCollection = collection(db, 'P2POrder');
-//     const p2pGetDoc = await getDocs(p2pCollection);
-//     const filteredData = p2pGetDoc.docs.map((doc) => ({
-//       id: doc.id,
-//       ...doc.data()
-//     }));
-
-//     const filteredItem = filteredData.find(item => item.id === walletAddress);
-//      return filteredItem?.type
-
-//   } catch (error) {
-//     console.error('Error fetching data:', error);
-//     return { data: [], loading: false, error: 'Error fetching data' };
-//   }
-// };
-
-// export default getP2P;
 import { collection, getDocs, updateDoc, doc, getDoc, query, where, DocumentData, addDoc } from "firebase/firestore";
 import { db } from "../../utils/firebaseConfig";
 
@@ -60,7 +11,6 @@ export const getP2P = async (walletAddress: any, type: any) => {
       if (p2pDoc.id === walletAddress) {
         const data = p2pDoc.data();
         if (data.type !== type) {
-          // Update the document if type needs to be changed
           await updateDoc(doc(db, "P2POrder", p2pDoc.id), {
             type: type,
           });
@@ -113,25 +63,6 @@ export const getWalletMessage = async (makerWallet: string) => {
     return false;
   }
 };
-
-
-// const walletP2P = async (walletAddress: string, doc: string) => {
-//   try {
-//     const p2pCollection = collection(db, 'P2POrder');
-//     const q = query(p2pCollection, where('docId', '==', doc), where('walletAddress', '==', walletAddress));
-//     const querySnapshot = await getDocs(q);
-
-//     const data = querySnapshot.docs.map(doc => ({
-//       id: doc.id,
-//       ...doc.data()
-//     }));
-
-//     return { data, loading: false, error: null };
-//   } catch (error) {
-//     console.error('Error fetching data:', error);
-//     return { data: [], loading: false, error: 'Error fetching data' };
-//   }
-// };
 
 
 

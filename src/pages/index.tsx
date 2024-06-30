@@ -15,12 +15,12 @@ export default function Home() {
 
   return (
     <>
-      <h1>Coming Soon, stay with us</h1>
-{/*       <Market
+      {/* <h1>Coming Soon, stay with us</h1> */}
+      <Market
         tab={tab}
         toggleTabBuy={toggleTabBuy}
         toggleTabSell={toggleTabSell}
-      /> */}
+      />
     </>
   );
 }

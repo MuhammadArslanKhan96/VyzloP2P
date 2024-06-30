@@ -1,8 +1,8 @@
 import { networkIds } from "@/constants/rpcs";
 import { useAppContext } from "@/context/AppContext";
+import useFirestoreListener from "@/hooks/useFirestoreListener";
 import { SupportedBlockchains } from "@/types";
-import React from "react";
-import { RxUpdate } from "react-icons/rx";
+import React, { useEffect, useState } from "react";
 
 interface TableHeaderProps {
   setSelectedFiat: (value: string) => void;
@@ -24,7 +24,40 @@ const TableHeader: React.FC<TableHeaderProps> = ({
   setSelectedCommunities,
 }) => {
   const { getEthersInstance } = useAppContext();
+  const [fiatCurrencies, setFiatCurrencies] = useState<string[]>([]);
+  const [blockChain, setBlockChain] = useState<string[]>([]);
+  const [crypto, setCrypto] = useState<string[]>([]);
 
+  const getData = (table: any) => {
+    const newFiatCurrencies = Array.from(
+      new Set(table.map((item: any) => item.fiatCurrency))
+    );
+    const newBlockChain = Array.from(
+      new Set(table.map((item: any) => item.blockChain))
+    );
+    const newCrypto = Array.from(
+      new Set(table.map((item: any) => item.cryptoSymbol))
+    );
+
+    setStateIfDifferent(setFiatCurrencies, fiatCurrencies, newFiatCurrencies);
+    setStateIfDifferent(setBlockChain, blockChain, newBlockChain);
+    setStateIfDifferent(setCrypto, crypto, newCrypto);
+  };
+
+  const setStateIfDifferent = (
+    setStateFunction: (value: any) => void,
+    currentState: any,
+    newState: any
+  ) => {
+    if (JSON.stringify(currentState) !== JSON.stringify(newState)) {
+      setStateFunction(newState);
+    }
+  };
+  const listener = useFirestoreListener("createOrder", getData);
+
+  useEffect(() => {
+    listener();
+  }, []);
   return (
     <>
       <div className="hidden md:flex px-8 py-4 justify-center items-center gap-x-6 mx-auto w-full  rounded-lg bg-white mt-8">
@@ -73,15 +106,11 @@ const TableHeader: React.FC<TableHeaderProps> = ({
                 <option value="" className="text-sm">
                   All
                 </option>
-                <option value="ZETA" className="text-sm">
-                  ZETA
-                </option>
-                <option value="BSC" className="text-sm">
-                  BSC
-                </option>
-                <option value="POLYGON" className="text-sm">
-                  Polygon
-                </option>
+                {blockChain.map((blockchain: any) => (
+                  <option value={blockchain} className="text-sm">
+                    {blockchain}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="flex flex-col">
@@ -96,15 +125,11 @@ const TableHeader: React.FC<TableHeaderProps> = ({
                 <option value="" className="text-sm">
                   All
                 </option>
-                <option value="USDT" className="text-sm">
-                  USDT
-                </option>
-                <option value="USDC" className="text-sm">
-                  USDC
-                </option>
-                <option value="DAI" className="text-sm">
-                  DAI
-                </option>
+                {crypto.map((crypto: any) => (
+                  <option value={crypto} className="text-sm">
+                    {crypto}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="flex flex-col">
@@ -119,10 +144,10 @@ const TableHeader: React.FC<TableHeaderProps> = ({
                 <option value="" className="text-sm">
                   All
                 </option>
-                <option value="EUR">EUR</option>
-                <option value="ARS">ARS</option>
-                <option value="COP">COP</option>
-                <option value="USD">USD</option>
+                {fiatCurrencies.map((fait: any) => (
+                  <option value={fait}>{fait.toUpperCase()}</option>
+                ))}
+                {}
               </select>
             </div>
           </div>

@@ -187,7 +187,7 @@ const Purchase = () => {
             ))}
           </Stepper>
         </Box>
-        <Box
+        {/* <Box
           sx={{
             width: { xs: "100%", md: "50%" },
             display: "flex",
@@ -211,7 +211,7 @@ const Purchase = () => {
             <SettingsIcon sx={{ fontSize: 16 }} />
             <AccountCircleIcon sx={{ fontSize: 16 }} />
           </Box>
-        </Box>
+        </Box> */}
       </Box>
       <Box className="bg-blue-100 p-5 md:flex h-screen  ">
         <Box

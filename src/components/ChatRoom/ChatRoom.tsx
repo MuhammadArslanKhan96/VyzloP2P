@@ -34,7 +34,13 @@ interface MessageType {
   imageURL?: string;
 }
 
-const ChatRoom = ({ setChatDisplay, chatDisplay }: { setChatDisplay: Function, chatDisplay: boolean }) => {
+const ChatRoom = ({
+  setChatDisplay,
+  chatDisplay,
+}: {
+  setChatDisplay: Function;
+  chatDisplay: boolean;
+}) => {
   const { maker, setMaker } = useAppContext();
   const router = useRouter();
   const { id } = router.query;
@@ -51,7 +57,6 @@ const ChatRoom = ({ setChatDisplay, chatDisplay }: { setChatDisplay: Function, c
   const [seller, setSellerName] = useState("");
   const user2 = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
   const user1 = walletAddress;
-
 
   useEffect(() => {
     const fetchWalletAddress = async (user2: any) => {
@@ -182,11 +187,18 @@ const ChatRoom = ({ setChatDisplay, chatDisplay }: { setChatDisplay: Function, c
         width: { xs: "100%", md: "30%" },
         marginTop: { md: 0 },
       }}
-      className={`${!chatDisplay ? "hidden" : ""} md:flex border bg-white rounded-lg h-[500px] ml-0 md:ml-3 flex flex-col justify-between`}
+      className={`${
+        !chatDisplay ? "hidden" : ""
+      } md:flex border bg-white rounded-lg h-[500px] ml-0 md:ml-3 flex flex-col justify-between`}
     >
       <Box className="w-full flex justify-between items-center border-b p-4">
         <Box className="flex">
-          <button onClick={() => setChatDisplay(false)} className="border-0 md:hidden">◀</button>
+          <button
+            onClick={() => setChatDisplay(false)}
+            className="border-0 md:hidden"
+          >
+            ◀
+          </button>
           <Avatar />
           <Box className="ml-1">
             <Typography fontSize={14}>
@@ -198,7 +210,6 @@ const ChatRoom = ({ setChatDisplay, chatDisplay }: { setChatDisplay: Function, c
           </Box>
         </Box>
         <Box>
-
           <Button
             sx={{ fontSize: 10, borderRadius: 2 }}
             className="bg-blue-100/50"
@@ -206,7 +217,6 @@ const ChatRoom = ({ setChatDisplay, chatDisplay }: { setChatDisplay: Function, c
           >
             Cancel order
           </Button>
-
 
           <MoreVertIcon />
         </Box>
@@ -244,30 +254,35 @@ const ChatRoom = ({ setChatDisplay, chatDisplay }: { setChatDisplay: Function, c
                 return (
                   <Box
                     key={index}
-                    className={`w-full flex items-center ${msg.sender === user1 ? "justify-end" : "justify-start"
-                      }`}
+                    className={`w-full flex items-center ${
+                      msg.sender === user1 ? "justify-end" : "justify-start"
+                    }`}
                   >
                     <Box
-                      className={`p-2 rounded-lg w-[60%] ${msg.sender === user1
-                        ? "bg-blue-100 text-left"
-                        : "bg-pink-100 text-right"
-                        } mb-2`}
+                      className={`p-2 rounded-lg w-[60%] ${
+                        msg.sender === user1
+                          ? "bg-blue-100 text-left"
+                          : "bg-pink-100 text-right"
+                      } mb-2`}
                     >
                       <Typography
-                        className={`text-[9px]  ${maker ? "text-right" : "text-left"
-                          }`}
+                        className={`text-[9px]  ${
+                          maker ? "text-right" : "text-left"
+                        }`}
                       >
                         {maker ? "unknown" : seller}
                       </Typography>
                       <Typography
-                        className={`text-sm  ${maker ? "text-right" : "text-left"
-                          }`}
+                        className={`text-sm  ${
+                          maker ? "text-right" : "text-left"
+                        }`}
                       >
                         {msg.text}
                       </Typography>
                       <Typography
-                        className={`text-[9px] ${maker ? "text-left" : "text-right"
-                          }`}
+                        className={`text-[9px] ${
+                          maker ? "text-left" : "text-right"
+                        }`}
                       >
                         {msg.createdAt.toLocaleTimeString()}
                       </Typography>
@@ -285,7 +300,6 @@ const ChatRoom = ({ setChatDisplay, chatDisplay }: { setChatDisplay: Function, c
         </div>
       </MainContainer>
       <Box className="w-full flex justify-between items-center px-4 py-3 border-t">
-        <InsertEmoticonIcon />
         <label htmlFor="image-upload">
           <ImageIcon className="text-blue-400" />
         </label>

@@ -1,5 +1,5 @@
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import { db } from "../../../utils/firebaseConfig";
 
 export interface OrderItem {
   blockChain: string;

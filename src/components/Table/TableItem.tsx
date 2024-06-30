@@ -67,33 +67,11 @@ const App: React.FC<AppProps> = ({
     }
   };
   const handleClose = () => setOpenModel(false);
-  const headTableName = [
-    "blockChain",
-    "address",
-    "payment Method",
-    "value",
-    // "time",
-    "country",
-    "Maximum",
-    "Minimum",
-    "price",
-    "Action",
-  ];
-  // const formatTime = (time: { seconds: number; nanoseconds: number }) => {
-  //   const date = new Date(time.seconds * 1000 + time.nanoseconds / 1000000);
-  //   return date.toLocaleString(); // Customize the format as needed
-  // };
+  const headTableName = ["price", "payment", "Limits", "Available", ""];
 
   return (
     <>
-      <div className="flex justify-center space-x-4 my-4">
-        {/* <button
-          onClick={() => handleFilter(null)}
-          className="text-sm px-4 py-2 rounded-md transition-all duration-300 text-white bg-blue-500 hover:bg-blue-300"
-        >
-          All
-        </button>*/}
-      </div>
+      <div className="flex justify-center space-x-4 my-4"></div>
       <div className="flex gap-2 p-1 bg-blue-100 rounded-lg w-fit absolute top-12 left-[150px] md:top-[12px] md:left-[48px]">
         <button
           onClick={() => handleFilter("buy")}
@@ -121,7 +99,7 @@ const App: React.FC<AppProps> = ({
                 <th
                   key={index}
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 font-bold text-left text-xs   uppercase tracking-wider"
                 >
                   {item}
                 </th>
@@ -133,33 +111,26 @@ const App: React.FC<AppProps> = ({
               filteredData.map((item) => (
                 <tr key={item.key} className="bg-white">
                   <td className="px-6 py-4 text-sm text-gray-500">
-                    {item.blockChain}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    {<Ellipsis num={item.wallet} />}
+                    {item.price} {item.fiatCurrency.toUpperCase()}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {item.paymentMethod && item.paymentMethod.join(", ")}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    {item.value}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    {item.country}
-                  </td>
-
-                  {/* <td className="px-6 py-4 text-sm text-gray-500">
-                    {item.time && formatTime(item.time)}
-                  </td> */}
 
                   <td className="px-6 py-4 text-sm text-gray-500 ">
-                    {item.max}
+                    <div>
+                      {item.fiatCurrency.toUpperCase()} {item.min}
+                    </div>
+                    <div>
+                      {item.fiatCurrency.toUpperCase()} {item.max}
+                    </div>
                   </td>
+
                   <td className="px-6 py-4 text-sm text-gray-500 ">
-                    {item.min}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500 ">
-                    {item.price}
+                    <div>
+                      {item.price} {item.cryptoSymbol}
+                    </div>
+                    <div>{item.blockChain}</div>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
                     <Link

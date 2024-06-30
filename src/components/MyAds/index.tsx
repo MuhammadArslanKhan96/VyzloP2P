@@ -11,8 +11,8 @@ import CreateLayout from "./Layout";
 import MyAds from "./Myads";
 import ReviewSection from "./ReviewSection";
 import SecondStep from "./SecondStep";
-import { CreateOrder } from "../../../utils/write/createOrders";
-import { GetToken } from "../../../utils/get/getTokensByIdName";
+import { GetToken } from "@/firebase/DataFetching/getTokensByIdName";
+import { CreateOrder } from "@/firebase/DataPost/createOrders";
 
 const MyAdsPage = () => {
   const router = useRouter();
@@ -36,7 +36,7 @@ const MyAdsPage = () => {
   ];
   const fieldsNames = [
     [
-      "wallet",
+      "takerAddress",
       "Network",
       "Coin",
       "Fiat Currency",
@@ -55,7 +55,7 @@ const MyAdsPage = () => {
     fiatCurrency: "",
     method: "",
     selectedUserId: 0,
-    wallet: wallet,
+    takerAddress: wallet,
     txType: "P2P",
     uid: 0,
     value: "0.0001",

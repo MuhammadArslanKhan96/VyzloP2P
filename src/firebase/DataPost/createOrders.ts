@@ -1,5 +1,5 @@
 import { addDoc, collection } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import { db } from "../../../utils/firebaseConfig";
 
 interface UserData {
   blockChain?: string;
@@ -7,7 +7,7 @@ interface UserData {
   fiatCurrency?: string;
   method?: string;
   selectedUserId?: number;
-  wallet?: string;
+  takerAddress?: string;
   txType?: string;
   uid?: number;
   value?: string;
@@ -22,7 +22,6 @@ interface UserData {
 }
 
 export const CreateOrder = async (data: UserData) => {
-  console.log(data)
   try {
     const time = new Date().toISOString(); 
     const userCollection = collection(db, 'createOrder');
