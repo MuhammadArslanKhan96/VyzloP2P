@@ -22,10 +22,11 @@ import {
 import { db, storage } from "../../../utils/firebaseConfig";
 import { useRouter } from "next/router";
 import { getWalletAddress } from "@/hooks/cookies";
-import walletP2P, { getP2P, getWallet } from "@/hooks/getP2P";
+import walletP2P, { UpdateP2POrder, getP2P, getWallet } from "@/hooks/getP2P";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import useFirestoreListener from "@/hooks/useFirestoreListener";
 interface MessageType {
   id: string;
   text: string;
@@ -55,23 +56,32 @@ const ChatRoom = ({
   const [makerSeller, setMakerWallet] = useState("");
   const [name, setName] = useState<string>("");
   const [seller, setSellerName] = useState("");
+  const [takerData, setTakerData] = useState<any>();
   const user2 = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
   const user1 = walletAddress;
 
-  useEffect(() => {
-    const fetchWalletAddress = async (user2: any) => {
-      const { data, loading, error } = await getWallet(user2);
-      if (loading) {
-      } else if (error) {
-        console.error("Error:", error);
-      } else {
-        setMakerWallet(data?.wallet);
-        setSellerName(data?.advertiser);
-      }
-    };
-    fetchWalletAddress(user2);
-  }, [user2]);
+  // useEffect(() => {
+  //   const fetchWalletAddress = async (user2: any) => {
+  //     const { data, loading, error } = await getWallet(user2);
+  //     if (loading) {
+  //     } else if (error) {
+  //       console.error("Error:", error);
+  //     } else {
+  //       setMakerWallet(data?.takerAddress);
+  //       setSellerName(data?.userName);
+  //     }
+  //   };
+  //   fetchWalletAddress(user2);
+  // }, [user2]);
 
+  const getData = (data: any) => {
+    setTakerData(data);
+  };
+
+  const listener = useFirestoreListener("createOrder", getData, user2);
+  useEffect(() => {
+    listener();
+  }, [user2]);
   useEffect(() => {
     const address = getWalletAddress();
     if (address) {
@@ -86,7 +96,7 @@ const ChatRoom = ({
     }
 
     const q = query(
-      collection(db, "P2POrder", user2, "messages"),
+      collection(db, "createOrder", user2, "messages"),
       orderBy("createdAt")
     );
 
@@ -132,7 +142,7 @@ const ChatRoom = ({
       messageData.imageURL = uploadedImageURL;
     }
 
-    await addDoc(collection(db, `P2POrder/${user2}/messages`), messageData);
+    await addDoc(collection(db, `createOrder/${user2}/messages`), messageData);
 
     setNewMessage("");
     setUploadedImageURL(null);
@@ -156,13 +166,13 @@ const ChatRoom = ({
   };
 
   const cancelOrder = async () => {
-    const messagesRef = collection(db, `P2POrder/${user2}/messages`);
+    const messagesRef = collection(db, `createOrder/${user2}/messages`);
     const snapshot = await getDocs(messagesRef);
     snapshot.forEach((doc) => {
       deleteDoc(doc.ref);
     });
-
     await getP2P(user2, 0);
+    UpdateP2POrder(user2, { isOpen: false });
     router.push("/");
   };
 
@@ -203,10 +213,16 @@ const ChatRoom = ({
           <Box className="ml-1">
             <Typography fontSize={14}>
               {maker
-                ? `${name?.slice(0, 6)}...${name?.slice(-6)}`
-                : `${makerSeller.slice(0, 6)}...${makerSeller.slice(-6)}`}
+                ? `${takerData?.takerAddress.slice(
+                    0,
+                    6
+                  )}...${takerData?.takerAddress.slice(-6)}`
+                : `${name?.slice(0, 6)}...${name?.slice(-6)}`}
             </Typography>
-            <Typography fontSize={14}> {maker ? "unknown" : seller}</Typography>
+            <Typography fontSize={14}>
+              {" "}
+              {maker ? takerData?.userName : "unknown"}
+            </Typography>
           </Box>
         </Box>
         <Box>
@@ -266,11 +282,11 @@ const ChatRoom = ({
                       } mb-2`}
                     >
                       <Typography
-                        className={`text-[9px]  ${
+                        className={`!text-[9px]  ${
                           maker ? "text-right" : "text-left"
                         }`}
                       >
-                        {maker ? "unknown" : seller}
+                        {maker ? "unknown" : takerData?.userName}
                       </Typography>
                       <Typography
                         className={`text-sm  ${
@@ -280,7 +296,7 @@ const ChatRoom = ({
                         {msg.text}
                       </Typography>
                       <Typography
-                        className={`text-[9px] ${
+                        className={`!text-[9px] ${
                           maker ? "text-left" : "text-right"
                         }`}
                       >

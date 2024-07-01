@@ -19,7 +19,9 @@ interface UserData {
   max?:string
   country?:string;
   price?:string
-  condition?:string
+  condition?:string;
+  status?:any;
+  type?:any
 }
 
 export const CreateOrder = async (data: UserData) => {

@@ -50,8 +50,8 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <h1>Coming soon, stay with us</h1>
-      {/*       <TelegramProvider>
+      {/* <h1>Coming soon, stay with us</h1> */}
+      <TelegramProvider>
         <AppContextProvider>
           {!hideSidebarAndHeader && (
             <Header
@@ -91,7 +91,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </div>
           </div>
         </AppContextProvider>
-      </TelegramProvider> */}
+      </TelegramProvider>
     </>
   );
 }

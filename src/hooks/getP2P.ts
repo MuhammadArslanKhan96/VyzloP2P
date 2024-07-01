@@ -4,14 +4,14 @@ import { db } from "../../utils/firebaseConfig";
 
 export const getP2P = async (walletAddress: any, type: any) => {
   try {
-    const p2pCollection = collection(db, "P2POrder");
+    const p2pCollection = collection(db, "createOrder");
     const p2pQuerySnapshot = await getDocs(p2pCollection);
 
     p2pQuerySnapshot.forEach(async (p2pDoc) => {
       if (p2pDoc.id === walletAddress) {
         const data = p2pDoc.data();
         if (data.type !== type) {
-          await updateDoc(doc(db, "P2POrder", p2pDoc.id), {
+          await updateDoc(doc(db, "createOrder", p2pDoc.id), {
             type: type,
           });
           return data
@@ -29,7 +29,7 @@ export const getP2P = async (walletAddress: any, type: any) => {
 
 export const getWallet = async (docId: string) => {
   try {
-    const p2pCollection = collection(db, "P2POrder");
+    const p2pCollection = collection(db, "createOrder");
     const p2pDoc = doc(p2pCollection, docId);
     const p2pDocSnapshot = await getDoc(p2pDoc);
 
@@ -68,11 +68,11 @@ export const getWalletMessage = async (makerWallet: string) => {
 
 const walletP2P = async (docId: any, walletAddress: any) => {
   try {
-    const p2pDocRef = doc(db, 'P2POrder', docId);
+    const p2pDocRef = doc(db, 'createOrder', docId);
     const docSnapshot = await getDoc(p2pDocRef);
     if (docSnapshot.exists()) {
       const data = docSnapshot.data() as DocumentData;
-      if (data.wallet.toLowerCase() === walletAddress && data.type === 1) {
+      if (data.takerAddress.toLowerCase() === walletAddress ) {
         return true;
       } else {
         return false;
@@ -122,11 +122,11 @@ interface Object {
 
 export const UpdateP2POrder = async (docID: any, order: Object) => {
   try {
-    await updateDoc(doc(db, "P2POrder", docID), {
+    await updateDoc(doc(db, "createOrder", docID), {
       ...order
     });
   } catch (error) {
-    console.error('Error updating document: ', error);
+    console.error('document: ', error);
     throw new Error('Error updating document');
   }
 };

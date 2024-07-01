@@ -12,9 +12,11 @@ import PaymentMethodTags from "../Field/PaymentMethodTags";
 export default function FirstStep({
   updateFields,
   networkData,
+  createOrder,
 }: {
   updateFields: (e: { target: { name: string; value: any } }) => void;
   networkData: any;
+  createOrder: any;
 }) {
   return (
     <Box className="flex flex-col justify-center items-center w-full">
@@ -37,6 +39,7 @@ export default function FirstStep({
                 required
                 name="userName"
                 onChange={updateFields}
+                defaultValue={createOrder?.userName}
                 sx={{ m: 1, minWidth: 400 }}
               ></TextField>
             </Box>
@@ -53,6 +56,7 @@ export default function FirstStep({
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
                 onChange={updateFields}
+                defaultValue={createOrder?.blockChain}
                 name="blockChain"
                 label="Network"
                 required
@@ -77,6 +81,7 @@ export default function FirstStep({
                 id="demo-simple-select-autowidth"
                 onChange={updateFields}
                 name="cryptoSymbol"
+                defaultValue={createOrder.cryptoSymbol}
                 label="Coin"
               >
                 {networkData.length > 0 ? (
@@ -104,6 +109,7 @@ export default function FirstStep({
                 required
                 name="fiatCurrency"
                 onChange={updateFields}
+                defaultValue={createOrder?.fiatCurrency}
                 sx={{ m: 1, minWidth: 400 }}
               ></TextField>
             </Box>
@@ -121,6 +127,7 @@ export default function FirstStep({
                     type="number"
                     name="min"
                     onChange={updateFields}
+                    defaultValue={createOrder?.min}
                     sx={{ width: 160 }}
                   ></TextField>
                 </Box>
@@ -132,6 +139,7 @@ export default function FirstStep({
                     required
                     type="number"
                     name="max"
+                    defaultValue={createOrder?.max}
                     onChange={updateFields}
                     sx={{ width: 160 }}
                   ></TextField>
@@ -144,6 +152,7 @@ export default function FirstStep({
               Which one or more payment methods?
             </Typography>
             <PaymentMethodTags
+              createOrder={createOrder}
               mutlipleMethod={(methods: string[]) =>
                 updateFields({
                   target: { name: "paymentMethod", value: methods },
@@ -154,6 +163,7 @@ export default function FirstStep({
             <TextField
               required
               type="number"
+              defaultValue={createOrder?.price}
               onChange={updateFields}
               name="price"
               sx={{ m: 1, minWidth: 400 }}
