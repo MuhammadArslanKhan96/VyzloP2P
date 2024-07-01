@@ -30,13 +30,13 @@ const TableHeader: React.FC<TableHeaderProps> = ({
 
   const getData = (table: any) => {
     const newFiatCurrencies = Array.from(
-      new Set(table.map((item: any) => item.fiatCurrency))
+      new Set(table.map((item: any) => item.fiatCurrency.toUpperCase()))
     );
     const newBlockChain = Array.from(
-      new Set(table.map((item: any) => item.blockChain))
+      new Set(table.map((item: any) => item.blockChain.toUpperCase()))
     );
     const newCrypto = Array.from(
-      new Set(table.map((item: any) => item.cryptoSymbol))
+      new Set(table.map((item: any) => item.cryptoSymbol.toUpperCase()))
     );
 
     setStateIfDifferent(setFiatCurrencies, fiatCurrencies, newFiatCurrencies);
