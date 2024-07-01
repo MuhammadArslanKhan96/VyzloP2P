@@ -28,7 +28,13 @@ import useFirestoreListener from "@/hooks/useFirestoreListener";
 import { UpdateP2POrder } from "@/hooks/getP2P";
 import { addresses, networkIds } from "@/constants/rpcs";
 import { SupportedBlockchains } from "@/types";
+import Ellipsis from "@/components/Ellipsis/Ellipsis";
 
+type TakerData = {
+  takerAddress: string;
+  userName: string;
+  time: { seconds: number; nanoseconds: number };
+};
 const Purchase = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -39,6 +45,16 @@ const Purchase = () => {
       ? id
       : "";
   const [p2pOrder, setP2pOrder] = useState<any>(null);
+  const [takerData, setTakerData] = useState<any>();
+  const getData = (data: any) => {
+    setTakerData(data);
+  };
+
+  const listener = useFirestoreListener("createOrder", getData, docId);
+  useEffect(() => {
+    listener();
+  }, [docId]);
+
   const statusText = [
     {
       btnText: "Create Escrow",
@@ -80,7 +96,7 @@ const Purchase = () => {
     });
   };
 
-  const eventListener = useFirestoreListener("P2POrder", getNewData, docId);
+  const eventListener = useFirestoreListener("createOrder", getNewData, docId);
 
   const updateStatus = async () => {
     try {
@@ -250,9 +266,7 @@ const Purchase = () => {
                   Add from
                 </Typography>
                 <Typography color="initial" fontSize={14}>
-                  {wallet
-                    ? `${wallet.slice(0, 6)}...${wallet.slice(-4)}`
-                    : "0x81...a6d5"}
+                  {takerData && <Ellipsis num={takerData?.takerAddress} />}
                 </Typography>
               </Box>
               <Box>
@@ -313,7 +327,7 @@ const Purchase = () => {
                 Location:
               </Typography>
               <Typography sx={{ fontWeight: "bold", fontSize: 14 }}>
-                Non specified
+                {takerData?.country}
               </Typography>
             </Box>
             <Box
@@ -328,9 +342,7 @@ const Purchase = () => {
               <Box sx={{ display: "flex", width: "100%" }}>
                 <Typography color="initial">Wallet</Typography>
                 <Typography sx={{ color: "blue", marginLeft: 1, fontSize: 14 }}>
-                  {wallet
-                    ? `${wallet.slice(0, 6)}...${wallet.slice(-4)}`
-                    : "0x81...a6d5"}
+                  {takerData && <Ellipsis num={takerData?.takerAddress} />}
                   <InsertDriveFileIcon />
                 </Typography>
               </Box>
@@ -346,7 +358,7 @@ const Purchase = () => {
                   Start of activity:
                 </Typography>
                 <Typography sx={{ color: "black" }} fontSize={14}>
-                  2024-02-01
+                  {takerData?.time}
                 </Typography>
               </Box>
             </Box>
@@ -385,7 +397,7 @@ const Purchase = () => {
               <Box sx={{ fontSize: 14 }}>
                 Network{" "}
                 <Typography sx={{ display: "inline-block", fontSize: 14 }}>
-                  BNB chain
+                  {takerData?.blockChain}
                 </Typography>
               </Box>
             </Box>
@@ -402,7 +414,7 @@ const Purchase = () => {
               <Box sx={{ fontSize: 14 }}>
                 Price:{" "}
                 <Typography sx={{ display: "inline-block", fontSize: 14 }}>
-                  10000 ARS
+                  {takerData?.price} {takerData?.fiatCurrency?.toUpperCase()}
                 </Typography>
               </Box>
               <Box sx={{ fontSize: 14 }}>
@@ -425,7 +437,7 @@ const Purchase = () => {
               <Typography
                 sx={{ display: "inline-block", fontWeight: 605, fontSize: 14 }}
               >
-                text
+                {takerData?.paymentMethod}
               </Typography>
             </Box>
             <Box sx={{ fontSize: 14 }}>
@@ -434,7 +446,8 @@ const Purchase = () => {
               >
                 Terms and conditions:{" "}
               </Typography>
-              Non specified
+              {takerData?.terms}
+              {takerData?.condition}
             </Box>
           </Box>
 
@@ -512,6 +525,7 @@ const Purchase = () => {
           </Box>
         </Box>
         <ChatRoom setChatDisplay={setChatDisplay} chatDisplay={chatDisplay} />
+        {/* <NewChatRoom /> */}
       </Box>
     </>
   );

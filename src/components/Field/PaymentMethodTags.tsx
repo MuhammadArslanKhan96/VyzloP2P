@@ -10,12 +10,18 @@ import {
 } from "@mui/material";
 
 const PaymentMethodTags = ({
+  createOrder,
   mutlipleMethod,
 }: {
+  createOrder: any;
   mutlipleMethod: (methods: string[]) => void;
 }) => {
-  const [paymentMethods, setPaymentMethods] = useState<string[]>([]);
-  const [selectedMethods, setSelectedMethods] = useState<string[]>([]);
+  const [paymentMethods, setPaymentMethods] = useState<string[]>(
+    createOrder?.paymentMethod || []
+  );
+  const [selectedMethods, setSelectedMethods] = useState<string[]>(
+    createOrder?.paymentMethod ? [createOrder?.paymentMethod] : []
+  );
   const [customMethod, setCustomMethod] = useState<string>("");
 
   const handleSelectChange = (event: any) => {
@@ -68,6 +74,7 @@ const PaymentMethodTags = ({
           id="payment-method-select"
           value={selectedMethods}
           onChange={handleSelectChange}
+          defaultValue={createOrder?.paymentMethod}
         >
           {paymentMethods.map((method) => (
             <MenuItem key={method} value={method}>

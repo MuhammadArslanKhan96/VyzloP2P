@@ -69,6 +69,8 @@ const MyAdsPage = () => {
     max: "",
     price: "",
     condition: "",
+    type: 0,
+    status: "0",
   });
   const [notification, setNotification] = useState({
     open: false,
@@ -172,6 +174,15 @@ const MyAdsPage = () => {
           );
         }
       });
+
+      const minimumOffer = createOrder?.min;
+      const maximumOffer = createOrder?.max;
+      if (minimumOffer < 0 || minimumOffer > maximumOffer) {
+        throw new Error(`Minimum offer must be less than maximum offer`);
+      } else if (maximumOffer < 0 || maximumOffer <= minimumOffer) {
+        throw new Error(`Maximum offer must be greater than minimum offer`);
+      }
+
       return true;
     } catch (error: any) {
       setNotification({
@@ -211,9 +222,15 @@ const MyAdsPage = () => {
           nextStep={() => updateStep()}
         >
           {activeModel === 0 && (
-            <FirstStep networkData={networkData} updateFields={handleChange} />
+            <FirstStep
+              networkData={networkData}
+              updateFields={handleChange}
+              createOrder={createOrder}
+            />
           )}
-          {activeModel === 1 && <SecondStep updateFields={handleChange} />}
+          {activeModel === 1 && (
+            <SecondStep updateFields={handleChange} createOrder={createOrder} />
+          )}
           {activeModel === 2 && <ReviewSection createOrder={createOrder} />}
         </CreateLayout>
       ) : (
