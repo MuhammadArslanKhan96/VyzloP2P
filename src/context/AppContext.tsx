@@ -9,6 +9,7 @@ import { ethers } from "ethers";
 import { setWalletAddress } from "@/hooks/cookies";
 import { chains, networkIds } from "@/constants/rpcs";
 import { SupportedBlockchains } from "@/types";
+import { addUserIfNotExists } from "@/services/user";
 
 const AppContext = createContext({} as any); // Provide a default value to the context
 
@@ -104,26 +105,34 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
 
         const res = await (walletConnected
           ? window.ethereum.request({
-              method: "eth_requestAccounts",
-              params: [],
-            })
+            method: "eth_requestAccounts",
+            params: [],
+          })
           : window.ethereum
-              .request({
-                method: "wallet_requestPermissions",
-                params: [
-                  {
-                    eth_accounts: {},
-                  },
-                ],
+            .request({
+              method: "wallet_requestPermissions",
+              params: [
+                {
+                  eth_accounts: {},
+                },
+              ],
+            })
+            .then(() =>
+              window.ethereum.request({
+                method: "eth_requestAccounts",
               })
-              .then(() =>
-                window.ethereum.request({
-                  method: "eth_requestAccounts",
-                })
-              ));
+            ));
 
         const Wallet = res.length > 0 ? res[0] : null;
         Wallet && setWallet(Wallet);
+
+        if (Wallet) {
+          await addUserIfNotExists({
+            address: Wallet,
+            name: "unknown"
+          });
+        }
+
         setWalletAddress(Wallet);
         localStorage.setItem("walletConnected", "true");
 
@@ -142,23 +151,23 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
         window.ethereum.on("chainChanged", async () => {
           const res = await (walletConnected
             ? window.ethereum.request({
-                method: "eth_requestAccounts",
-                params: [],
-              })
+              method: "eth_requestAccounts",
+              params: [],
+            })
             : window.ethereum
-                .request({
-                  method: "wallet_requestPermissions",
-                  params: [
-                    {
-                      eth_accounts: {},
-                    },
-                  ],
+              .request({
+                method: "wallet_requestPermissions",
+                params: [
+                  {
+                    eth_accounts: {},
+                  },
+                ],
+              })
+              .then(() =>
+                window.ethereum.request({
+                  method: "eth_requestAccounts",
                 })
-                .then(() =>
-                  window.ethereum.request({
-                    method: "eth_requestAccounts",
-                  })
-                ));
+              ));
 
           const Wallet = res.length > 0 ? res[0] : null;
           getBalance(Wallet);
