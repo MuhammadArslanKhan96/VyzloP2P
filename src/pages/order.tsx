@@ -53,7 +53,7 @@ const Order = () => {
                   data.map((item: any) => (
                     <tr key={item.key} className="bg-white">
                       <td className="px-6 py-4 text-sm text-gray-500 capitalize ">
-                        {item.userName ? item.userName : "no name"}
+                        {item.userName ? item?.userName : "no name"}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-500">
                         {item.price} {item.fiatCurrency.toUpperCase()}

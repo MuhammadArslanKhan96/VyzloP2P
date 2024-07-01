@@ -1,4 +1,5 @@
 export interface Order {
+    [x: string]: any;
     userName: any;
     country: any;
     time(time: any): import("react").ReactNode;

@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 import useFirestoreListener from "@/hooks/useFirestoreListener";
 import { Order } from "@/types/order";
 
-
 interface AppProps {
   selectedBlockchain: string;
   selectedCrypto: string;
@@ -31,7 +30,12 @@ const App: React.FC<AppProps> = ({
   const { wallet } = useAppContext();
   const [openModel, setOpenModel] = useState(false);
 
-  const getData = (tableData: Order[]) => setTableData(tableData.filter(order => wallet === order.wallet ? true : !order.isOpen))
+  const getData = (tableData: Order[]) =>
+    setTableData(
+      tableData.filter((order) =>
+        wallet === order.takerAddress ? true : !order.isOpen
+      )
+    );
 
   const listener = useFirestoreListener("P2POrder", getData);
 
@@ -45,14 +49,16 @@ const App: React.FC<AppProps> = ({
 
   const filteredData = tableData
     ? tableData.filter((item) => {
-      return (
-        item.symbol.toLowerCase().includes(selectedCrypto.toLowerCase()) &&
-        item.fiat.toLowerCase().includes(selectedFiat.toLowerCase()) &&
-        item.symbol.toLowerCase().includes(selectedCrypto.toLowerCase()) &&
-        item.blockChain.toLowerCase().includes(selectedBlockchain.toLowerCase()) &&
-        item.type === (tab ? 0 : 1)
-      );
-    })
+        return (
+          item.symbol.toLowerCase().includes(selectedCrypto.toLowerCase()) &&
+          item.fiat.toLowerCase().includes(selectedFiat.toLowerCase()) &&
+          item.symbol.toLowerCase().includes(selectedCrypto.toLowerCase()) &&
+          item.blockChain
+            .toLowerCase()
+            .includes(selectedBlockchain.toLowerCase()) &&
+          item.type === (tab ? 0 : 1)
+        );
+      })
     : tableData;
   const checkWallet = () => {
     if (wallet) {
@@ -69,11 +75,7 @@ const App: React.FC<AppProps> = ({
         <div className="flex flex-col gap-6 pt-1 pb-3">
           {filteredData.map((item, index) => (
             <Link
-              href={
-                wallet && item.type === 0
-                  ? `/purchase/${item.key}`
-                  : "/"
-              }
+              href={wallet && item.type === 0 ? `/purchase/${item.key}` : "/"}
               key={index}
               onClick={checkWallet}
             >
@@ -84,31 +86,44 @@ const App: React.FC<AppProps> = ({
 
                 <div className="flex justify-between gap-3">
                   <div className="flex-2">
-                    <div className="font-bold">{item.value} {item.fiat}</div>
-                    <div className="text-xs pb-1">Available {item.available}{item.symbol}</div>
-                    <div className="text-xs">Limit {item.fiat} {item.boundries}</div>
+                    <div className="font-bold">
+                      {item.value} {item.fiat}
+                    </div>
+                    <div className="text-xs pb-1">
+                      Available {item.available}
+                      {item.symbol}
+                    </div>
+                    <div className="text-xs">
+                      Limit {item.fiat} {item.boundries}
+                    </div>
                   </div>
 
                   <div className="flex flex-col items-end flex-1 gap-1">
-                    <div className="text-gray-600 text-xs">{item.payMethod}</div>
+                    <div className="text-gray-600 text-xs">
+                      {item.payMethod}
+                    </div>
 
-                    <button className={`text-white py-[1px] px-3 rounded text-sm ${item.type === 0
-                      ? "bg-green-500 hover:bg-green-300"
-                      : "bg-red-500 hover:bg-red-300"}`}>
+                    <button
+                      className={`text-white py-[1px] px-3 rounded text-sm ${
+                        item.type === 0
+                          ? "bg-green-500 hover:bg-green-300"
+                          : "bg-red-500 hover:bg-red-300"
+                      }`}
+                    >
                       {item.type === 0 ? "Buy" : "Sell"}
                     </button>
-                    <div className="border border-yellow-600 text-yellow-600 text-[9px]">* Requires verification</div>
+                    <div className="border border-yellow-600 text-yellow-600 text-[9px]">
+                      * Requires verification
+                    </div>
                   </div>
                 </div>
               </div>
             </Link>
           ))}
 
-          {filteredData.length === 0 &&
-            <>No Records Founds</>
-          }
+          {filteredData.length === 0 && <>No Records Founds</>}
         </div>
-      </div >
+      </div>
       {openModel && (
         <Modal
           open={openModel}
@@ -127,8 +142,7 @@ const App: React.FC<AppProps> = ({
             </Typography>
           </Box>
         </Modal>
-      )
-      }
+      )}
     </>
   );
 };

@@ -29,6 +29,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({
   const [crypto, setCrypto] = useState<string[]>([]);
 
   const getData = (table: any) => {
+    console.log(table);
     const newFiatCurrencies = Array.from(
       new Set(table.map((item: any) => item.fiatCurrency.toUpperCase()))
     );

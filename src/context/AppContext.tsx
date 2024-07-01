@@ -1,4 +1,10 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { ethers } from "ethers";
 import { setWalletAddress } from "@/hooks/cookies";
 import { chains, networkIds } from "@/constants/rpcs";
@@ -28,7 +34,8 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
   const getEthersInstance = async (
-    networkId: number, network: SupportedBlockchains
+    networkId: number,
+    network: SupportedBlockchains
   ): Promise<ethers.JsonRpcProvider | ethers.BrowserProvider> => {
     let ethersProvider: ethers.JsonRpcProvider | ethers.BrowserProvider;
 
@@ -55,9 +62,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
           try {
             await (window.ethereum as any).request({
               method: "wallet_addEthereumChain",
-              params: [
-                chains[network],
-              ],
+              params: [chains[network]],
             });
           } catch (addError) {
             console.error("Error adding Ethereum chain:", addError);
@@ -83,11 +88,12 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     const chainId = Number(selectedChain.chainId);
     const chainsKeys = Object.keys(networkIds);
     const chainsValues = Object.values(networkIds);
-    const selectedCoin = chains[chainsKeys[chainsValues.indexOf(chainId)] as SupportedBlockchains];
+    const selectedCoin =
+      chains[chainsKeys[chainsValues.indexOf(chainId)] as SupportedBlockchains];
     setChainCoin(selectedCoin.nativeCurrency.name);
-    const balanceEth = await provider.getBalance(Wallet ? Wallet : wallet);
+    const balanceEth = await provider.getBalance(Wallet || wallet);
     const balance = ethers.formatEther(balanceEth);
-    setBalance(parseFloat(balance))
+    setBalance(parseFloat(balance));
   };
 
   const getWalletFunction = async (connect?: boolean) => {
@@ -96,41 +102,66 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
         const walletConnected = localStorage.getItem("walletConnected");
         if (walletConnected === null && !connect) return;
 
-        const res = await (walletConnected ?
-          window.ethereum.request({
-            method: 'eth_requestAccounts',
-            params: []
-          })
-          :
-          window.ethereum.request({
-            method: "wallet_requestPermissions",
-            params: [{
-              eth_accounts: {}
-            }]
-          }).then(() => window.ethereum.request({
-            method: 'eth_requestAccounts'
-          })));
+        const res = await (walletConnected
+          ? window.ethereum.request({
+              method: "eth_requestAccounts",
+              params: [],
+            })
+          : window.ethereum
+              .request({
+                method: "wallet_requestPermissions",
+                params: [
+                  {
+                    eth_accounts: {},
+                  },
+                ],
+              })
+              .then(() =>
+                window.ethereum.request({
+                  method: "eth_requestAccounts",
+                })
+              ));
 
         const Wallet = res.length > 0 ? res[0] : null;
         Wallet && setWallet(Wallet);
         setWalletAddress(Wallet);
         localStorage.setItem("walletConnected", "true");
 
-        Wallet && await getBalance(Wallet);
-
+        Wallet && (await getBalance(Wallet));
 
         window.ethereum.on("connect", (accounts: string[]) => {
-          getBalance(accounts[0])
+          getBalance(accounts[0]);
         });
 
         window.ethereum.on("accountsChanged", (accounts: string[]) => {
           setWallet(accounts[0]);
           setWalletAddress(accounts[0]);
-          getBalance(accounts[0])
+          getBalance(accounts[0]);
         });
 
-        window.ethereum.on("chainChanged", () => {
-          getBalance();
+        window.ethereum.on("chainChanged", async () => {
+          const res = await (walletConnected
+            ? window.ethereum.request({
+                method: "eth_requestAccounts",
+                params: [],
+              })
+            : window.ethereum
+                .request({
+                  method: "wallet_requestPermissions",
+                  params: [
+                    {
+                      eth_accounts: {},
+                    },
+                  ],
+                })
+                .then(() =>
+                  window.ethereum.request({
+                    method: "eth_requestAccounts",
+                  })
+                ));
+
+          const Wallet = res.length > 0 ? res[0] : null;
+          getBalance(Wallet);
         });
 
         window.ethereum.on("disconnect", () => {
@@ -138,9 +169,6 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
           localStorage.removeItem("walletConnected");
           setBalance(0);
         });
-
-
-
       } catch (err) {
         console.error("Error requesting accounts:", err);
       }
@@ -158,7 +186,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     setWalletAddress(null);
     localStorage.removeItem("walletConnected");
     setBalance(0);
-  }
+  };
 
   return (
     <AppContext.Provider
@@ -173,7 +201,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
         setMaker,
         balance,
         disconnectWallet,
-        chainCoin
+        chainCoin,
       }}
     >
       {children}

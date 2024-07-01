@@ -136,7 +136,7 @@ const App: React.FC<AppProps> = ({
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500 ">
                     <div>
-                      {item.price} {item.cryptoSymbol}
+                      {item.max} {item.cryptoSymbol}
                     </div>
                     <div>{item.blockChain}</div>
                   </td>

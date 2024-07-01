@@ -22,6 +22,7 @@ interface UserData {
   condition?:string;
   status?:any;
   type?:any
+  isOpen?:any
 }
 
 export const CreateOrder = async (data: UserData) => {

@@ -68,7 +68,9 @@ const PaymentMethodTags = ({
       </Box>
 
       <FormControl sx={{ m: 1, minWidth: 400 }}>
-        <InputLabel id="payment-method-label">Payment Method</InputLabel>
+        <InputLabel id="payment-method-label " className="bg-white">
+          Payment Method
+        </InputLabel>
         <Select
           labelId="payment-method-label"
           id="payment-method-select"

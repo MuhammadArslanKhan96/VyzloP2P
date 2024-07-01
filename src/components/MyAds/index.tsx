@@ -13,10 +13,21 @@ import ReviewSection from "./ReviewSection";
 import SecondStep from "./SecondStep";
 import { GetToken } from "@/firebase/DataFetching/getTokensByIdName";
 import { CreateOrder } from "@/firebase/DataPost/createOrders";
+import useFirestoreListener from "@/hooks/useFirestoreListener";
 
 const MyAdsPage = () => {
   const router = useRouter();
+  const [fiatCurrency, setFiatCurrency] = useState();
 
+  const getData = (Fiat: any) => {
+    setFiatCurrency(Fiat);
+  };
+
+  const listerns = useFirestoreListener("Fiat", getData);
+
+  useEffect(() => {
+    listerns();
+  }, []);
   const [activeModel, setActiveModel] = useState(0);
   const [nextStep, setNextStep] = useState(false);
   const [newAds, setNewAds] = useState(false);
@@ -33,7 +44,7 @@ const MyAdsPage = () => {
       "paymentMethod",
       "price",
     ],
-    ["country", "condition", "message", "terms"],
+    ["condition", "message", "terms"],
   ];
   const fieldsNames = [
     [
@@ -47,7 +58,7 @@ const MyAdsPage = () => {
       "Payment Method",
       "Price",
     ],
-    ["Country", "Condition", "Message", "Terms"],
+    ["Condition", "Message", "Terms"],
   ];
 
   const { wallet, getEthersInstance } = useAppContext();
@@ -64,13 +75,14 @@ const MyAdsPage = () => {
     message: "",
     paymentMethod: "",
     terms: "",
-    country: "",
+    // country: "",
     min: "",
     max: "",
     price: "",
     condition: "",
     type: 0,
     status: "0",
+    isOpen: false,
   });
   const [notification, setNotification] = useState({
     open: false,
@@ -156,6 +168,20 @@ const MyAdsPage = () => {
 
   const validateStep = (currentStep: number) => {
     try {
+      const minimumOffer =
+        typeof createOrder?.min === "string"
+          ? parseFloat(createOrder?.min)
+          : createOrder?.min;
+      const maximumOffer =
+        typeof createOrder?.max === "string"
+          ? parseFloat(createOrder?.max)
+          : createOrder?.max;
+      if (minimumOffer < 0 || minimumOffer > maximumOffer) {
+        console.log(minimumOffer, maximumOffer);
+        throw new Error(`Minimum offer must be less than maximum offer`);
+      } else if (maximumOffer < 0 || maximumOffer <= minimumOffer) {
+        throw new Error(`Maximum offer must be greater than minimum offer`);
+      }
       const validationFields: string[] = fields[currentStep];
       validationFields.forEach((fieldName) => {
         const fieldExists = !!createOrder[fieldName];
@@ -174,14 +200,6 @@ const MyAdsPage = () => {
           );
         }
       });
-
-      const minimumOffer = createOrder?.min;
-      const maximumOffer = createOrder?.max;
-      if (minimumOffer < 0 || minimumOffer > maximumOffer) {
-        throw new Error(`Minimum offer must be less than maximum offer`);
-      } else if (maximumOffer < 0 || maximumOffer <= minimumOffer) {
-        throw new Error(`Maximum offer must be greater than minimum offer`);
-      }
 
       return true;
     } catch (error: any) {
@@ -223,6 +241,7 @@ const MyAdsPage = () => {
         >
           {activeModel === 0 && (
             <FirstStep
+              fiatCountries={fiatCurrency}
               networkData={networkData}
               updateFields={handleChange}
               createOrder={createOrder}

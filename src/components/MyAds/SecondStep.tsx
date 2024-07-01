@@ -20,14 +20,16 @@ export default function SecondStep({
       </Typography>
       <Box className="w-full flex justify-center  gap-8 items-center mt-10  ">
         <Box className="w-[40%]">
-          <Typography sx={{ color: "grey" }}>Select the country</Typography>
+          {/* <Typography sx={{ color: "grey" }}>Select the country</Typography>
           <CountrySelector
+            fiatCountries={fiatCountries}
+            updateFields={updateFields}
             countryMethod={(selectedCountry: any) =>
               updateFields({
                 target: { name: "country", value: selectedCountry.label },
               })
             }
-          />
+          /> */}
           <Typography sx={{ marginBlock: 2, color: "grey" }}>
             You can add conditions here:
           </Typography>
@@ -47,6 +49,19 @@ export default function SecondStep({
           <TextareaAutosize
             onChange={updateFields}
             defaultValue={createOrder?.message}
+            name="message"
+            minRows={2}
+            maxRows={2}
+            placeholder="Enter your text here"
+            style={{ width: "100%" }}
+            className="border rounded-lg p-2 overflow-y-auto resize-none "
+          />
+          <Typography color="grey">
+            You can add up to three restrictions
+          </Typography>
+          <TextareaAutosize
+            onChange={updateFields}
+            defaultValue={createOrder?.terms}
             name="terms"
             minRows={2}
             maxRows={2}

@@ -8,8 +8,11 @@ import {
   Typography,
 } from "@mui/material";
 import PaymentMethodTags from "../Field/PaymentMethodTags";
+import useFirestoreListener from "@/hooks/useFirestoreListener";
+import { useEffect, useState } from "react";
 
 export default function FirstStep({
+  fiatCountries,
   updateFields,
   networkData,
   createOrder,
@@ -17,7 +20,17 @@ export default function FirstStep({
   updateFields: (e: { target: { name: string; value: any } }) => void;
   networkData: any;
   createOrder: any;
+  fiatCountries: any;
 }) {
+  const [netWork, setNetwork] = useState([]);
+  const getData = (docs: any) => {
+    setNetwork(docs);
+    console.log(docs[0]?.id);
+  };
+  const listerns = useFirestoreListener("tokenDetails", getData);
+  useEffect(() => {
+    listerns();
+  }, []);
   return (
     <Box className="flex flex-col justify-center items-center w-full">
       <Typography sx={{ color: "black", fontWeight: "bold" }}>
@@ -28,7 +41,7 @@ export default function FirstStep({
       </Typography>
 
       <Box className="w-full flex flex-col justify-center  items-center mt-10 ">
-        <Box className="w-full flex flex-wrap justify-center  gap-x-10 ">
+        <Box className="w-full flex flex-wrap justify-start md:justify-center  gap-x-10 ">
           <Box sx={{ m: 1, minWidth: 800, maxWidth: 800 }}>
             <Box>
               <Typography sx={{ color: "gray" }}>
@@ -61,7 +74,6 @@ export default function FirstStep({
                 label="Network"
                 required
               >
-                <MenuItem value="BSC">BSC</MenuItem>
                 <MenuItem value="POLYGON">POLYGON</MenuItem>
                 <MenuItem value="ZETA">ZETA</MenuItem>
               </Select>
@@ -93,7 +105,7 @@ export default function FirstStep({
                     ))
                   )
                 ) : (
-                  <MenuItem disabled>No coins available</MenuItem>
+                  <MenuItem disabled>Please Select Network Id</MenuItem>
                 )}
               </Select>
             </FormControl>
@@ -105,13 +117,32 @@ export default function FirstStep({
               <Typography sx={{ color: "gray" }}>
                 Which fiat currency do you want to use?
               </Typography>
-              <TextField
-                required
-                name="fiatCurrency"
-                onChange={updateFields}
-                defaultValue={createOrder?.fiatCurrency}
-                sx={{ m: 1, minWidth: 400 }}
-              ></TextField>
+              <FormControl sx={{ m: 1, minWidth: 300 }}>
+                <InputLabel id="demo-simple-select-autowidth-label">
+                  Fiat
+                </InputLabel>
+                <Select
+                  required
+                  labelId="demo-simple-select-autowidth-label"
+                  id="demo-simple-select-autowidth"
+                  onChange={updateFields}
+                  name="fiatCurrency"
+                  defaultValue={createOrder?.fiatCurrency}
+                  label="fiat"
+                >
+                  {fiatCountries.length > 0 ? (
+                    fiatCountries.map((item: any) =>
+                      item.fiat.map((fiat: string, index: number) => (
+                        <MenuItem key={index} value={fiat}>
+                          {fiat}
+                        </MenuItem>
+                      ))
+                    )
+                  ) : (
+                    <MenuItem disabled>No Fiat</MenuItem>
+                  )}
+                </Select>
+              </FormControl>
             </Box>
             <Box className="flex flex-col justify-start  my-3  items-start ">
               <Typography sx={{ color: "gray" }}>
@@ -139,8 +170,8 @@ export default function FirstStep({
                     required
                     type="number"
                     name="max"
-                    defaultValue={createOrder?.max}
                     onChange={updateFields}
+                    defaultValue={createOrder?.max}
                     sx={{ width: 160 }}
                   ></TextField>
                 </Box>
