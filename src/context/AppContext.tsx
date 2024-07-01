@@ -9,7 +9,7 @@ import { ethers } from "ethers";
 import { setWalletAddress } from "@/hooks/cookies";
 import { chains, networkIds } from "@/constants/rpcs";
 import { SupportedBlockchains } from "@/types";
-import { addUserIfNotExists } from "@/services/user";
+import { addUserIfNotExists } from "@/Services/user";
 
 const AppContext = createContext({} as any); // Provide a default value to the context
 

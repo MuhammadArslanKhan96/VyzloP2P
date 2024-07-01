@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../../../public/images/logoVyzlo.png";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { MdLanguage } from "react-icons/md";
 import Image from "next/image";
 import { CiSettings } from "react-icons/ci";
-import { IoMdContact } from "react-icons/io";
+import { IoIosNotifications, IoMdContact } from "react-icons/io";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { useAppContext } from "@/context/AppContext";
+import { Badge, IconButton, Menu, MenuItem } from "@mui/material";
+import { IoNotificationsCircleOutline } from "react-icons/io5";
 
 type HeaderProps = {
   toggleMenu: () => void;
@@ -29,13 +31,23 @@ const Header = ({
   const walletConnect = async () => {
     getWalletFunction(true);
   };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleOpenMenu = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <>
       {/* Header */}
       <div
-        className={`bg-[#fff] py-4 px-4 flex items-center justify-between z-10 w-full ${
-          openMenu ? "absolute lg:fixed top-0" : "fixed"
-        } ${openAccMenu ? "absolute lg:fixed top-0" : "fixed"}`}
+        className={`bg-[#fff] py-4 px-4 flex items-center justify-between z-10 w-full ${openMenu ? "absolute lg:fixed top-0" : "fixed"
+          } ${openAccMenu ? "absolute lg:fixed top-0" : "fixed"}`}
       >
         <div className="flex items-center gap-12">
           <div className="hidden lg:flex items-center">
@@ -91,6 +103,37 @@ const Header = ({
               ? wallet?.slice(0, 5) + "..." + wallet?.slice(-6)
               : "Connect Wallet"}
           </button>
+          {/* 
+          <button
+            className="me-8 sm:me-0 bg-[#d4ebfc] font-semibold px-4 py-1 rounded-lg"
+          >
+            <IoIosNotifications size={22} />
+          </button> */}
+          <div>
+            <IconButton onClick={handleOpenMenu} color="inherit">
+              <Badge badgeContent={2} color="error">
+                <IoIosNotifications size={22} />
+              </Badge>
+            </IconButton>
+
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleCloseMenu}
+              disableScrollLock
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
+            >
+              <MenuItem disabled>No notifications</MenuItem>
+            </Menu>
+          </div>
+
           <button
             className="flex gap-2 bg-[#d4ebfc] text-[#05379A] p-3 rounded-full hover:text-white hover:bg-[#05379A] transition-all duration-500"
             onClick={toggleAccMenu}

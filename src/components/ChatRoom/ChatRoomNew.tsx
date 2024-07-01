@@ -28,7 +28,7 @@ import walletP2P, { getP2P, getWallet } from "@/hooks/getP2P";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
 import { IoCloseCircleOutline } from "react-icons/io5";
-import { fetchUserByWalletAddress } from "@/services/user";
+import { fetchUserByWalletAddress } from "@/Services/user";
 interface MessageType {
   id: string;
   text: string;
@@ -117,7 +117,7 @@ const ChatRoomNew = ({
     });
 
     return () => {
-      // deleteMessagesOnUserLeave(collectionId)
+      deleteMessagesOnUserLeave(collectionId || "")
       unsubscribe()
     };
   }, [collectionId, user]);
