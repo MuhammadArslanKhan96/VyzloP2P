@@ -13,6 +13,8 @@ import {
   onSnapshot,
   getDocs,
   deleteDoc,
+  where,
+  doc,
 } from "firebase/firestore";
 import {
   ref as storageRef,
@@ -21,88 +23,83 @@ import {
 } from "firebase/storage";
 import { db, storage } from "../../../utils/firebaseConfig";
 import { useRouter } from "next/router";
-import { getWalletAddress } from "@/hooks/cookies";
+import { getWalletAddress, setWalletAddress } from "@/hooks/cookies";
 import walletP2P, { getP2P, getWallet } from "@/hooks/getP2P";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import { fetchUserByWalletAddress } from "@/services/user";
 interface MessageType {
   id: string;
   text: string;
   createdAt: Date;
   sender?: string;
   imageURL?: string;
+  collectionId: string
 }
 
-const ChatRoom = ({
+const ChatRoomNew = ({
   setChatDisplay,
   chatDisplay,
 }: {
   setChatDisplay: Function;
   chatDisplay: boolean;
 }) => {
-  const { maker, setMaker } = useAppContext();
+  // const { maker, setMaker } = useAppContext();
   const router = useRouter();
-  const { id } = router.query;
+  const { id = [] } = router.query;
 
+  const collectionId = useMemo(() => id?.length > 0 ? id[0] : null, [id])
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [msgInput, setMsgInput] = useState("");
-
-  const [walletAddress, setWalletAddressState] = useState<string | undefined>("");
-  const [makerSeller, setMakerWallet] = useState("");
+  const [isSeller, setIsSeller] = useState<any | null>([]);
+  const [seller, setSeller] = useState<any | null>([]);
+  const [user, setUser] = useState<any | null>([])
+  const [data, setData] = useState<any | null>([]);
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null); // pending
   const [uploadedImageURL, setUploadedImageURL] = useState<string | null>(null); //pending
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  const [data, setData] = useState<any | null>([]);
-
-
-
-  // const [name, setName] = useState<string>("");
-  // const [seller, setSellerName] = useState("");
-  // const user2 = Array.isArray(id) && id.length > 0 ? id[0] : undefined;
-  // const user1 = walletAddress;
-
   useEffect(() => {
     const fetchWalletAddress = async (id: any) => {
       const { data: resData, loading, error } = await getWallet(id);
-      console.log(resData)
+      const address = getWalletAddress();
+
       if (loading || error) {
         return console.error(error || loading);
       }
-      // setSellerName(data?.advertiser);
-      setMakerWallet(data?.wallet);
-      setData(resData);
+
+      const sellerCheck = address === resData?.takerAddress;
+      const userData: any = await fetchUserByWalletAddress(address || "");
+      setUser(userData);
+
+      if (sellerCheck) {
+        setIsSeller(true);
+        return setData(resData);
+      }
+
+      setSeller({ name: resData?.userName, address: resData?.takerAddress });
     };
-    fetchWalletAddress(id);
-  }, [id]);
 
-  useEffect(() => {
-    const address = getWalletAddress();
-    if (address) {
-      setWalletAddressState(address);
+    if (collectionId) {
+      fetchWalletAddress(collectionId);
     }
-  }, []);
+
+  }, [collectionId, data?.takerAddress]);
 
   useEffect(() => {
-    if (!walletAddress || !makerSeller) {
-      console.error("User1 or User2 is undefined");
+    if (!user || !user.id || !collectionId) {
+      console.error("Invalid parameters:", { user, collectionId });
       return;
     }
 
-    if (typeof id !== "string") {
-      return console.error(id);
-    }
-
-    const q = query(
-      collection(db, "Messages", walletAddress, "messages", id),
-      orderBy("createdAt")
-    );
+    const messagesRef = collection(db, `createOrder/${collectionId}/messages`);
+    const q = query(messagesRef, orderBy("createdAt"));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const loadedMessages: MessageType[] = [];
+      const loadedMessages: any = [];
       querySnapshot.forEach((msg) => {
         loadedMessages.push({
           id: msg.id,
@@ -115,8 +112,11 @@ const ChatRoom = ({
       setMessages(loadedMessages);
     });
 
-    return () => unsubscribe();
-  }, [walletAddress]);
+    return () => {
+      // deleteMessagesOnUserLeave(collectionId)
+      unsubscribe()
+    };
+  }, [user, collectionId]);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -127,29 +127,27 @@ const ChatRoom = ({
   const handleSend = async () => {
     if (msgInput.trim() === "" && !uploadedImageURL) return;
 
-    if (!walletAddress || !makerSeller) {
-      console.error("User1 or User2 is undefined");
+    if (!user || !seller) {
+      console.error("user or seller is undefined");
       return;
     }
 
-    if (typeof id !== "string") {
+    if (typeof collectionId !== "string") {
       return console.error(id);
     }
-
-
+    
     const messageData: Partial<MessageType> = {
       text: msgInput,
       createdAt: new Date(),
-      sender: walletAddress,
+      sender: user.address,
+      collectionId
     };
 
     if (uploadedImageURL) {
       messageData.imageURL = uploadedImageURL;
     }
 
-    // await addDoc(collection(db, `P2POrder/${user2}/messages`), messageData);
-
-    await addDoc(collection(db, "Messages", walletAddress, "messages", id),messageData),
+    await addDoc(collection(db, `createOrder/${collectionId}/messages`), messageData);
 
     setMsgInput("");
     setUploadedImageURL(null);
@@ -172,16 +170,25 @@ const ChatRoom = ({
     setUploadedImageURL(null);
   };
 
-  // const cancelOrder = async () => {
-  //   const messagesRef = collection(db, `P2POrder/${user2}/messages`);
-  //   const snapshot = await getDocs(messagesRef);
-  //   snapshot.forEach((doc) => {
-  //     deleteDoc(doc.ref);
-  //   });
+  const deleteMessagesOnUserLeave = async (collectionId: string) => {
+    try {
+      const messagesRef = collection(db, `createOrder/${collectionId}/messages`);
+      const querySnapshot = await getDocs(messagesRef);
+      // Delete each document in the subcollection
+      querySnapshot.forEach(async (doc) => {
+        await deleteDoc(doc.ref);
+        console.log(`Document with ID ${doc.id} successfully deleted.`);
+      });
+      console.log('All messages deleted for user:', collectionId);
+    } catch (error) {
+      console.error('Error deleting messages:', error);
+    }
+  };
 
-  //   await getP2P(user2, 0);
-  //   router.push("/");
-  // };
+  const cancelOrder = async () => {
+    await deleteMessagesOnUserLeave(collectionId || "")
+    router.push("/");
+  };
 
   // useEffect(() => {
   //   if (messages.length > 0) {
@@ -191,11 +198,11 @@ const ChatRoom = ({
 
   // useEffect(() => {
   //   const getting = async () => {
-  //     const res = await walletP2P(user2, user1);
+  //     const res = await walletP2P(user2, walletAddress);
   //     setMaker(res);
   //   };
   //   getting();
-  // }, [user1, user2]);
+  // }, [walletAddress, user2]);
 
   return (
     <Box
@@ -217,19 +224,23 @@ const ChatRoom = ({
           </button>
           <Avatar />
           <Box className="ml-1">
-            <Typography fontSize={14}>
-              {/* {maker
+            {/* <Typography fontSize={14}>
+              {maker
                 ? `${name?.slice(0, 6)}...${name?.slice(-6)}`
-                : `${makerSeller.slice(0, 6)}...${makerSeller.slice(-6)}`} */}
-            </Typography>
-            {/* <Typography fontSize={14}> {maker ? "unknown" : seller}</Typography> */}
+                : `${seller.slice(0, 6)}...${seller.slice(-6)}`}
+
+
+                {seller?.address === user.address ? `${name?.slice(0, 6)}...${name?.slice(-6)}`}
+            </Typography> */}
+            <Typography fontSize={14}> {isSeller ? "unknown" : seller.name}</Typography>
+            {/* <Typography fontSize={14}> {!seller ? "unknown" : seller.address?.slice(0, 6) + "..." + seller.address?.slice(-6)}</Typography> */}
           </Box>
         </Box>
         <Box>
           <Button
             sx={{ fontSize: 10, borderRadius: 2 }}
             className="bg-blue-100/50"
-            // onClick={cancelOrder}
+            onClick={cancelOrder}
           >
             Cancel order
           </Button>
@@ -270,29 +281,29 @@ const ChatRoom = ({
                 return (
                   <Box
                     key={index}
-                    className={`w-full flex items-center ${msg.sender === walletAddress ? "justify-end" : "justify-start"
+                    className={`w-full flex items-center ${msg.sender === user.address ? "justify-end" : "justify-start"
                       }`}
                   >
                     <Box
-                      className={`p-2 rounded-lg w-[60%] ${msg.sender === walletAddress
+                      className={`p-2 rounded-lg w-[60%] ${msg.sender === user.address
                         ? "bg-blue-100 text-left"
                         : "bg-pink-100 text-right"
                         } mb-2`}
                     >
                       <Typography
-                        className={`text-[9px]  ${maker ? "text-right" : "text-left"
+                        className={`text-[9px]  ${false ? "text-right" : "text-left"
                           }`}
                       >
-                        {maker ? "unknown" : makerSeller}
+                        {msg.sender === user.address ? user.name : isSeller ? "unknown" : seller.name}
                       </Typography>
                       <Typography
-                        className={`text-sm  ${maker ? "text-right" : "text-left"
+                        className={`text-sm  ${false ? "text-right" : "text-left"
                           }`}
                       >
                         {msg.text}
                       </Typography>
                       <Typography
-                        className={`text-[9px] ${maker ? "text-left" : "text-right"
+                        className={`text-[9px] ${false ? "text-left" : "text-right"
                           }`}
                       >
                         {msg.createdAt.toLocaleTimeString()}
@@ -347,4 +358,4 @@ const ChatRoom = ({
   );
 };
 
-export default ChatRoom;
+export default ChatRoomNew;

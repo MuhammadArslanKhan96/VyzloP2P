@@ -29,6 +29,7 @@ import { UpdateP2POrder } from "@/hooks/getP2P";
 import { addresses, networkIds } from "@/constants/rpcs";
 import { SupportedBlockchains } from "@/types";
 import Ellipsis from "@/components/Ellipsis/Ellipsis";
+import ChatRoomNew from "@/components/ChatRoom/ChatRoomNew";
 
 type TakerData = {
   takerAddress: string;
@@ -524,7 +525,7 @@ const Purchase = () => {
             </Box>
           </Box>
         </Box>
-        <ChatRoom setChatDisplay={setChatDisplay} chatDisplay={chatDisplay} />
+        <ChatRoomNew setChatDisplay={setChatDisplay} chatDisplay={chatDisplay} />
         {/* <NewChatRoom /> */}
       </Box>
     </>
