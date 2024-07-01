@@ -52,6 +52,7 @@ const ChatRoomNew = ({
   const collectionId = useMemo(() => id?.length > 0 ? id[0] : null, [id])
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [msgInput, setMsgInput] = useState("");
+  const [makerWallet, setMakerWallet] = useState("");
   const [isSeller, setIsSeller] = useState<any | null>([]);
   const [seller, setSeller] = useState<any | null>([]);
   const [user, setUser] = useState<any | null>([])
@@ -135,7 +136,7 @@ const ChatRoomNew = ({
     if (typeof collectionId !== "string") {
       return console.error(id);
     }
-    
+
     const messageData: Partial<MessageType> = {
       text: msgInput,
       createdAt: new Date(),
@@ -190,11 +191,11 @@ const ChatRoomNew = ({
     router.push("/");
   };
 
-  // useEffect(() => {
-  //   if (messages.length > 0) {
-  //     setName(messages[0]?.sender || "");
-  //   }
-  // }, [messages]);
+  useEffect(() => {
+    if (messages.length > 0) {
+      setMakerWallet(messages[0]?.sender || "");
+    }
+  }, [messages]);
 
   // useEffect(() => {
   //   const getting = async () => {
@@ -224,14 +225,9 @@ const ChatRoomNew = ({
           </button>
           <Avatar />
           <Box className="ml-1">
-            {/* <Typography fontSize={14}>
-              {maker
-                ? `${name?.slice(0, 6)}...${name?.slice(-6)}`
-                : `${seller.slice(0, 6)}...${seller.slice(-6)}`}
-
-
-                {seller?.address === user.address ? `${name?.slice(0, 6)}...${name?.slice(-6)}`}
-            </Typography> */}
+            <Typography fontSize={14}>
+              {isSeller ? `${makerWallet?.slice(0, 6)}...${makerWallet?.slice(-6)}` : `${seller?.address?.slice(0, 6)}...${seller?.address?.slice(-6)}`}
+            </Typography>
             <Typography fontSize={14}> {isSeller ? "unknown" : seller.name}</Typography>
             {/* <Typography fontSize={14}> {!seller ? "unknown" : seller.address?.slice(0, 6) + "..." + seller.address?.slice(-6)}</Typography> */}
           </Box>
