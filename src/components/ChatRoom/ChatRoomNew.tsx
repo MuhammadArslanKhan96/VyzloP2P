@@ -65,11 +65,14 @@ const ChatRoomNew = ({
 
   useEffect(() => {
     const fetchWalletAddress = async (id: any) => {
+
+      console.log(id, "id")
+
       const { data: resData, loading, error } = await getWallet(id);
       const address = getWalletAddress();
 
       if (loading || error) {
-        return console.error(error || loading);
+        return console.log(error || loading);
       }
 
       const sellerCheck = address === resData?.takerAddress;
@@ -88,11 +91,11 @@ const ChatRoomNew = ({
       fetchWalletAddress(collectionId);
     }
 
-  }, [collectionId, data?.takerAddress]);
+  }, [collectionId]);
 
   useEffect(() => {
-    if (!user || !user.id || !collectionId) {
-      console.error("Invalid parameters:", { user, collectionId });
+    if (!user || !user.id) {
+      console.log("Invalid parameters:", { user });
       return;
     }
 
@@ -117,7 +120,7 @@ const ChatRoomNew = ({
       // deleteMessagesOnUserLeave(collectionId)
       unsubscribe()
     };
-  }, [user, collectionId]);
+  }, [collectionId, user]);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -228,7 +231,7 @@ const ChatRoomNew = ({
             <Typography fontSize={14}>
               {isSeller ? `${makerWallet?.slice(0, 6)}...${makerWallet?.slice(-6)}` : `${seller?.address?.slice(0, 6)}...${seller?.address?.slice(-6)}`}
             </Typography>
-            <Typography fontSize={14}> {isSeller ? "unknown" : seller.name}</Typography>
+            <Typography fontSize={14}> {isSeller ? "unknown" : seller?.name || ""}</Typography>
             {/* <Typography fontSize={14}> {!seller ? "unknown" : seller.address?.slice(0, 6) + "..." + seller.address?.slice(-6)}</Typography> */}
           </Box>
         </Box>
@@ -277,11 +280,11 @@ const ChatRoomNew = ({
                 return (
                   <Box
                     key={index}
-                    className={`w-full flex items-center ${msg.sender === user.address ? "justify-end" : "justify-start"
+                    className={`w-full flex items-center ${msg.sender === user?.address ? "justify-end" : "justify-start"
                       }`}
                   >
                     <Box
-                      className={`p-2 rounded-lg w-[60%] ${msg.sender === user.address
+                      className={`p-2 rounded-lg w-[60%] ${msg.sender === user?.address
                         ? "bg-blue-100 text-left"
                         : "bg-pink-100 text-right"
                         } mb-2`}
@@ -290,7 +293,7 @@ const ChatRoomNew = ({
                         className={`text-[9px]  ${false ? "text-right" : "text-left"
                           }`}
                       >
-                        {msg.sender === user.address ? user.name : isSeller ? "unknown" : seller.name}
+                        {msg?.sender === user?.address ? user?.name : isSeller ? "unknown" : seller?.name}
                       </Typography>
                       <Typography
                         className={`text-sm  ${false ? "text-right" : "text-left"
@@ -302,11 +305,11 @@ const ChatRoomNew = ({
                         className={`text-[9px] ${false ? "text-left" : "text-right"
                           }`}
                       >
-                        {msg.createdAt.toLocaleTimeString()}
+                        {msg?.createdAt.toLocaleTimeString()}
                       </Typography>
-                      {msg.imageURL && (
+                      {msg?.imageURL && (
                         <Box>
-                          <img src={msg.imageURL} alt="Attached" />
+                          <img src={msg?.imageURL} alt="Attached" />
                         </Box>
                       )}
                     </Box>
