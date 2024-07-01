@@ -131,8 +131,8 @@ const ChatRoomNew = ({
   const handleSend = async () => {
     if (msgInput.trim() === "" && !uploadedImageURL) return;
 
-    if (!user || !seller) {
-      console.error("user or seller is undefined");
+    if (!user) {
+      console.error("user is undefined");
       return;
     }
 
